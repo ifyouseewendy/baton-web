@@ -1,7 +1,7 @@
 set :output, "log/schedule.log"
 
 every 1.minute do
-  runner "HourlyOrder.new.check"
+  runner "HourlyOrder.new('xiaojin').check"
 end
 
 #
