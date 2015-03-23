@@ -34,7 +34,7 @@ class DailyOrderTest < ActiveSupport::TestCase
 
     assert_equal 1, Product.count
 
-    assert_equal 3, Order.count
+    assert_equal 5, Order.count
     o = Order.where(serial_number: '000001').first
     assert_equal 'xiaojin',   o.platform.name
     assert_equal 'wendi',     o.user.name

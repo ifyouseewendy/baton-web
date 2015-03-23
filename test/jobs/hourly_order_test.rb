@@ -35,7 +35,7 @@ class HourlyOrderTest < ActiveSupport::TestCase
 
       assert_equal 1, Product.count
 
-      assert_equal 2, Order.count
+      assert_equal 4, Order.count
       o = Order.where(serial_number: '000001').first
       assert_equal 'xiaojin',   o.platform.name
       assert_equal 'wendi',     o.user.name
