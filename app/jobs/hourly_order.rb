@@ -8,10 +8,6 @@ class HourlyOrder
     @count = 0
   end
 
-  def backup
-    source_path = File.join('/Users/wendi/tmp', platform, 'upload', Date.today.to_s.gsub('-',''))
-  end
-
   def check
     puts "--> [#{Time.now}] <HourlyOrder> Start"
 
@@ -28,7 +24,37 @@ class HourlyOrder
     puts "--> [#{Time.now}] <HourlyOrder> parsed #{@count} records"
   end
 
+  def parse_and_create_from(csv)
+    CSV.foreach(csv) do |row|
+      next if Order.where(serial_number: row[0]).count > 0
+
+      user = User.find_or_create_by(id_card_number: row[3]) do |u|
+        u.name = row[2]
+        u.id_card_number = row[3]
+        u.mobile = row[6]
+      end
+
+      product = Product.find_or_create_by(code: row[4])
+
+      order = Order.create(
+        user:           user,
+        product:        product,
+        platform:       platform,
+        serial_number:  row[0],
+        generated_at:   Time.parse(row[1]),
+        user_share:     row[5]
+      )
+
+      @count += 1
+    end
+  end
+
   private
+
+    def source_path
+      @_source_path ||= File.join('/Users/wendi/tmp', platform, 'upload', Date.today.to_s.gsub('-',''))
+    end
+
 
     def find_new_files
       new_files = []
@@ -41,28 +67,4 @@ class HourlyOrder
       new_files
     end
 
-    def parse_and_create_from(csv)
-      CSV.foreach(csv) do |row|
-        next if Order.where(serial_number: row[0]).count > 0
-
-        user = User.find_or_create_by(id_card_number: row[3]) do |u|
-          u.name = row[2]
-          u.id_card_number = row[3]
-          u.mobile = row[6]
-        end
-
-        product = Product.find_or_create_by(code: row[4])
-
-        order = Order.create(
-          user:           user,
-          product:        product,
-          platform:       platform,
-          serial_number:  row[0],
-          generated_at:   Time.parse(row[1]),
-          user_share:     row[5]
-        )
-
-        @count += 1
-      end
-    end
 end
