@@ -1,10 +1,12 @@
+require 'csv'
+
 class HourlyOrder
   # Check hourly order statistics from Internet platform
 
   attr_accessor :platform, :count
 
   def initialize(platform)
-    @platform = platform
+    @platform = Platform.find_or_create_by(name: platform)
     @count = 0
   end
 
@@ -18,10 +20,10 @@ class HourlyOrder
     end
 
     files.each do |csv|
-      parse_and_create_from(csv)
+      parse_and_create_from File.join(source_path, csv)
     end
 
-    puts "--> [#{Time.now}] <HourlyOrder> parsed #{@count} records"
+    puts "--> [#{Time.now}] <HourlyOrder> parsed #{self.count} records"
   end
 
   def parse_and_create_from(csv)
@@ -42,19 +44,23 @@ class HourlyOrder
         platform:       platform,
         serial_number:  row[0],
         generated_at:   Time.parse(row[1]),
-        user_share:     row[5]
+        user_share:     row[5].to_i
       )
 
-      @count += 1
+      self.count += 1
     end
   end
 
   private
 
     def source_path
-      @_source_path ||= File.join('/Users/wendi/tmp', platform, 'upload', Date.today.to_s.gsub('-',''))
+      @_source_path ||= File.join(root_path, platform.name, 'upload', Date.today.to_s.gsub('-',''))
     end
 
+    # Test stub use
+    def root_path
+      @_root_path ||= "/home"
+    end
 
     def find_new_files
       new_files = []
