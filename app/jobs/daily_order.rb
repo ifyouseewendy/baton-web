@@ -9,7 +9,7 @@ class DailyOrder
 
   def initialize(platform, project)
     @platform = Platform.find_or_create_by(name: platform)
-    @project  = Project.find_or_create_by(platform: @platform, name: project)
+    @project  = @platform.projects.find_or_create_by(name: project)
   end
 
   def check
