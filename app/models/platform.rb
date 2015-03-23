@@ -1,7 +1,7 @@
 class Platform
   include Mongoid::Document
 
-  has_many :orders
+  has_many :projects
 
   field :name, type: String
   field :code, type: String
