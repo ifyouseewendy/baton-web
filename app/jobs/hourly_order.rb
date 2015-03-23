@@ -33,7 +33,7 @@ class HourlyOrder
   end
 
   def parse_and_create_from(fn)
-    count = 0
+    order_count, share_count = 0, 0
     CSV.foreach(fn) do |row|
       next if Order.where(serial_number: row[0]).count > 0
 
@@ -54,11 +54,18 @@ class HourlyOrder
         user_share:     row[5].to_i
       )
 
-      count += 1
+      order_count += 1
+      share_count += row[5].to_i
     end
 
     date, hour = parse_name File.basename(fn)
-    HourlyStat.create(project: self.project, date: date, hour: hour, count: count)
+    HourlyStat.create(
+      project: self.project,
+      date: date,
+      hour: hour,
+      order_count: order_count,
+      share_count: share_count
+    )
   end
 
   private

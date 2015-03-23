@@ -3,7 +3,8 @@ class HourlyStat
 
   belongs_to :project
 
-  field :date,  type: String
-  field :hour,  type: Integer
-  field :count, type: Integer
+  field :date,        type: String
+  field :hour,        type: Integer
+  field :order_count, type: Integer
+  field :share_count, type: Integer
 end

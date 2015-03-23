@@ -44,7 +44,9 @@ class HourlyOrderTest < ActiveSupport::TestCase
       assert_equal 200,         o.user_share
       assert_equal Date.today,  o.generated_at.to_date
 
-      assert_equal 2, HourlyStat.where(project: o.project, date: Date.today.to_s).first.count
+      hs = HourlyStat.where(project: o.project, date: Date.today.to_s).first
+      assert_equal 2,   hs.order_count
+      assert_equal 600, hs.share_count
     end
   end
 end
