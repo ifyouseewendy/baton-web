@@ -36,6 +36,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Console
 gem 'pry-rails'
 gem 'pry-doc'
+gem 'awesome_print'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
