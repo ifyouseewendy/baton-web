@@ -1,0 +1,58 @@
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<script>
+$(document).ready(function(){
+  $.ajax({
+    url: "<%= get_hourly_data_path %>",
+    type: 'GET',
+    dataType: 'json'
+  }).done(function(result){
+    if( result['status'] === 'failed' ){
+      console.log(result['msg']);
+    } else {
+      renderTrendHightchart(result['data']);
+    }
+  });
+
+});
+
+function renderTrendHightchart(data){
+  stats = {
+    title: {
+      text: '小时级别客户销售数据',
+      x: -20 //center
+    },
+    subtitle: {
+      text: '小时级别',
+      x: -20
+    },
+    xAxis: {},
+    yAxis: {
+        title: {
+            text: '购买数目'
+        },
+        plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+        }]
+    },
+    tooltip: {
+        valueSuffix: ''
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle',
+        borderWidth: 0
+    },
+  };
+
+  stats.xAxis.categories  = data.hours;
+  stats.series            = data.series;
+
+  $('#container').highcharts(stats);
+
+};
+
+</script>
