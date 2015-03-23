@@ -5,6 +5,7 @@ class Project
 
   has_many :products
   has_many :orders
+  has_many :hourly_stats
 
   field :name, type: String
 end
