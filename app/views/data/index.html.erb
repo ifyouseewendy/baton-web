@@ -23,7 +23,6 @@ function renderTrendHightchart(data){
       x: -20 //center
     },
     subtitle: {
-      text: '小时级别',
       x: -20
     },
     xAxis: {},
@@ -49,6 +48,7 @@ function renderTrendHightchart(data){
   };
 
   stats.xAxis.categories  = data.hours;
+  stats.subtitle.text     = data.platform;
   stats.series            = data.series;
 
   $('#container').highcharts(stats);

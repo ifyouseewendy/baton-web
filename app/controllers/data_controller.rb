@@ -3,19 +3,30 @@ class DataController < ApplicationController
   end
 
   def get_hourly
+    platform = Platform.where(name: 'xiaojin').first
+    project  = platform.projects.where(name: 'alpha').first
+
+    hours, order_count, share_count = [], [], []
+    project.hourly_stats.asc(:date).asc(:hour).each do |hs|
+      hours       << "#{hs.date} #{hs.hour}"
+      order_count << hs.order_count
+      share_count << hs.share_count
+    end
+
     render json: \
     {
       status: 'succeed',
       data:{
-        hours: [
-          '2015-01-01 01', '2015-01-01 02',
-          '2015-01-01 03', '2015-01-01 05',
-          '2015-01-01 05', '2015-01-01 06',
-        ],
+        platform: platform.name,
+        hours: hours,
         series: [
           {
-            name: 'xiaojin',
-            data: [1,2,3,4,5,6]
+            name: "订单数量",
+            data: order_count
+          },
+          {
+            name: "销售额",
+            data: share_count
           }
         ]
       }
