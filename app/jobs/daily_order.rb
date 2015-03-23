@@ -1,9 +1,9 @@
 require 'csv'
 
-class HourlyOrder
-  # Check hourly order statistics from Internet platform
+class DailyOrder
+  # Check daily order statistics from Internet platform
   #
-  #   Create new orders.
+  #   Add left orders of HourlyOrder
 
   attr_accessor :platform
 
@@ -12,17 +12,17 @@ class HourlyOrder
   end
 
   def check
-    puts "--> [#{Time.now}] <HourlyOrder> Start checking"
+    puts "--> [#{Time.now}] <DailyOrder> Start checking"
 
     unchecked_files.each do |file|
       fn = File.join(source_path, file)
       parse_and_create_from fn
-      puts "--> [#{Time.now}] <HourlyOrder> parsed #{file}"
+      puts "--> [#{Time.now}] <DailyOrder> parsed #{file}"
 
       backup fn
     end
 
-    puts "<-- [#{Time.now}] <HourlyOrder> End"
+    puts "<-- [#{Time.now}] <DailyOrder> End"
   end
 
   def backup(fn)
@@ -72,18 +72,12 @@ class HourlyOrder
     end
 
     def unchecked_files
-      @_unchecked_files ||= Dir.entries(source_path).select{|fn| fn =~ /实时/}.reduce([]) do |ret, fn|
-        date, hour = parse_name(fn)
-        if HourlyStat.where(date: date, hour: hour).count > 0
-          ret
-        else
-          ret << fn
-        end
+      @_unchecked_files ||= Dir.entries(source_path).select do |fn|
+        fn =~ /天级/ && parse_name(fn) == Date.today.to_s
       end
     end
 
     def parse_name(fn)
-      date, hour = fn.split('.')[0].split('_')[-2,2]
-      [Date.parse(date).to_s, hour.to_i]
+      Date.parse(fn.split('.')[0].split('_')[-1]).to_s rescue nil
     end
 end
