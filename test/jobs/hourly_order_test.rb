@@ -13,7 +13,7 @@ class HourlyOrderTest < ActiveSupport::TestCase
   end
 
   teardown do
-    [User, Product, Order, Platform].map{|m| m.delete_all}
+    [User, Product, Order, Platform, HourlyStat].map{|m| m.delete_all}
   end
 
   test "stub" do
@@ -25,7 +25,7 @@ class HourlyOrderTest < ActiveSupport::TestCase
   end
 
   test "parse_and_create_from" do
-    assert_difference '@hourly_order.count', 2 do
+    assert_difference "HourlyStat.where(date: Date.today.to_s).count", 2 do
       @hourly_order.check
 
       assert_equal 2, User.count
@@ -42,6 +42,8 @@ class HourlyOrderTest < ActiveSupport::TestCase
       assert_equal '300180',    o.product.code
       assert_equal 200,         o.user_share
       assert_equal Date.today,  o.generated_at.to_date
+
+      assert_equal 2, HourlyStat.where(date: Date.today).first.count
     end
   end
 end
