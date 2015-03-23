@@ -5,10 +5,11 @@ class DailyOrder
   #
   #   Add left orders of HourlyOrder
 
-  attr_accessor :platform
+  attr_accessor :platform, :project
 
-  def initialize(platform)
+  def initialize(platform, project)
     @platform = Platform.find_or_create_by(name: platform)
+    @project  = Project.find_or_create_by(platform: @platform, name: project)
   end
 
   def check
@@ -32,7 +33,7 @@ class DailyOrder
   end
 
   def parse_and_create_from(fn)
-    count = 0
+    order_count, share_count = 0, 0
     CSV.foreach(fn) do |row|
       next if Order.where(serial_number: row[0]).count > 0
 
@@ -42,22 +43,29 @@ class DailyOrder
         u.mobile = row[6]
       end
 
-      product = Product.find_or_create_by(code: row[4])
+      product = Product.find_or_create_by(code: row[4], project: project)
 
       Order.create(
         user:           user,
+        project:        project,
         product:        product,
-        platform:       platform,
         serial_number:  row[0],
         generated_at:   Time.parse(row[1]),
         user_share:     row[5].to_i
       )
 
-      count += 1
+      order_count += 1
+      share_count += row[5].to_i
     end
 
     date, hour = parse_name File.basename(fn)
-    HourlyStat.create(date: date, hour: hour, count: count)
+    HourlyStat.create(
+      project: self.project,
+      date: date,
+      hour: hour,
+      order_count: order_count,
+      share_count: share_count
+    )
   end
 
   private

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class DailyOrderTest < ActiveSupport::TestCase
   setup do
-    @daily_order = DailyOrder.new('xiaojin')
+    @daily_order = DailyOrder.new('xiaojin', 'alpha')
     def @daily_order.root_path
       File.join(Rails.root, "test/jobs/resources")
     end
@@ -36,15 +36,15 @@ class DailyOrderTest < ActiveSupport::TestCase
 
     assert_equal 5, Order.count
     o = Order.where(serial_number: '000001').first
-    assert_equal 'xiaojin',   o.platform.name
     assert_equal 'wendi',     o.user.name
+    assert_equal 'alpha',     o.project.name
     assert_equal '300180',    o.product.code
     assert_equal 200,         o.user_share
     assert_equal Date.today,  o.generated_at.to_date
   end
 
   test "work with HourlyOrder check" do
-    @hourly_order = HourlyOrder.new('xiaojin')
+    @hourly_order = HourlyOrder.new('xiaojin', 'alpah')
     def @hourly_order.root_path
       File.join(Rails.root, "test/jobs/resources")
     end
