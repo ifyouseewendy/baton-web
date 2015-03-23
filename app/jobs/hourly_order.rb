@@ -13,11 +13,20 @@ class HourlyOrder
     puts "--> [#{Time.now}] <HourlyOrder> Start checking"
 
     unchecked_files.each do |file|
-      parse_and_create_from File.join(source_path, file)
+      fn = File.join(source_path, file)
+      parse_and_create_from fn
       puts "--> [#{Time.now}] <HourlyOrder> parsed #{file}"
+
+      backup fn
     end
 
     puts "<-- [#{Time.now}] <HourlyOrder> End"
+  end
+
+  def backup(fn)
+    target = File.join "#{Dir.home}", 'backup', platform.name
+    FileUtils.mkdir_p target
+    `cp #{fn} #{target}`
   end
 
   def parse_and_create_from(fn)
