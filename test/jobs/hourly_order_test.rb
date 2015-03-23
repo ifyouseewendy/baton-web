@@ -2,7 +2,7 @@ require 'test_helper'
 
 class HourlyOrderTest < ActiveSupport::TestCase
   setup do
-    @hourly_order = HourlyOrder.new('xiaojin')
+    @hourly_order = HourlyOrder.new('xiaojin', 'alpha')
     def @hourly_order.root_path
       File.join(Rails.root, "test/jobs/resources")
     end
@@ -20,8 +20,9 @@ class HourlyOrderTest < ActiveSupport::TestCase
     puts @hourly_order.root_path
   end
 
-  test "platform created" do
+  test "create platform and project" do
     assert_equal 'xiaojin', @hourly_order.platform.name
+    assert_equal 'alpha',   @hourly_order.project.name
   end
 
   test "parse_and_create_from" do
@@ -37,13 +38,13 @@ class HourlyOrderTest < ActiveSupport::TestCase
 
       assert_equal 4, Order.count
       o = Order.where(serial_number: '000001').first
-      assert_equal 'xiaojin',   o.platform.name
       assert_equal 'wendi',     o.user.name
+      assert_equal 'alpha',     o.project.name
       assert_equal '300180',    o.product.code
       assert_equal 200,         o.user_share
       assert_equal Date.today,  o.generated_at.to_date
 
-      assert_equal 2, HourlyStat.where(date: Date.today).first.count
+      assert_equal 2, HourlyStat.where(project: o.project, date: Date.today.to_s).first.count
     end
   end
 end

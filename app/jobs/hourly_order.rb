@@ -5,10 +5,11 @@ class HourlyOrder
   #
   #   Create new orders.
 
-  attr_accessor :platform
+  attr_accessor :platform, :project
 
-  def initialize(platform)
+  def initialize(platform, project)
     @platform = Platform.find_or_create_by(name: platform)
+    @project  = Project.find_or_create_by(platform: @platform, name: project)
   end
 
   def check
@@ -42,12 +43,12 @@ class HourlyOrder
         u.mobile = row[6]
       end
 
-      product = Product.find_or_create_by(code: row[4])
+      product = Product.find_or_create_by(code: row[4], project: project)
 
       Order.create(
         user:           user,
+        project:        project,
         product:        product,
-        platform:       platform,
         serial_number:  row[0],
         generated_at:   Time.parse(row[1]),
         user_share:     row[5].to_i
@@ -57,7 +58,7 @@ class HourlyOrder
     end
 
     date, hour = parse_name File.basename(fn)
-    HourlyStat.create(date: date, hour: hour, count: count)
+    HourlyStat.create(project: self.project, date: date, hour: hour, count: count)
   end
 
   private
@@ -72,9 +73,9 @@ class HourlyOrder
     end
 
     def unchecked_files
-      @_unchecked_files ||= Dir.entries(source_path).select{|fn| fn =~ /实时/}.reduce([]) do |ret, fn|
+      @_unchecked_files = Dir.entries(source_path).select{|fn| fn =~ /实时/}.reduce([]) do |ret, fn|
         date, hour = parse_name(fn)
-        if HourlyStat.where(date: date, hour: hour).count > 0
+        if HourlyStat.where(project: self.project, date: date, hour: hour).count > 0
           ret
         else
           ret << fn
