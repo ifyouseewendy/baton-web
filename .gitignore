@@ -15,3 +15,4 @@ config/mongoid.yml
 db/resources
 config/thin.yml
 logs
+vendor/bundle
