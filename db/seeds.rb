@@ -1,45 +1,62 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+def remove_db_data
+  [User, Product, Order, Platform, Project, HourlyStat].map{|m| m.delete_all}
+end
 
-xiaojin = Platform.create(
-  name: 'xiaojin',
-  code: 'AA'
-)
+def remove_resource_files
+  FileUtils.rm_rf( "#{Rails.root}/db/resources/xiaojin" )
+end
 
-wendi = User.create(
-  name:             'Di Wen',
-  gender:           1,
-  mobile:           '13612341234',
-  telephone:        '010-61106110',
-  post_code:        '100083',
-  address:          'Peony Garden',
-  id_card_number:   '220302198811112222',
-  id_card_address:  'Siping, Jilin'
-)
+def generate_resource_files
+  ['20150320', '20150321'].each do |date|
+    dir = "#{Rails.root}/db/resources/xiaojin/upload/#{date}"
+    FileUtils.mkdir_p(dir)
 
-product = Product.create(
-  code: '300180'
-)
+    (10..20).map(&:to_s).each do |hour|
+      File.open("#{dir}/xiaojin_实时客户明细销售表_#{date}_#{hour}.csv", 'w') do |of|
+        ( rand(40)+10 ).times do
+          serial_number   = "serial_#{SecureRandom.hex(5)}"
+          generated_at    = (Date.parse('20150101') + 10.hours + rand(60).minutes).to_s(:db).gsub(/[-:\s]/,'')
+          user_name       = "user_#{SecureRandom.hex(4)}"
+          id_card_number  = "id_#{SecureRandom.hex(10)}"
+          product_code    = ( 100000+rand(10) ).to_s
+          user_share      = ( 1000+rand(4000) ).to_s
+          mobile          = ( 18600000000+rand(9999) ).to_s
 
-order_1 = Order.create(
-  user:           wendi,
-  platform:       xiaojin,
-  product:        product,
-  serial_number:  '000001',
-  generated_at:   Time.now,
-  user_share:     100
-)
+          of.puts [serial_number, generated_at, user_name, id_card_number, product_code, user_share, mobile].join(",")
+        end
+      end
+    end
+  end
+end
 
-order_2 = Order.create(
-  user:           wendi,
-  platform:       xiaojin,
-  product:        product,
-  serial_number:  '000002',
-  generated_at:   Time.now,
-  user_share:     200
-)
+def generate_db_data
+  a = HourlyOrder.new('xiaojin', 'alpha')
+
+  def a.root_path
+    File.join(Rails.root, "db/resources")
+  end
+
+  def Date.today
+    Date.parse("2015-03-20")
+  end
+
+  a.check
+
+  b = HourlyOrder.new('xiaojin', 'alpha')
+
+  def b.root_path
+    File.join(Rails.root, "db/resources")
+  end
+
+  def Date.today
+    Date.parse("2015-03-21")
+  end
+
+  b.check
+end
+
+remove_db_data
+remove_resource_files
+generate_resource_files
+generate_db_data
+
