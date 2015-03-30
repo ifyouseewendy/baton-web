@@ -37,13 +37,13 @@ class HourlyOrder
     CSV.foreach(fn) do |row|
       next if Order.where(serial_number: row[0]).count > 0
 
-      user = User.find_or_create_by(id_card_number: row[3]) do |u|
-        u.name = row[2]
-        u.id_card_number = row[3]
+      user = User.find_or_create_by(id_card_number: row[5]) do |u|
+        u.name = row[4]
+        u.id_card_number = row[5]
         u.mobile = row[6]
       end
 
-      product = Product.find_or_create_by(code: row[4], project: project)
+      product = Product.find_or_create_by(code: row[2], project: project)
 
       Order.create(
         user:           user,
@@ -51,11 +51,11 @@ class HourlyOrder
         product:        product,
         serial_number:  row[0],
         generated_at:   Time.parse(row[1]),
-        user_share:     row[5].to_i
+        user_share:     row[3].to_i
       )
 
       order_count += 1
-      share_count += row[5].to_i
+      share_count += row[3].to_i
     end
 
     date, hour = parse_name File.basename(fn)

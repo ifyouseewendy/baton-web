@@ -22,7 +22,7 @@ def generate_resource_files
           user_share      = ( 1000+rand(4000) ).to_s
           mobile          = ( 18600000000+rand(9999) ).to_s
 
-          of.puts [serial_number, generated_at, user_name, id_card_number, product_code, user_share, mobile].join(",")
+          of.puts [serial_number, generated_at, product_code, user_share, user_name, id_card_number, mobile].join(",")
         end
       end
     end
