@@ -1,6 +1,16 @@
+# Public: Product code presentation by 6 length default, uniform upcase,
+# 0-9A-Z charset successor, 0->1, 9->A, Z->0.
+#
+# Examples
+#
+#   pc = ProductCode.new('k000AZ')
+#
+#   pc.next # => 'K000B0'
+#   pc.to_s # => '07X1AZ'
+#
+#   pc.next!
+#   pc.to_s # => '07X1B0'
 class ProductCode
-  # TODO Comment based on Tomdoc
-
   CHARSET = ('0'..'9').to_a + ('A'..'Z').to_a
 
   attr_accessor :code, :length
@@ -12,10 +22,15 @@ class ProductCode
     check_code
   end
 
+  # Public: Generate the next code based on 0-9A-Z charset.
+  #
+  # Examples
+  #
+  #   "07X1AZ".next                   # => "07X1BA"
+  #   ProductCode.new("07X1AZ").next  # => "07X1B0"
+  #
+  # Returns next String code.
   def next
-    # Why not use `code.next`?
-    #
-    # "K0001Z".next # => "K0002A"
     _code = ( code.to_i(36) + 1 ).to_s(36).rjust(length, '0').upcase
     raise "Overflow Code Length: #{code} -> #{_code}" if _code.length > length
 
