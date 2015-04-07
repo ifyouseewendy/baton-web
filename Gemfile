@@ -39,6 +39,9 @@ gem 'pry-rails'
 gem 'pry-doc'
 gem 'awesome_print'
 
+# Command Line
+gem 'thor'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
