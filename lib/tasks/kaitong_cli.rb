@@ -12,7 +12,13 @@ class KaitongCli < Thor
 
   MAX_CODE_CAPACITY = 200
 
-  desc 'xiaojin', ''
+  desc 'xiaojin', '将资产单元编号映射成产品代码'
+  long_desc <<-LONGDESC
+    Examples:
+
+      ruby lib/tasks/kaitong_cli.rb xiaojin --code=K00001 --column=2
+        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/客户销售明细表.csv
+  LONGDESC
   option :from,   required: true
   option :column, type: :numeric, required: true
   option :code,   required: true
