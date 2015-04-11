@@ -31,6 +31,54 @@ class KaitongCli < Thor
 
     puts ">> Generate file: #{output}"
   end
+
+  desc 'invest_check', "校验交易确认文件"
+  long_desc <<-LONGDESC
+    Examples:
+
+      ruby lib/tasks/jingdong.rb invest_check --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/jingdong/kaitong_invest_20150411.txt
+  LONGDESC
+  option :from,   required: true
+  def invest_check
+    raise "Invalid <from> file position: #{options[:from]}" unless File.exist?(options[:from])
+
+    total_rows, total_amount, total_fee, rows, amount, fee = [0]*6
+
+    File.open(options[:from], 'r') do |rf|
+      rf.each_with_index do |line, i|
+        next if i == 1
+        next if line.empty?
+
+        columns = line.split("|")
+
+        if i == 0
+          total_rows    = columns[1].split(":").last.to_i
+          total_amount  = columns[2].split(":").last.to_i
+          total_fee     = columns[3].split(":").last.to_i
+        else
+          rows    += 1
+          amount  += columns[7].to_i
+          fee     += columns[10].to_i
+        end
+      end
+    end
+
+    check_equality("总笔数",      total_rows,   rows)
+    check_equality("总金额",      total_amount, amount)
+    check_equality("手续费总额",  total_fee,    fee)
+
+  end
+
+  private
+
+    def check_equality(name, a, b)
+      if a == b
+        puts "--> <#{name}> Equals: #{a}"
+      else
+        puts "--> <#{name}> Don't Match: #{a} - #{b}"
+      end
+    end
+
 end
 
 KaitongCli.start(ARGV)
