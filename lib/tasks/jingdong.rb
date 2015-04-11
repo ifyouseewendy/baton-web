@@ -1,7 +1,8 @@
-require_relative 'kaitong_cli'
 require 'roo'
 require 'roo-xls'
 require 'mongoid'
+require_relative 'kaitong_cli'
+require File.expand_path('../../models/rate_calculator', __FILE__)
 
 class KaitongCli < Thor
   desc 'convert', '产品发布文件.xls(x) -> 产品发布文件.txt'
@@ -150,46 +151,6 @@ class KaitongCli < Thor
       end
     end
 
-end
-
-require 'bigdecimal'
-
-# Public: A calculator aims handling arithmatic precision and
-# saving the result with 2 points truncated decimal.
-#
-# Examples
-#
-#   190000 * 0.0783
-#   # => 14876.999999999998
-#   190000 * 783 / 10000
-#   # => 14877
-#
-#   cal = RateCalculator.new(190000, 0.0783)
-#   cal.run
-#   # => 14877.0
-#
-#
-#   195555 * 0.0783
-#   # => 15311.956499999998
-#
-#   cal = RateCalculator.new(195555, 0.0783)
-#   # => 15311.95
-#
-# Returns a BigDecimal
-class RateCalculator
-  attr_reader :base, :rate
-
-  def initialize(base, rate)
-    @base = BigDecimal(base.to_s)
-    @rate = BigDecimal(rate.to_s)
-  end
-
-  def run
-    BigDecimal.save_rounding_mode do
-      BigDecimal.mode(BigDecimal::ROUND_MODE, :truncate)
-      (base*rate).round(2)
-    end
-  end
 end
 
 RefundRecord = \
