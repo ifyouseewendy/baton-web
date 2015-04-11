@@ -10,15 +10,14 @@ require 'bigdecimal'
 #   190000 * 783 / 10000
 #   # => 14877
 #
-#   cal = RateCalculator.new(190000, 0.0783)
-#   cal.run
+#   cal = RateCalculator.new(190000, 0.0783).run
 #   # => 14877.0
 #
 #
 #   195555 * 0.0783
 #   # => 15311.956499999998
 #
-#   cal = RateCalculator.new(195555, 0.0783)
+#   cal = RateCalculator.new(195555, 0.0783).run
 #   # => 15311.95
 #
 # Returns a BigDecimal
