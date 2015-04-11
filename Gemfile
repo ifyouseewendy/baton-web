@@ -42,6 +42,10 @@ gem 'awesome_print'
 # Command Line
 gem 'thor'
 
+# Parse XLSx
+gem 'roo', '2.0.0beta1'
+gem 'roo-xls'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
