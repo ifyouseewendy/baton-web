@@ -9,7 +9,7 @@ class KaitongCli < Thor
     Examples:
 
       ruby lib/tasks/xiaojin.rb convert --code=K00001 --column=2
-        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/客户销售明细表.csv
+        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/xiaojin/客户销售明细表.csv
   LONGDESC
   option :from,   required: true
   option :column, type: :numeric, required: true
@@ -40,7 +40,7 @@ class KaitongCli < Thor
       end
     end
 
-    puts "--> Generate file: #{output}"
+    puts ">> Generate file: #{output}"
     puts "    Code range: #{options[:code]} - #{code}"
   end
 
