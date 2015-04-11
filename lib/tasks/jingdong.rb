@@ -152,8 +152,10 @@ class KaitongCli < Thor
 
 end
 
-# Public: A calculator aims handling Float operation precision and
-# saving the result with truncated 2 point Float.
+require 'bigdecimal'
+
+# Public: A calculator aims handling arithmatic precision and
+# saving the result with 2 points truncated decimal.
 #
 # Examples
 #
@@ -173,33 +175,21 @@ end
 #   cal = RateCalculator.new(195555, 0.0783)
 #   # => 15311.95
 #
-# Returns <`6`>
+# Returns a BigDecimal
 class RateCalculator
   attr_reader :base, :rate
 
-  # Internal: Handles 6 point rate.
-  MAGNIFIER = 1000000
-
-  # Public: Initialization
-  #
-  # base - Integer
-  # rate - Numeric
   def initialize(base, rate)
-    raise "#initialize: <base> needs to be Integer" unless base.is_a? Integer
-
-    @base = base
-    @rate = rate
+    @base = BigDecimal(base.to_s)
+    @rate = BigDecimal(rate.to_s)
   end
 
   def run
-    truncate_2_point MAGNIFIER*rate*base/MAGNIFIER
-  end
-
-  private
-
-    def truncate_2_point(float)
-      (float * 100).to_i / 100.0
+    BigDecimal.save_rounding_mode do
+      BigDecimal.mode(BigDecimal::ROUND_MODE, :truncate)
+      (base*rate).round(2)
     end
+  end
 end
 
 RefundRecord = \
