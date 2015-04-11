@@ -25,7 +25,8 @@ class KaitongCli < Thor
     load_rails
 
     column = options[:column]
-    output = "#{options[:from]}.out.csv"
+    out_filename = File.basename(options[:from], '.csv')
+    output = File.join(Rails.root, 'tmp', "#{out_filename}.out.csv")
     code = ProductCode.new(options[:code])
     File.open(output, 'w') do |of|
       pos = 0
