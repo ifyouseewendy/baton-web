@@ -2,11 +2,6 @@ require_relative 'kaitong_cli'
 require 'csv'
 
 class KaitongCli < Thor
-  desc "hello NAME", "say hello to NAME"
-  def hello(name)
-    puts "Hello #{name}"
-  end
-
   MAX_CODE_CAPACITY = 200
 
   desc 'convert', '将资产单元编号映射成产品代码'
