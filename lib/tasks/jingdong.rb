@@ -49,7 +49,7 @@ class KaitongCli < Thor
 
     total_rows, total_amount, total_fee, rows, amount, fee = [0]*6
 
-    File.open(options[:from], 'r') do |rf|
+    File.open(options[:from], 'r:GBK') do |rf|
       rf.each_with_index do |line, i|
         next if i == 1
         next if line.empty?
