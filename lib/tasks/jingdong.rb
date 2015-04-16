@@ -22,7 +22,7 @@ class KaitongCli < Thor
     out_filename = File.basename(options[:from]).split('.')[0]
     output = File.join(File.expand_path("../../../tmp", __FILE__), "#{out_filename}.txt")
 
-    File.open(output, 'w') do |wf|
+    File.open(output, 'w:GBK:UTF-8') do |wf|
       sheet = xlsx.sheet(0)
 
       wf.puts sheet.row(1).reject(&:nil?).join("|")
@@ -32,7 +32,7 @@ class KaitongCli < Thor
       end
     end
 
-    convert_file_encoding!(output)
+    # convert_file_encoding!(output)
 
     puts ">> Generate file: #{output}"
   end
