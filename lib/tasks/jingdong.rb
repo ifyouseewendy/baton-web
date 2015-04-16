@@ -1,6 +1,7 @@
 require 'roo'
 require 'roo-xls'
 require 'mongoid'
+require 'tempfile'
 require_relative 'kaitong_cli'
 require File.expand_path('../../models/rate_calculator', __FILE__)
 
@@ -30,6 +31,8 @@ class KaitongCli < Thor
         wf.puts sheet.row(i).join("|")
       end
     end
+
+    convert_file_encoding!(output)
 
     puts ">> Generate file: #{output}"
   end
@@ -149,6 +152,11 @@ class KaitongCli < Thor
       else
         puts "--> <#{name}> Don't Match: #{a} - #{b}"
       end
+    end
+
+    def convert_file_encoding!(file, from="UTF-8", to="GBK")
+      content = File.read(file)
+      File.open(file, "w:#{to}:#{from}"){|wf| wf.write content }
     end
 
 end
