@@ -41,13 +41,15 @@ class KaitongCli < Thor
   long_desc <<-LONGDESC
     Examples:
 
-      ruby lib/tasks/jingdong.rb invest_check --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/jingdong/kaitong_invest_20150411.txt
+      ruby lib/tasks/jingdong.rb invest_check --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/jingdong/kaitong_invest_20150414.txt
   LONGDESC
   option :from,   required: true
   def invest_check
     raise "Invalid <from> file position: #{options[:from]}" unless File.exist?(options[:from])
 
     total_rows, total_amount, total_fee, rows, amount, fee = [0]*6
+
+    product_summary = Hash.new(0)
 
     File.open(options[:from], 'r:GBK') do |rf|
       rf.each_with_index do |line, i|
@@ -64,6 +66,9 @@ class KaitongCli < Thor
           rows    += 1
           amount  += columns[7].to_i
           fee     += columns[10].to_i
+
+          code    = columns[1][-6..-1]
+          product_summary[code] += columns[7].to_i
         end
       end
     end
@@ -71,6 +76,8 @@ class KaitongCli < Thor
     check_equality("总笔数",      total_rows,   rows)
     check_equality("总金额",      total_amount, amount)
     check_equality("手续费总额",  total_fee,    fee)
+    puts "-"*20
+    product_summary.sort_by{|k,v| k}.map{|k,v| puts "#{k}: #{v}"}
   end
 
   desc 'generate_refund', "生成交易还款（试算）文件"
