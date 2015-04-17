@@ -143,6 +143,40 @@ class KaitongCli < Thor
     puts ">> Generate file: #{output}"
   end
 
+  desc 'generate_gjs_details', "生成广交所需要的《客户明细销售表》"
+  long_desc <<-LONGDESC
+    Examples:
+
+      ruby lib/tasks/jingdong.rb generate_gjs_details --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/jingdong/kaitong_invest_20150414.txt
+  LONGDESC
+  option :from, required: true
+  def generate_gjs_details
+    raise "Invalid <from> file position: #{options[:from]}" unless File.exist?(options[:from])
+
+    out_filename = File.basename(options[:from]).split('.')[0]
+    output = File.join(File.expand_path("../../../tmp", __FILE__), "#{out_filename}.detail.csv")
+
+    File.open(output, 'w:GBK') do |wf|
+
+      wf.puts "客户姓名,客户全称,机构标志,证件类别,证件编号,证件地址,性别,电话,邮政编码,联系地址,传真,股权代码,股权数量,股权性质,上市日期,持仓均价,手机,风险级别,股权代码,营业部"
+
+      File.open(options[:from], 'r:GBK') do |rf|
+        rf.each_with_index do |line, i|
+          next if i <= 1
+          next if line.empty?
+
+          columns = line.split("|")
+
+          platform = '京东平台'
+          code = columns[1][-6..-1]
+          wf.puts [columns[3], nil, 0, 0, columns[4], platform, nil, platform, platform, platform, nil, code, columns[7].to_i, nil, nil, 1, columns[5], 1, code, nil].map(&:to_s).map{|str| str.encode(Encoding::GBK)}.join(",")
+        end
+      end
+    end
+
+    puts ">> Generate file: #{output}"
+
+  end
 
   private
 
@@ -192,7 +226,6 @@ RefundRecord = \
     end
 
   end
-
 
 
 KaitongCli.start(ARGV)
