@@ -176,7 +176,7 @@ class KaitongCli < Thor
 
           platform = '京东平台'
           code = columns[1][-6..-1]
-          wf.puts [columns[3], nil, 0, 0, columns[4], platform, nil, platform, platform, platform, nil, code, columns[7].to_i, nil, nil, 1, columns[5], 1, code, '2002'].map(&:to_s).map{|str| str.encode(Encoding::GBK)}.join(",")
+          wf.puts [columns[3], nil, 0, 0, columns[4], platform, nil, columns[5], '100000', platform, nil, code, columns[7].to_i, nil, nil, 1, columns[5], 1, code, '2002'].map(&:to_s).map{|str| str.encode(Encoding::GBK)}.join(",")
         end
       end
     end
