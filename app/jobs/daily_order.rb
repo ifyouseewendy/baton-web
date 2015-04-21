@@ -12,15 +12,20 @@ class DailyOrder
     @project  = @platform.projects.find_or_create_by(name: project)
   end
 
-  def check
+  def check(file_path)
     puts "--> [#{Time.now}] <DailyOrder> Start checking"
 
-    unchecked_files.each do |file|
-      fn = File.join(source_path, file)
-      parse_and_create_from fn
-      puts "--> [#{Time.now}] <DailyOrder> parsed #{file}"
+    if file_path.present?
+      parse_and_create_from file_path
+      puts "--> [#{Time.now}] <DailyOrder> parsed #{file_path}"
+    else
+      unchecked_files.each do |file|
+        fn = File.join(source_path, file)
+        parse_and_create_from fn
+        puts "--> [#{Time.now}] <DailyOrder> parsed #{file}"
 
-      backup fn
+        backup fn
+      end
     end
 
     puts "<-- [#{Time.now}] <DailyOrder> End"
@@ -43,7 +48,8 @@ class DailyOrder
         u.mobile = row[6]
       end
 
-      product = Product.find_or_create_by(code: row[2], project: project)
+      # product = Product.find_or_create_by(code: row[2], project: project)
+      product = nil
 
       Order.create(
         user:           user,
