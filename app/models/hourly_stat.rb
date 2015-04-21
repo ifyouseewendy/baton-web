@@ -6,5 +6,5 @@ class HourlyStat
   field :date,        type: String
   field :hour,        type: Integer
   field :order_count, type: Integer
-  field :share_count, type: Integer
+  field :share_count, type: Float
 end
