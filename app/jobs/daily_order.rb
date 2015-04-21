@@ -40,7 +40,8 @@ class DailyOrder
   def parse_and_create_from(fn)
     order_count, share_count = 0, 0
     CSV.foreach(fn) do |row|
-      next if Order.where(serial_number: row[0]).count > 0
+      Order.where(serial_number: row[0]).delete_all \
+        if Order.where(serial_number: row[0]).count > 0
 
       user = User.find_or_create_by(id_card_number: row[5]) do |u|
         u.name = row[4]
@@ -57,14 +58,16 @@ class DailyOrder
         product:        product,
         serial_number:  row[0],
         generated_at:   Time.parse(row[1]),
-        user_share:     row[3].to_i
+        user_share:     row[3].to_f
       )
 
       order_count += 1
-      share_count += row[3].to_i
+      share_count += row[3].to_f
     end
 
     date, hour = parse_name File.basename(fn)
+
+    project.hourly_stats.where(date: date).delete_all
     HourlyStat.create(
       project: self.project,
       date: date,
