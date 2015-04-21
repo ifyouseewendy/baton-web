@@ -1,6 +1,7 @@
 class DataController < ApplicationController
-  def index
-    platform = Platform.where(name: 'xiaojin').first
+  def show
+    platform = params[:id] || 'xiaojin'
+    platform = Platform.where(name: platform).first
     project  = platform.projects.where(name: 'alpha').first
 
     @daily_stats = {}
@@ -12,7 +13,9 @@ class DataController < ApplicationController
   end
 
   def get_hourly
-    platform = Platform.where(name: 'xiaojin').first
+    platform = params[:platform]
+    platform = 'xiaojin' if platform.blank?
+    platform = Platform.where(name: platform).first
     project  = platform.projects.where(name: 'alpha').first
 
     hours, order_count, share_count = [], [], []

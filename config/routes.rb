@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'data#index'
+  root 'data#show'
 
   resources :data do
     collection do

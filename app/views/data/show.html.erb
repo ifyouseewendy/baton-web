@@ -27,7 +27,10 @@ $(document).ready(function(){
   $.ajax({
     url: "<%= get_hourly_data_path %>",
     type: 'GET',
-    dataType: 'json'
+    dataType: 'json',
+    data: {
+      platform: '<%= params[:id] %>'
+    }
   }).done(function(result){
     if( result['status'] === 'failed' ){
       console.log(result['msg']);
