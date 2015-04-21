@@ -4,6 +4,21 @@ require 'csv'
 class KaitongCli < Thor
   MAX_CODE_CAPACITY = 200
 
+  desc 'daily_order_check', '处理天级客户销售明细'
+  long_desc <<-LONGDESC
+    Examples:
+
+      ruby lib/tasks/xiaojin.rb daily_order_check --project=alpha
+        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/jobs/resources/xiaojin/upload/20150320/xiaojin_天级客户明细销售表_20150320.csv
+  LONGDESC
+  option :from,       required: true
+  option :project,    required: true
+  def daily_order_check
+    load_rails
+
+    DailyOrder.new('tuniu', options[:project]).check(options[:from])
+  end
+
   desc 'convert', '将资产单元编号映射成产品代码'
   long_desc <<-LONGDESC
     Examples:
