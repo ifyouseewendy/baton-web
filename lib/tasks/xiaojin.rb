@@ -46,7 +46,9 @@ class KaitongCli < Thor
 
         next if row[0].blank?
 
-        of.puts (row[0..(column-1)] + [code.to_s] + row[(column+1)..-1]).join(',')
+        before_code = column > 0 ? row[0..(column-1)] : []
+        after_code  = row[(column+1)..-1]
+        of.puts (before_code + [code.to_s] + after_code).join(',')
         record_relation(row[column], code)
 
         if pos == MAX_CODE_CAPACITY
