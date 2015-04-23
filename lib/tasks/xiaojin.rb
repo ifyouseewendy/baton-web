@@ -25,7 +25,7 @@ class KaitongCli < Thor
     Examples:
 
       ruby lib/tasks/xiaojin.rb convert --code=K00001 --column=2
-        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/xiaojin/客户销售明细表.csv
+        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/xiaojin/xiaojin_客户明细销售表_20150423.csv
   LONGDESC
   option :from,   required: true
   option :column, type: :numeric, required: true
@@ -71,7 +71,7 @@ class KaitongCli < Thor
     Examples:
 
       ruby lib/tasks/xiaojin.rb generate_gjs_details --platform='小金理财'
-        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/xiaojin/客户销售明细表.csv
+        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/tmp/xiaojin_客户明细销售表_20150423.detail.csv
   LONGDESC
   option :from,     required: true
   option :platform, required: true
@@ -101,6 +101,60 @@ class KaitongCli < Thor
     puts ">> Generate file: #{output}"
 
   end
+
+  desc 'generate_gjs_overview', "生成广交所需要的《产品销售表》"
+  long_desc <<-LONGDESC
+    Parameters:
+
+      from          - 为 convert 任务生成的文件地址
+      from_overview - 小金传送来的《产品销售表》
+    Examples:
+
+      ruby lib/tasks/xiaojin.rb generate_gjs_overview
+        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/tmp/tuniu_客户明细销售表_20150423.out.csv
+        --from_overview=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/xiaojin/xiaojin_产品销售表_20150423.csv
+  LONGDESC
+  option :from,             required: true
+  option :from_overview,    required: true
+  def generate_gjs_overview
+    raise "Invalid <from> file position: #{options[:from]}" unless File.exist?(options[:from])
+    raise "Invalid <from_overview> file position: #{options[:from_overview]}" unless File.exist?(options[:from_overview])
+
+    code_amount = Hash.new(0)
+    File.open(options[:from], 'r') do |rf|
+      rf.each_line do |line|
+        next if line.empty?
+        columns = line.split(',')
+        code_amount[columns[0]] += columns[3].to_f
+      end
+    end
+
+    out_filename = File.basename(options[:from_overview]).split('.')[0]
+    output = File.join(File.expand_path("../../../tmp", __FILE__), "#{out_filename}.overview.csv")
+
+    File.open(output, 'w:GBK') do |wf|
+
+      wf.puts "产品代码,交易板块,债券简称,债券全称,总发行量,发行价,持仓户数上限,票面利率,年付息次数,付息安排,发行模式,发行日期,上市日期,到期日期,起息日期,兑息日期,交易状态,委托数量下限,委托数量上限,交易基数"
+
+      File.open(options[:from_overview], 'r:GBK') do |rf|
+        rf.each_with_index do |line, i|
+          next if line.empty?
+
+          columns = line.split(',')
+
+          raise 'No match amount from detail and overview' unless code_amount.values.reduce(:+) == columns[3].to_i
+
+          code_amount.each do |code, amount|
+            wf.puts [code, '98', columns[1], columns[2], amount, '1', '200', columns[7], '1', '', '1', columns[11], columns[12], columns[13], columns[14], columns[15], '3', columns[17], columns[18], columns[19]].map(&:to_s).map{|str| str.encode(Encoding::GBK)}.join(',')
+          end
+        end
+      end
+    end
+
+    puts ">> Generate file: #{output}"
+
+  end
+
 
   private
 
