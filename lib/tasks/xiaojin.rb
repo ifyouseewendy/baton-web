@@ -91,7 +91,7 @@ class KaitongCli < Thor
 
           columns = line.split(',')
           code = columns[2]
-          wf.puts [columns[2], nil, 0, 0, columns[5], platform, columns[7], columns[6], '100000', platform, nil, columns[2], columns[3].to_i, nil, nil, 1, columns[6], 1, code, '2002' ].join(',')
+          wf.puts [columns[4], nil, 0, 0, columns[5], platform, columns[7], columns[6], '100000', platform, nil, columns[2], columns[3].to_i, nil, nil, 1, columns[6], 1, code, '2002' ].join(',')
         end
       end
     end
