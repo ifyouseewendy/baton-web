@@ -104,7 +104,7 @@ class KaitongCli < Thor
     total_rows, total_amount, total_fee = [0]*3
 
     orders = []
-    File.open(options[:from], 'r') do |rf|
+    File.open(options[:from], 'r:GBK') do |rf|
       rf.each_with_index do |line, i|
         next if i == 1
         next if line.empty?
@@ -141,7 +141,7 @@ class KaitongCli < Thor
     parts << Date.today.to_s.gsub('-', '')
     output = File.join(File.expand_path("../../../tmp", __FILE__), "#{parts.join('_')}.txt")
 
-    File.open(output, 'w') do |wf|
+    File.open(output, 'w:GBK') do |wf|
       wf.puts ["version:1", "总笔数:#{orders.count}", "总金额:#{orders.map(&:return_amount).sum}"].join("|")
       wf.puts RefundRecord::VOCABULARY.values.join("|")
       orders.each{|order| wf.puts order.values.join("|")}
