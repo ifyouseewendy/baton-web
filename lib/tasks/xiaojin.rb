@@ -1,5 +1,6 @@
 require_relative 'kaitong_cli'
 require 'csv'
+require File.expand_path('../../models/rate_calculator', __FILE__)
 
 class KaitongCli < Thor
   MAX_CODE_CAPACITY = 200
@@ -153,6 +154,50 @@ class KaitongCli < Thor
 
     puts ">> Generate file: #{output}"
 
+  end
+
+  desc 'generate_refund', "生成交易试算文件"
+  long_desc <<-LONGDESC
+    Examples:
+
+      ruby lib/tasks/xiaojin.rb generate_refund --rate=0.0783
+        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/xiaojin/xiaojin_客户明细销售表_20150423.csv
+  LONGDESC
+  option :from, required: true
+  option :rate, type: :numeric, required: true
+  def generate_refund
+    raise "Invalid <from> file position: #{options[:from]}" unless File.exist?(options[:from])
+
+    rate              = options[:rate]
+
+    out_filename = File.basename(options[:from], '.csv')
+    output = File.join(File.expand_path("../../../tmp", __FILE__), "#{out_filename}.refund.csv")
+
+    File.open(output, 'w') do |wf|
+      stats = []
+      total_rows, total_amount = [0]*2
+
+      CSV.foreach(options[:from]) do |row|
+        next if row[0].empty?
+
+        total_rows += 1
+
+        return_base       = row[3].to_i
+        return_interest   = RateCalculator.new(return_base, rate).run.to_f
+        return_amount     = return_base + return_interest
+        stats << [
+          row[2], row[4], row[5], return_base, rate, return_interest, return_amount
+        ]
+
+        total_amount += return_amount
+      end
+
+      stats.unshift [total_rows, total_amount]
+
+      stats.each{|stat| wf.puts stat.join(',')}
+    end
+
+    puts ">> Generate file: #{output}"
   end
 
 
