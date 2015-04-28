@@ -28,7 +28,7 @@ class KaitongCli < Thor
       wf.puts sheet.row(1).reject(&:nil?).join("|")
 
       (2..sheet.last_row).each do |i|
-        wf.puts sheet.row(i).join("|")
+        wf.puts sheet.row(i).map(&:to_s).map(&:strip).join("|")
       end
     end
 
