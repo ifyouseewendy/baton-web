@@ -16,3 +16,5 @@ db/resources
 config/thin.yml
 logs
 vendor/bundle
+*.swn
+*.swp
