@@ -1,5 +1,5 @@
 GEM
-  remote: https://rubygems.org/
+  remote: https://ruby.taobao.org/
   specs:
     actionmailer (4.2.0)
       actionpack (= 4.2.0)
@@ -44,6 +44,7 @@ GEM
     builder (3.2.2)
     byebug (4.0.3)
       columnize (= 0.9.0)
+    charlock_holmes (0.7.3)
     chronic (0.10.2)
     coderay (1.1.0)
     coffee-rails (4.1.0)
@@ -197,6 +198,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   byebug
+  charlock_holmes
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)
   jquery-rails

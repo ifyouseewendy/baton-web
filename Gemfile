@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'https://ruby.taobao.org'
 
 ruby '2.2.0'
 
@@ -45,6 +45,9 @@ gem 'thor'
 # Parse XLSx
 gem 'roo', '2.0.0beta1'
 gem 'roo-xls'
+
+# Encoding
+gem 'charlock_holmes'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
