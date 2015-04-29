@@ -196,7 +196,7 @@ class KaitongCli < Thor
     end
 
     def convert_file_encoding!(file, from="UTF-8", to="GBK")
-      content = File.read(file)
+      content = File.read(file, encoding:from)
       File.open(file, "w:#{to}:#{from}"){|wf| wf.write content }
     end
 
