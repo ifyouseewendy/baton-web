@@ -1,6 +1,7 @@
 require 'roo'
 require 'roo-xls'
 require 'mongoid'
+require 'charlock_holmes'
 require 'tempfile'
 require_relative 'kaitong_cli'
 require File.expand_path('../../models/rate_calculator', __FILE__)
@@ -185,6 +186,50 @@ class KaitongCli < Thor
 
   end
 
+
+  desc 'generate_contract_files', "批量生成产品合同文件"
+  long_desc <<-LONGDESC
+    Examples:
+
+      ruby lib/tasks/jingdong.rb generate_contract_files --start_code=600101 --count=5
+        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/jingdong/guangjiaosuo_产品合同模板_20150428.html
+  LONGDESC
+  option :from,       required: true
+  option :start_code, required: true
+  option :count,      required: true, type: :numeric
+  option :period_length, type: :numeric
+  def generate_contract_files
+    raise "Invalid <from> file position: #{options[:from]}" unless File.exist?(options[:from])
+
+    load_rails
+
+    # Guangjiaosuo makes 600109's next is 600110, instead of 60010A
+    # code = ProductCode.new(options[:start_code])
+    code = options[:start_code]
+
+    content = read_utf8_content(options[:from])
+
+    date = Date.today.to_s.gsub('-', '')
+    output_dir = File.join( File.expand_path("../../../tmp/kaitong_contract_#{date}", __FILE__) )
+    FileUtils.mkdir_p output_dir
+
+    (1..options[:count]).each do |idx|
+      period = prefill_zero(idx, options[:period_length] || 2)
+
+      output_file = File.join(output_dir, "kaitong_KAITONG#{code}_contract.html")
+      File.open(output_file, 'w:GBK:UTF-8') do |wf|
+        wf.write content\
+                  .gsub('__contract_index__', "#{code}001")\
+                  .gsub('__period_index__', period)\
+                  .gsub('__product_code__', code.to_s)
+
+        code.next!
+      end
+
+      puts ">> Generate file: #{output_file}"
+    end
+  end
+
   private
 
     def check_equality(name, a, b)
@@ -198,6 +243,24 @@ class KaitongCli < Thor
     def convert_file_encoding!(file, from="UTF-8", to="GBK")
       content = File.read(file, encoding:from)
       File.open(file, "w:#{to}:#{from}"){|wf| wf.write content }
+    end
+
+    def prefill_zero(num, length)
+      res = num.to_s
+      res = ([0]*(length - res.length) + res.to_s.chars).join if num.to_s.length < length
+      return res
+    end
+
+    def detect_file_encoding(file)
+      contents = File.read(file)
+      detection = CharlockHolmes::EncodingDetector.detect(contents)
+      detection[:encoding] rescue nil
+    end
+
+    def read_utf8_content(file)
+      content = File.read(file)
+      detection = CharlockHolmes::EncodingDetector.detect(content)
+      CharlockHolmes::Converter.convert content, detection[:encoding], 'UTF-8'
     end
 
 end
