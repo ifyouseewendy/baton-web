@@ -38,6 +38,8 @@ class DailyOrder
   end
 
   def parse_and_create_from(fn)
+    convert_file_encoding!(fn, 'GBK', 'UTF-8')
+
     order_count, share_count = 0, 0
     CSV.foreach(fn) do |row|
       Order.where(serial_number: row[0]).delete_all \
@@ -97,4 +99,10 @@ class DailyOrder
     def parse_name(fn)
       Date.parse(fn.split('.')[0].split('_')[-1]).to_s rescue nil
     end
+
+    def convert_file_encoding!(file, from="UTF-8", to="GBK")
+      content = File.read(file, encoding:from)
+      File.open(file, "w:#{to}:#{from}"){|wf| wf.write content }
+    end
+
 end
