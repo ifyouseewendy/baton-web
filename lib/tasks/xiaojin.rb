@@ -79,6 +79,8 @@ class KaitongCli < Thor
   def generate_gjs_details
     raise "Invalid <from> file position: #{options[:from]}" unless File.exist?(options[:from])
 
+    convert_file_encoding!(options[:from], 'GBK', 'UTF-8')
+
     out_filename = File.basename(options[:from]).split('.')[0]
     output = File.join(File.expand_path("../../../tmp", __FILE__), "#{out_filename}.detail.csv")
 
@@ -98,6 +100,8 @@ class KaitongCli < Thor
         end
       end
     end
+
+    convert_file_encoding!(output)
 
     puts ">> Generate file: #{output}"
 
@@ -207,6 +211,11 @@ class KaitongCli < Thor
       prd = Product.find_or_create_by(code: code.to_s)
       prd.property_serial << stat
       prd.save!
+    end
+
+    def convert_file_encoding!(file, from="UTF-8", to="GBK")
+      content = File.read(file, encoding:from)
+      File.open(file, "w:#{to}:#{from}"){|wf| wf.write content }
     end
 end
 
