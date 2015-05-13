@@ -1,7 +1,7 @@
 development:
   sessions:
     default:
-      database: ftp_monitor_development
+      database: baton_development
       hosts:
         - localhost:27018
       # Provides the hosts the default session can connect to. Must be an array
@@ -12,7 +12,7 @@ development:
 test:
   sessions:
     default:
-      database: ftp_monitor_test
+      database: baton_test
       hosts:
         - localhost:27017
       options:
