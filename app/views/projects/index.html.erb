@@ -26,48 +26,105 @@
             <tbody>
               <tr>
                 <td>Project 1</td>
-                <td>测试</td>
-                <td>准备期</td>
+                <td>Test</td>
+                <td>Stage 2</td>
                 <td>1/4</td>
-                <td>准备《产品合同文件》</td>
+                <td>Task 1</td>
                 <td>@wendi</td>
                 <td>30 mins</td>
                 <td><a href='#'>进入项目</a></td>
               </tr>
               <tr>
                 <td>Project 2</td>
-                <td>上线</td>
-                <td>准备期</td>
+                <td>Online</td>
+                <td>Stage 2</td>
                 <td>2/4</td>
-                <td>制作《产品销售计划表》</td>
-                <td>@jingjing</td>
+                <td>Task 2</td>
+                <td>@larry</td>
                 <td>30 mins</td>
                 <td><a href='#'>进入项目</a></td>
               </tr>
               <tr>
                 <td>Project 3</td>
-                <td>上线</td>
-                <td>募集期</td>
+                <td>Online</td>
+                <td>Stage 3</td>
                 <td>2/3</td>
-                <td>发送《交易确认文件》</td>
-                <td>@jingdong</td>
+                <td>Task 3</td>
+                <td>@larry</td>
                 <td>50 mins</td>
                 <td><a href='#'>进入项目</a></td>
               </tr>
               <tr>
                 <td>Project 4</td>
-                <td>上线</td>
-                <td>存续期</td>
+                <td>Online</td>
+                <td>Stage 4</td>
                 <td>2/3</td>
-                <td>产品起息</td>
+                <td>Task 2</td>
                 <td></td>
                 <td>210 days</td>
                 <td><a href='#'>进入项目</a></td>
               </tr>
             </tbody>
           </table>
+        </div>
 
+        <div>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            添加新项目
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="myModalLabel">创建新项目</h4>
+                </div>
+                <form class="form-horizontal" action="<%= projects_path %>" method='post'>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                      <label for="inputName" class="col-sm-2 control-label">名称</label>
+                      <div class="col-sm-4">
+                        <input type="text" name='name' class="form-control" id="inputName" placeholder="">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="inputName" class="col-sm-2 control-label">类型</label>
+                      <label class="radio-inline">
+                        <input type="radio" name="environment" id="inlineRadio1" value="test"> 测试
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio" name="environment" id="inlineRadio2" value="online"> 上线
+                      </label>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="inputName" class="col-sm-2 control-label">流程模板</label>
+                      <label class="radio-inline">
+                        <input type="radio" name="recipe" id="inlineRadio1" value="jingdong"> 京东
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio" name="recipe" id="inlineRadio2" value="other"> 其他
+                      </label>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">确认</button>
+                </div>
+                  </form>
+              </div>
+            </div>
           </div>
+        </div>
+
+
+
         </section>
 
     </section>
