@@ -12,6 +12,12 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
+    # render: @project.current_stage
+  end
+
+  # GET /projects/new
+  def new
+    @project = Project.new
   end
 
   # GET /projects/1/edit
