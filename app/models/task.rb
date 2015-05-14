@@ -1,9 +1,9 @@
-class Stage
+class Task
   include Mongoid::Document
 
   # References
-  belongs_to  :project
-  has_many    :tasks
+  belongs_to  :stage
+  has_many    :steps
 
   # Fields
   enum :status, [:undone, :done] # :undone by default
@@ -11,11 +11,7 @@ class Stage
   field :name,        :type => String
   field :description, :type => String
 
-  def steps
-    tasks.flat_map(&:steps)
-  end
-
   def check_status
-    self.done! if tasks.all?(&:done?)
+    self.done! if steps.all?(&:done?)
   end
 end
