@@ -4,6 +4,7 @@ ruby '2.2.0'
 
 gem 'rails', '4.2.0'
 gem 'mongoid'
+gem "mongoid-enum"
 
 gem 'whenever', :require => false
 
