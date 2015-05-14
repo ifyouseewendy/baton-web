@@ -23,102 +23,43 @@
 
             <div class="col-lg-8">
               <!-- .accordion -->
-              <div class="panel-group m-b" id="accordion2">
-                <div class="panel">
-                  <div class="panel-heading">
-                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                      任务1 - 获取广交所上传的准备文件
-                    </a>
-                  </div>
-                  <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;">
-                    <div class="panel-body text-sm">
-                      <ul class="list-group gutter list-group-lg list-group-sp">
-                        <li class="list-group-item" draggable="true">
-                          <a href="#" class="pull-right" data-dismiss="alert"><i class="fa fa-play"></i></a>
-                          <span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i> 01</span>
-                          <div class="clear">
-                            检查广交所是否上传文件至 FTP
-                            <p>
-                              <ul>
-                                <li>《产品信息表》<a href='#'>下载</a></li>
-                                <li>《产品合同模板》<a href='#'>下载</a></li>
-                                <li>《合同可修改字段》<a href='#'>下载</a></li>
-                              </ul>
-                            </p>
-                          </div>
-                        </li>
+              <div class="panel-group m-b" id="accordion_stage1">
+
+                <%= render layout: 'task', locals: { number: 1, accordion_id: 'accordion_stage1', content: "获取广交所上传的准备文件" } do %>
+                  <%= render layout: 'step', locals: { number: '01' } do %>
+                    检查广交所是否上传文件至 FTP
+                    <p>
+                      <ul>
+                        <li>《产品信息表》<a href='#'>下载</a></li>
+                        <li>《产品合同模板》<a href='#'>下载</a></li>
+                        <li>《合同可修改字段》<a href='#'>下载</a></li>
                       </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="panel">
-                  <div class="panel-heading">
-                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                      任务2 - 为京东提供相关文件
-                    </a>
-                  </div>
-                  <div id="collapseTwo" class="panel-collapse collapse" style="height: 0px;">
-                    <div class="panel-body text-sm">
-                      <ul class="list-group gutter list-group-lg list-group-sp">
-                        <li class="list-group-item" draggable="true">
-                          <a href="#" class="pull-right" data-dismiss="alert"><i class="fa fa-play"></i></a>
-                          <span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i> 01</span>
-                          <div class="clear">
-                            填写《产品发布文件》，并上传（交互校验结果）
-                          </div>
-                        </li>
-                        <li class="list-group-item" draggable="true">
-                          <a href="#" class="pull-right" data-dismiss="alert"><i class="fa fa-play"></i></a>
-                          <span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i> 02</span>
-                          <div class="clear">
-                            生成《产品合同文件》（交互校验结果）
-                          </div>
-                        </li>
-                        <li class="list-group-item" draggable="true">
-                          <a href="#" class="pull-right" data-dismiss="alert"><i class="fa fa-play"></i></a>
-                          <span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i> 03</span>
-                          <div class="clear">
-                            传送给京东
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="panel">
-                  <div class="panel-heading">
-                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-                      任务3 - 为广交所提供相关文件
-                    </a>
-                  </div>
-                  <div id="collapseThree" class="panel-collapse collapse" style="height: 0px;">
-                    <div class="panel-body text-sm">
-                      <ul class="list-group gutter list-group-lg list-group-sp">
-                        <li class="list-group-item" draggable="true">
-                          <a href="#" class="pull-right" data-dismiss="alert"><i class="fa fa-play"></i></a>
-                          <span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i> 01</span>
-                          <div class="clear">
-                            填写《产品销售计划表》，并上传（交互校验结果）
-                          </div>
-                        </li>
-                        <li class="list-group-item" draggable="true">
-                          <a href="#" class="pull-right" data-dismiss="alert"><i class="fa fa-play"></i></a>
-                          <span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i> 02</span>
-                          <div class="clear">
-                            生成《产品合同文件》（交互校验结果）
-                          </div>
-                        </li>
-                        <li class="list-group-item" draggable="true">
-                          <a href="#" class="pull-right" data-dismiss="alert"><i class="fa fa-play"></i></a>
-                          <span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i> 03</span>
-                          <div class="clear">
-                            传送给广交所
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                    </p>
+                  <% end %>
+                <% end %>
+
+                <%= render layout: 'task', locals: { number: 2, accordion_id: 'accordion_stage1', content: "填写《产品发布文件》，并上传、校验" } do %>
+                  <%= render partial: 'step', locals: { number: '01', content: '上传《产品发布文件》' } %>
+                  <%= render partial: 'step', locals: { number: '02', content: '检验文件内容与编码' } %>
+                  <%= render partial: 'step', locals: { number: '03', content: '生成京东指定格式 txt' } %>
+                <% end %>
+
+                <%= render layout: 'task', locals: { number: 3, accordion_id: 'accordion_stage1', content: "生成《产品合同文件》" } do %>
+                  <%= render partial: 'step', locals: { number: '01', content: '批量生成产品合同' } %>
+                <% end %>
+
+                <%= render layout: 'task', locals: { number: 4, accordion_id: 'accordion_stage1', content: "发送给京东，等待确认" } do %>
+                  <%= render partial: 'step', locals: { number: '01', content: '发送' } %>
+                  <%= render partial: 'step', locals: { number: '02', content: '京东确认' } %>
+                <% end %>
+
+                <%= render layout: 'task', locals: { number: 5, accordion_id: 'accordion_stage1', content: "为广交所提供相关文件" } do %>
+                  <%= render partial: 'step', locals: { number: '01', content: '填写《产品销售计划表》，并上传、校验' } %>
+                  <%= render partial: 'step', locals: { number: '02', content: '生成《产品合同文件》' } %>
+                  <%= render partial: 'step', locals: { number: '03', content: '发送' } %>
+                  <%= render partial: 'step', locals: { number: '04', content: '广交所确认' } %>
+                <% end %>
+
               </div>
 
             </div>

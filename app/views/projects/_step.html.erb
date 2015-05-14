@@ -1,0 +1,9 @@
+<% content ||= nil %>
+
+<li class="list-group-item" draggable="true">
+  <a href="#" class="pull-right" data-dismiss="alert"><i class="fa fa-play"></i></a>
+  <span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i> <%= number %></span>
+  <div class="clear">
+    <%= content || yield %>
+  </div>
+</li>
