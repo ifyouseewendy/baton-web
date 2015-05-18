@@ -7,6 +7,7 @@ class Project
 
   # References
   has_many :stages
+  belongs_to :jingdong_recipe
 
   # Fields
   enum :env,    [:test, :online] # :test by default

@@ -1,10 +1,12 @@
 class JingdongRecipe
   include Recipe
 
+  has_many :projects
+
   def build
     source = read_source
 
-    project = Project.create(name: source['name'], description: source['description'])
+    project = self.projects.create(name: source['name'], description: source['description'])
     source['stages'].each do |stage_source|
       stage = project.stages.create(name: stage_source['name'], description: stage_source['description'])
       stage_source['tasks'].each do |task_source|

@@ -1,4 +1,4 @@
-# Make base class a Singleton
+# Make base class a Singleton Mongoid class
 
 module Recipe
   extend ActiveSupport::Concern

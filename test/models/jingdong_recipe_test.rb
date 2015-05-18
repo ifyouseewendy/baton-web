@@ -21,5 +21,8 @@ class JingdongRecipeTest < ActiveSupport::TestCase
     assert_equal source['stages'].count, Stage.count
     assert_equal source['stages'].map{|h| h['tasks'].count}.sum, Task.count
     assert_equal source['stages'].map{|h| h['tasks'].map{|hh| hh['steps'].count}.sum }.sum, Step.count
+
+    assert_equal 1, @subject.projects.count
+    assert_equal Project.first, @subject.projects.first
   end
 end
