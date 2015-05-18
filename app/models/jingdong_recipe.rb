@@ -2,7 +2,7 @@ class JingdongRecipe
   include Recipe
 
   def build
-    source = YAML.load File.read( config_for(:jingdong)  )
+    source = read_source
 
     project = Project.create(name: source['name'], description: source['description'])
     source['stages'].each do |stage_source|
@@ -15,4 +15,10 @@ class JingdongRecipe
       end
     end
   end
+
+  private
+
+    def read_source
+      YAML.load File.read( config_for(:jingdong)  )
+    end
 end
