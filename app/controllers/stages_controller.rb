@@ -1,4 +1,5 @@
 class StagesController < ApplicationController
+  before_action :set_project, only: [:show, :edit, :update, :destroy]
   before_action :set_stage, only: [:show, :edit, :update, :destroy]
 
   skip_before_filter :verify_authenticity_token, :only => [:create]
@@ -64,9 +65,12 @@ class StagesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_stage
       @stage = Stage.find(params[:id])
+    end
+
+    def set_project
+      @project = Project.find(params[:project_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
