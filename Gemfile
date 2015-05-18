@@ -68,7 +68,6 @@ end
 
 
 group :test do
-  gem "factory_girl_rails", "~> 4.0"
   gem 'minitest-reporters'
   gem 'minitest-focus'
   gem 'mocha'
