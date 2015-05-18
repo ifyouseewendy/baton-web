@@ -53,6 +53,10 @@ gem 'roo-xls'
 # Encoding
 gem 'charlock_holmes'
 
+group :development do
+  gem 'quiet_assets'
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -65,7 +69,6 @@ group :development, :test do
 
   gem "pry-byebug"
 end
-
 
 group :test do
   gem 'fabrication'
