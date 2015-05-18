@@ -15,4 +15,7 @@ class Task
   field :name,        :type => String
   field :description, :type => String
 
+  def current_step
+    steps.detect(&:undone?)
+  end
 end

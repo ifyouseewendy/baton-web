@@ -4,6 +4,10 @@ module StatusCheck
     self.status == :done ? true : check_status!
   end
 
+  def undone?
+    self.status == :undone ? true : !check_status!
+  end
+
   def done!
     self.update_attribute(:status, :done)
     steps.map(&:done!)

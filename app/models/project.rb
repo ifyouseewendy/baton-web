@@ -28,4 +28,7 @@ class Project
     stages.flat_map(&:steps)
   end
 
+  def current_stage
+    stages.detect(&:undone?)
+  end
 end

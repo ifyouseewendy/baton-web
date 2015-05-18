@@ -19,4 +19,7 @@ class Stage
     tasks.flat_map(&:steps)
   end
 
+  def current_task
+    tasks.detect(&:undone?)
+  end
 end
