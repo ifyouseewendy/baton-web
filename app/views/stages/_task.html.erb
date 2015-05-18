@@ -1,6 +1,6 @@
 <% collapse_id ||= "collapse_task#{number}" %>
 
-<div class="panel">
+<div class="panel task-panel" data-task-id="<%= task_id %>">
   <div class="panel-heading">
     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#<%= accordion_id %>" href="#<%= collapse_id %>">
       任务<%= number %> - <%= content || html %>

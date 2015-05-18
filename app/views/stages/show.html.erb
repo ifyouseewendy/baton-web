@@ -1,3 +1,5 @@
+<% stage_id = @project.stages.index(@stage) %>
+
 <section class="hbox stretch">
   <%= render partial: 'shared/aside' %>
 
@@ -8,11 +10,11 @@
       </header>
 
       <section class="scrollable wrapper">
-        <div class="">
+        <div class="project-panel" data-project-id="<%= @project.id %>">
           <% # Stage Display %>
-          <div class="progress" style="width: 80%">
-            <% @project.stages.each do |stage| %>
-              <div class="progress-bar <%= @stage == stage ? 'progress-bar-striped active' : '' %>" style="width: 25%; border-right: 1px solid white">
+          <div class="progress stage-panel" style="width: 80%">
+            <% @project.stages.each_with_index do |stage, idx| %>
+              <div class="progress-bar <%= stage_id == idx ? 'progress-bar-striped active' : '' %>" style="width: 25%; border-right: 1px solid white" data-stage-id="<%= stage.id %>">
                 <%= stage.name %>
               </div>
             <% end %>
@@ -25,9 +27,9 @@
               <div class="panel-group m-b" id="accordion_stage1">
 
                 <% @stage.tasks.each_with_index do |task, task_id| %>
-                  <%= render layout: 'task', locals: { number: task_id+1, accordion_id: 'accordion_stage1', content: task.name} do %>
+                  <%= render layout: 'task', locals: { number: task_id+1, accordion_id: 'accordion_stage1', content: task.name, task_id: task.id } do %>
                     <% task.steps.each_with_index do |step, step_id| %>
-                      <%= render layout: 'step', locals: { number: step_id+1, content: step.name } do %>
+                      <%= render layout: 'step', locals: { number: step_id+1, content: step.name, step_id: "#{step.id}" } do %>
                       <% end %>
                     <% end %>
                   <% end %>
