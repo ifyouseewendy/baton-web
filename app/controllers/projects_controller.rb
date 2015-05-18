@@ -12,6 +12,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
+    redirect_to project_stage_path(@project, @project.current_stage)
     # render: @project.current_stage
   end
 
