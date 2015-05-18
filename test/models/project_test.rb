@@ -1,8 +1,10 @@
 require 'test_helper'
 require_relative 'enum_field_test'
+require_relative 'status_check_test'
 
 class ProjectTest < ActiveSupport::TestCase
   include EnumFieldTest
+  include StatusCheckTest
 
   def setup
     @project = @subject = Fabricate(:project)

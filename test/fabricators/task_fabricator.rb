@@ -1,5 +1,5 @@
 Fabricator(:task) do
-  name 'step1'
+  name 'task1'
   description ''
   steps do |task|
     [
