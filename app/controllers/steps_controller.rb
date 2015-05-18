@@ -2,6 +2,7 @@ class StepsController < ApplicationController
   before_action :set_step, only: [:run]
 
   def run
+    sleep(3)
     if stage_params[:stub] == 'succeed'
       render json: { status: 'succeed' }
     else

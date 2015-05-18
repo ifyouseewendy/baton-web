@@ -3,6 +3,9 @@ get_stage_id    = -> $('.stage-panel .active').attr('data-stage-id')
 
 $(document).on 'ready', ->
   $(".baton-step-list .step-run").on 'click', ->
+    icon = $(this).find('i')
+    icon.removeClass('fa-play').addClass('fa-spinner fa-pulse')
+
     project_id = get_project_id()
     stage_id = get_stage_id()
     task_id = $(this).closest('.task-panel').attr('data-task-id')
@@ -13,18 +16,17 @@ $(document).on 'ready', ->
     console.log(task_id)
     console.log(step_id)
 
-    icon = $(this).find('fa')
-
     $.ajax
       url: "/projects/"+project_id+"/stages/"+stage_id+"/tasks/"+task_id+"/steps/"+step_id+"/run"
       data:
-        stub: "failed"
+        stub: "succeed"
       type: 'POST'
       error: (jqXHR, textStatus, errorThrown) ->
         $('body').append "AJAX Error: #{textStatus}"
       success: (data, textStatus, jqXHR) ->
         current_item = $('.baton-step-list a[data-step-id='+step_id+']')
         if data['status'] == 'succeed'
-          current_item.find('i').removeClass('fa-play').addClass('fa-check')
+          current_item.find('i').removeClass('fa-spinner fa-pulse').addClass('fa-check')
         else
+          current_item.find('i').removeClass('fa-spinner fa-pulse').addClass('fa-play')
           current_item.closest('.baton-step-list').find('.error-message').text( data['message'] )
