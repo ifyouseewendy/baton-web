@@ -1,7 +1,5 @@
-require 'singleton'
-
-class JingdongRecipe < Recipe
-  include Singleton
+class JingdongRecipe
+  include Recipe
 
   def build
     source = YAML.load File.read( config_for(:jingdong)  )
