@@ -7,7 +7,7 @@ class Stage
 
   # References
   belongs_to  :project
-  has_many    :tasks
+  has_many    :tasks, dependent: :destroy
 
   # Fields
   enum :status, [:undone, :done] # :undone by default

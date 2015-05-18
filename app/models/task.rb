@@ -7,7 +7,7 @@ class Task
 
   # References
   belongs_to  :stage
-  has_many    :steps
+  has_many    :steps, dependent: :destroy
 
   # Fields
   enum :status, [:undone, :done] # :undone by default

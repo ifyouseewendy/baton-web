@@ -6,7 +6,7 @@ class Project
   prepend StatusCheck
 
   # References
-  has_many :stages
+  has_many :stages, dependent: :destroy
   belongs_to :jingdong_recipe
 
   # Fields
