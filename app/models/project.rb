@@ -15,6 +15,7 @@ class Project
 
   field :name,        :type => String
   field :description, :type => String
+  field :recipe,      :type => Symbol
 
   # Validations
   validates :name, presence: true, uniqueness: true

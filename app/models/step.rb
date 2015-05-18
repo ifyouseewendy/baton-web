@@ -10,4 +10,17 @@ class Step
 
   field :name,        :type => String
   field :description, :type => String
+  field :job_id,      :type => String
+
+  def stage
+    task.stage
+  end
+
+  def project
+    stage.project
+  end
+
+  def run(args)
+    "#{project.recipe.capitalize}Step::Job#{job_id}".constantize.new.run(args)
+  end
 end

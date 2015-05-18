@@ -3,9 +3,13 @@ class StepsController < ApplicationController
 
   def run
     sleep(3)
-    if stage_params[:stub] == 'succeed'
+
+    begin
+      @step.run(params)
       render json: { status: 'succeed' }
-    else
+    rescue => e
+      puts e.message
+      puts e.backtrace
       render json: { status: 'failed', message: "Sorry dude, it's sucked" }
     end
   end
