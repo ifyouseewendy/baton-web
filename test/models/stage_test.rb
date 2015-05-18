@@ -11,4 +11,8 @@ class StageTest < ActiveSupport::TestCase
   def teardown
     Stage.delete_all
   end
+
+  def test_steps
+    assert_equal @stage.tasks.map(&:steps).flatten.map(&:name), @stage.steps.map(&:name)
+  end
 end

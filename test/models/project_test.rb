@@ -12,7 +12,15 @@ class ProjectTest < ActiveSupport::TestCase
     Project.delete_all
   end
 
-  def test_hello
-    binding.pry
+  def test_tasks_entry
+    assert_equal \
+      @project.stages.map(&:tasks).flatten.map(&:name),
+      @project.tasks.map(&:name)
+  end
+
+  def test_steps_entry
+    assert_equal \
+      @project.tasks.map(&:steps).flatten.map(&:name),
+      @project.steps.map(&:name)
   end
 end
