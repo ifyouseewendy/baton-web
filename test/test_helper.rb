@@ -4,6 +4,7 @@ require 'rails/test_help'
 require 'minitest/reporters'
 require 'minitest/focus'
 require 'mocha/mini_test'
+require 'pry-byebug'
 
 Dir[Rails.root.join('test/support/**/*.rb')].each { |file| require file }
 

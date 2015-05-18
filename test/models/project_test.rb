@@ -1,7 +1,18 @@
 require 'test_helper'
+require_relative 'enum_field_test'
 
 class ProjectTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  include EnumFieldTest
+
+  def setup
+    @project = @subject = Fabricate(:project)
+  end
+
+  def teardown
+    Project.delete_all
+  end
+
+  def test_hello
+    binding.pry
+  end
 end
