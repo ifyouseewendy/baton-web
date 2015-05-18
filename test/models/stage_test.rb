@@ -11,7 +11,7 @@ class StageTest < ActiveSupport::TestCase
   end
 
   def teardown
-    Stage.delete_all
+    @stage.delete
   end
 
   def test_steps_entry

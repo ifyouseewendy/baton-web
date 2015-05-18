@@ -11,7 +11,7 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   def teardown
-    Project.delete_all
+    @project.delete
   end
 
   def test_tasks_entry
@@ -24,5 +24,10 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal \
       @project.tasks.map(&:steps).flatten.map(&:name),
       @project.steps.map(&:name)
+  end
+
+  def test_dependent_destroy
+    @project.delete
+    assert_equal [0]*4, [Project, Stage, Task, Step].map(&:count)
   end
 end

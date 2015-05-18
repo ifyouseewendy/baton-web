@@ -11,7 +11,7 @@ class TaskTest < ActiveSupport::TestCase
   end
 
   def teardown
-    Task.delete_all
+    @task.delete
   end
 
 end

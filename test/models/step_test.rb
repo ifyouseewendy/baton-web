@@ -9,6 +9,6 @@ class StepTest < ActiveSupport::TestCase
   end
 
   def teardown
-    Step.delete_all
+    @step.delete
   end
 end
