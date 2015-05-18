@@ -68,6 +68,7 @@ end
 
 
 group :test do
+  gem 'fabrication'
   gem 'minitest-reporters'
   gem 'minitest-focus'
   gem 'mocha'
