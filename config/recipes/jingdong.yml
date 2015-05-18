@@ -41,5 +41,11 @@ stages:
             description: ''
           - name: '广交所确认'
             description: ''
+  - name: '募集期'
+    description: ''
+  - name: '起息日'
+    description: ''
+  - name: '到期日'
+    description: ''
 
 
