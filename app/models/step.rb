@@ -1,5 +1,6 @@
 class Step
   include Mongoid::Document
+  include Mongoid::Enum
 
   # References
   belongs_to :task

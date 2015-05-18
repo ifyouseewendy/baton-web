@@ -1,5 +1,6 @@
 class Stage
   include Mongoid::Document
+  include Mongoid::Enum
 
   # References
   belongs_to  :project
