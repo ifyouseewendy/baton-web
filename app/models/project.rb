@@ -2,6 +2,9 @@ class Project
   include Mongoid::Document
   include Mongoid::Enum
 
+  # Concerns
+  prepend StatusCheck
+
   # References
   has_many :stages
 
@@ -24,7 +27,4 @@ class Project
     stages.flat_map(&:steps)
   end
 
-  def check_status
-    self.done! if stages.all?(&:done?)
-  end
 end

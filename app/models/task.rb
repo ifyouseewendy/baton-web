@@ -2,6 +2,9 @@ class Task
   include Mongoid::Document
   include Mongoid::Enum
 
+  # Concerns
+  prepend StatusCheck
+
   # References
   belongs_to  :stage
   has_many    :steps
@@ -12,7 +15,4 @@ class Task
   field :name,        :type => String
   field :description, :type => String
 
-  def check_status
-    self.done! if steps.all?(&:done?)
-  end
 end
