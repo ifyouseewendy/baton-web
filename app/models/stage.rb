@@ -23,4 +23,9 @@ class Stage
   def current_task
     tasks.detect(&:undone?)
   end
+
+  def progress
+    "#{(tasks.index(current_task) + 1)} / #{tasks.to_a.count}"
+  end
+
 end

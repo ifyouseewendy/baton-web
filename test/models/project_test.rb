@@ -30,4 +30,13 @@ class ProjectTest < ActiveSupport::TestCase
     @project.delete
     assert_equal [0]*4, [Project, Stage, Task, Step].map(&:count)
   end
+
+  def test_current_stage
+    first, second = @project.stages.values_at(0, 1)
+    assert_equal first, @project.current_stage
+
+    first.done!
+    assert_equal second, @project.current_stage
+  end
+
 end

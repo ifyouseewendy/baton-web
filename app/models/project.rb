@@ -34,4 +34,8 @@ class Project
   def current_stage
     stages.detect(&:undone?)
   end
+
+  def current_task
+    current_stage.current_task
+  end
 end

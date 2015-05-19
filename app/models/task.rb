@@ -19,4 +19,5 @@ class Task
   def current_step
     steps.detect(&:undone?)
   end
+
 end
