@@ -12,8 +12,18 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    redirect_to project_stage_path(@project, @project.current_stage)
-    # render: @project.current_stage
+    respond_to do |format|
+      format.html { redirect_to project_stage_path(@project, @project.current_stage) }
+      format.json do
+        render json: {
+          name:           @project.name,
+          env:            @project.zh_env,
+          platform:       @project.platform,
+          category:       @project.category,
+          category_index: @project.category_index
+        }
+      end
+    end
   end
 
   # GET /projects/new
