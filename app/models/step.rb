@@ -22,6 +22,6 @@ class Step
   end
 
   def run(args)
-    "#{project.recipe.capitalize}Step::Job#{job_id}".constantize.new.run(args)
+    "#{project.recipe.capitalize}Job::Step#{job_id}".constantize.new.run(args)
   end
 end
