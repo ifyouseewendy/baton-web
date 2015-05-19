@@ -1,10 +1,10 @@
 <!-- Modal -->
-<div class="modal fade" id="<%= modal_id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="<%= modal_id %>" tabindex="-1" role="dialog" aria-labelledby="<%= modal_id %>-modal-label" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">创建新项目</h4>
+        <h4 class="modal-title" id="<%= modal_id %>-modal-label">创建新项目</h4>
       </div>
       <%= form_for Project.new, html: {class: "form-horizontal"} do |f| %>
         <div class="modal-body">

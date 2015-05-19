@@ -1,8 +1,17 @@
 .vbox {
-  .flash-notice {
-    color: #337ab7
+  header {
+    .flash-notice {
+      color: #337ab7
+    }
+    .flash-alert {
+      color: #a94442
+    }
   }
-  .flash-alert {
-    color: #a94442
+
+  table {
+    .project-edit {
+      position: relative;
+      right: 5px;
+    }
   }
 }

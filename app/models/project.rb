@@ -24,6 +24,9 @@ class Project
   # Validations
   validates :name, presence: true, uniqueness: true
 
+  # Constants
+  CATEGORY = %w(私募债 理财产品 收益权转让)
+
   class << self
     def build_by(recipe)
       "#{recipe.capitalize}Recipe".constantize.instance.build
@@ -49,5 +52,9 @@ class Project
   # No I18n temp
   def zh_env
     {test: '测试', online: '线上'}[env]
+  end
+
+  def category_index
+    CATEGORY.index(category) + 1
   end
 end

@@ -43,7 +43,8 @@
                   <%# <%= content_tag(:td, current_stage.pending_time) %>
                   <%= content_tag(:td) do %>
                     <%= link_to '进入项目', project_path(project) %>
-                    <%= link_to content_tag(:i, nil, class: 'fa fa-times'), project_path(project), method: :delete, class: 'pull-right project-delete' %>
+                    <%= link_to content_tag(:i, nil, class: 'fa fa-times'),   project_path(project), method: :delete, class: 'pull-right project-delete' %>
+                    <%= link_to content_tag(:i, nil, class: 'fa fa-pencil'),  "#", class: 'pull-right project-edit' %>
                   <% end %>
                 <% end %>
               <% end %>
@@ -53,10 +54,10 @@
 
         <div>
 
-          <!-- Button trigger modal -->
-          <% modal_id = "new-project" %>
-          <%= button_tag "添加新项目", type: 'button', class: "btn btn-primary", data: {toggle: "modal", target: "##{modal_id}" } %>
-          <%= render partial: 'new_form', locals: {modal_id: modal_id} %>
+          <%= render partial: 'edit_form', locals: {modal_id: "edit-project-form"} %>
+
+          <%= button_tag "添加新项目", type: 'button', class: "btn btn-primary", data: {toggle: "modal", target: "#new-project-form" } %>
+          <%= render partial: 'new_form', locals: {modal_id: "new-project-form"} %>
 
         </div>
 
