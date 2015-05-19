@@ -1,5 +1,6 @@
 class Step
   include Mongoid::Document
+  include Mongoid::Timestamps
   include Mongoid::Enum
 
   # References
