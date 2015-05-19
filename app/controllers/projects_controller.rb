@@ -58,15 +58,12 @@ class ProjectsController < ApplicationController
   end
 
   # PATCH/PUT /projects/1
-  # PATCH/PUT /projects/1.json
   def update
     respond_to do |format|
       if @project.update(project_params)
-        format.html { redirect_to @project, notice: 'Project was successfully updated.' }
-        format.json { render :show, status: :ok, location: @project }
+        format.html { redirect_to projects_path, notice: "项目 #{@project.name} 更新成功" }
       else
-        format.html { render :edit }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        format.html { redirect_to projects_path, alert: @project.errors.full_messages.join("\n") }
       end
     end
   end
