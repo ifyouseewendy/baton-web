@@ -52,70 +52,12 @@
         </div>
 
         <div>
+
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-            添加新项目
-          </button>
+          <% modal_id = "new-project" %>
+          <%= button_tag "添加新项目", type: 'button', class: "btn btn-primary", data: {toggle: "modal", target: "##{modal_id}" } %>
+          <%= render partial: 'new_form', locals: {modal_id: modal_id} %>
 
-          <!-- Modal -->
-          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title" id="myModalLabel">创建新项目</h4>
-                </div>
-                <%= form_for Project.new, html: {class: "form-horizontal"} do |f| %>
-                  <div class="modal-body">
-                    <div class="form-group">
-                      <%= f.label '名称', class: "col-sm-2 control-label" %>
-                      <div class="col-sm-4">
-                        <%= f.text_field :name, class: "form-control" %>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <%= f.label '对接平台', class: "col-sm-2 control-label" %>
-                      <div class="col-sm-4">
-                        <%= f.text_field :platform, class: "form-control" %>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <%= f.label '产品类型', class: "col-sm-2 control-label" %>
-                      <div class="col-sm-4">
-                        <%= f.select :category, %w(私募债 理财产品 收益权转让), {}, class: "form-control" %>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <%= f.label '流程模板', class: "col-sm-2 control-label" %>
-                      <div class="col-sm-4">
-                        <label class="radio-inline">
-                          <%= f.radio_button :recipe, :jingdong, checked: 'checked' %> 京东
-                        </label>
-                        <label class="radio-inline">
-                          <%= f.radio_button :recipe, :normal %> 其他
-                        </label>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <%= f.label '执行环境', class: "col-sm-2 control-label" %>
-                      <div class="col-sm-4">
-                        <label class="radio-inline">
-                          <%= f.radio_button :env, :test, checked: 'checked' %> 测试
-                        </label>
-                        <label class="radio-inline">
-                          <%= f.radio_button :env, :online %> 上线
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="modal-footer">
-                    <%= f.button "确认", class: "btn btn-primary" %>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
         </div>
 
 
