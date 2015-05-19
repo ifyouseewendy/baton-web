@@ -12,7 +12,7 @@
 
       <section class="scrollable wrapper">
         <div class="">
-          <table class="table table-bordered">
+          <table class="table table-bordered table-hover">
             <thead>
               <tr>
                 <th>名称</th>
@@ -41,7 +41,7 @@
                   <%= content_tag(:td, current_task.name) %>
                   <%# <%= content_tag(:td, current_task.owner) %>
                   <%# <%= content_tag(:td, current_stage.pending_time) %>
-                  <%= content_tag(:td) do %>
+                  <%= content_tag(:td, class: 'col-sm-2') do %>
                     <%= link_to '进入项目', project_path(project) %>
                     <%= link_to content_tag(:i, nil, class: 'fa fa-times'),   project_path(project), method: :delete, class: 'pull-right project-delete' %>
                     <%= link_to content_tag(:i, nil, class: 'fa fa-pencil'),  "#", class: 'pull-right project-edit' %>
@@ -60,7 +60,6 @@
           <%= render partial: 'new_form', locals: {modal_id: "new-project-form"} %>
 
         </div>
-
 
 
       </section>

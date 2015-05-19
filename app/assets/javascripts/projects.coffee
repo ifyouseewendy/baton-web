@@ -1,4 +1,14 @@
 $(document).on 'ready', ->
+  $('.vbox tbody tr').hover(
+    ->
+      $(this).find('.project-delete').show()
+      $(this).find('.project-edit').show()
+    ,
+    ->
+      $(this).find('.project-delete').hide()
+      $(this).find('.project-edit').hide()
+  )
+
   $(".project-delete").on 'click', ->
     return confirm('Are you sure?')
 
