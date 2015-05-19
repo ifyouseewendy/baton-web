@@ -53,6 +53,9 @@ gem 'roo-xls'
 # Encoding
 gem 'charlock_holmes'
 
+# SFTP
+gem 'net-sftp'
+
 group :development do
   gem 'quiet_assets'
 end
