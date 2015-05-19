@@ -16,6 +16,8 @@ class JingdongRecipe
         end
       end
     end
+
+    project
   end
 
   private

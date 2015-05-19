@@ -39,4 +39,9 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal second, @project.current_stage
   end
 
+  def test_class_build_by
+    JingdongRecipe.instance.expects(:build)
+    Project.build_by(:jingdong)
+  end
+
 end

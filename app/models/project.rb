@@ -22,6 +22,11 @@ class Project
   # Validations
   validates :name, presence: true, uniqueness: true
 
+  class << self
+    def build_by(recipe)
+      "#{recipe.capitalize}Recipe".constantize.instance.build
+    end
+  end
 
   def tasks
     stages.flat_map(&:tasks)
