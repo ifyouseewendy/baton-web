@@ -15,7 +15,8 @@
               <tr>
                 <th>名称</th>
                 <th>分类</th>
-                <th>阶段</th>
+                <th>执行环境</th>
+                <th>当前阶段</th>
                 <th>阶段进度</th>
                 <th>当前任务</th>
                 <!-- <th>执行人</th> -->
@@ -29,7 +30,8 @@
                 <% current_task   = project.current_task %>
                 <%= content_tag(:tr)  do %>
                   <%= content_tag(:td, project.name) %>
-                  <%= content_tag(:td, project.env) %>
+                  <%= content_tag(:td, project.category) %>
+                  <%= content_tag(:td, project.zh_env) %>
                   <%= content_tag(:td, current_stage.name) %>
                   <%= content_tag(:td, current_stage.progress) %>
                   <%= content_tag(:td, current_task.name) %>

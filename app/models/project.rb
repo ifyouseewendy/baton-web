@@ -43,4 +43,9 @@ class Project
   def current_task
     current_stage.current_task
   end
+
+  # No I18n temp
+  def zh_env
+    {test: '测试', online: '线上'}[env]
+  end
 end
