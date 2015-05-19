@@ -1,10 +1,7 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
-
-  skip_before_filter :verify_authenticity_token, :only => [:create]
+  before_action :set_project, only: [:show, :update, :destroy]
 
   # GET /projects
-  # GET /projects.json
   def index
     @projects = Project.all
   end
@@ -24,15 +21,6 @@ class ProjectsController < ApplicationController
         }
       end
     end
-  end
-
-  # GET /projects/new
-  def new
-    @project = Project.new
-  end
-
-  # GET /projects/1/edit
-  def edit
   end
 
   # POST /projects
@@ -80,14 +68,11 @@ class ProjectsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_project
       @project = Project.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
       params.require(:project).permit(:name, :category, :env, :recipe, :platform)
     end
-
 end
