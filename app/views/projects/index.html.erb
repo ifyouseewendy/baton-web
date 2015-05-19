@@ -18,52 +18,26 @@
                 <th>阶段</th>
                 <th>阶段进度</th>
                 <th>当前任务</th>
-                <th>执行人</th>
-                <th>等待时间</th>
+                <!-- <th>执行人</th> -->
+                <!-- <th>等待时间</th> -->
                 <th>操作</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Project 1</td>
-                <td>Test</td>
-                <td>Stage 2</td>
-                <td>1/4</td>
-                <td>Task 1</td>
-                <td>@wendi</td>
-                <td>30 mins</td>
-                <td><a href="<%= project_path(Project.first._id) %>">进入项目</a></td>
-              </tr>
-              <tr>
-                <td>Project 2</td>
-                <td>Online</td>
-                <td>Stage 2</td>
-                <td>2/4</td>
-                <td>Task 2</td>
-                <td>@larry</td>
-                <td>30 mins</td>
-                <td><a href="<%= project_path(Project.first._id) %>">进入项目</a></td>
-              </tr>
-              <tr>
-                <td>Project 3</td>
-                <td>Online</td>
-                <td>Stage 3</td>
-                <td>2/3</td>
-                <td>Task 3</td>
-                <td>@larry</td>
-                <td>50 mins</td>
-                <td><a href="<%= project_path(Project.first._id) %>">进入项目</a></td>
-              </tr>
-              <tr>
-                <td>Project 4</td>
-                <td>Online</td>
-                <td>Stage 4</td>
-                <td>2/3</td>
-                <td>Task 2</td>
-                <td></td>
-                <td>210 days</td>
-                <td><a href="<%= project_path(Project.first._id) %>">进入项目</a></td>
-              </tr>
+              <% @projects.each do |project| %>
+                <% current_stage  = project.current_stage %>
+                <% current_task   = project.current_task %>
+                <%= content_tag(:tr)  do %>
+                  <%= content_tag(:td, project.name) %>
+                  <%= content_tag(:td, project.env) %>
+                  <%= content_tag(:td, current_stage.name) %>
+                  <%= content_tag(:td, current_stage.progress) %>
+                  <%= content_tag(:td, current_task.name) %>
+                  <%# <%= content_tag(:td, current_task.owner) %>
+                  <%# <%= content_tag(:td, current_stage.pending_time) %>
+                  <%= content_tag(:td, link_to('进入项目', project_path(project))) %>
+                <% end %>
+              <% end %>
             </tbody>
           </table>
         </div>
@@ -131,7 +105,7 @@
 
 
 
-        </section>
+      </section>
 
     </section>
   </section>
