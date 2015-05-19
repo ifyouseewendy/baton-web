@@ -16,7 +16,8 @@
             <thead>
               <tr>
                 <th>名称</th>
-                <th>分类</th>
+                <th>产品类型</th>
+                <th>对接平台</th>
                 <th>执行环境</th>
                 <th>当前阶段</th>
                 <th>阶段进度</th>
@@ -33,6 +34,7 @@
                 <%= content_tag(:tr, nil, data: {project_id: project.id.to_s} )  do %>
                   <%= content_tag(:td, project.name) %>
                   <%= content_tag(:td, project.category) %>
+                  <%= content_tag(:td, project.platform) %>
                   <%= content_tag(:td, project.zh_env) %>
                   <%= content_tag(:td, current_stage.name) %>
                   <%= content_tag(:td, current_stage.progress) %>
@@ -72,20 +74,15 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <%= f.label '产品类型', class: "col-sm-2 control-label" %>
+                      <%= f.label '对接平台', class: "col-sm-2 control-label" %>
                       <div class="col-sm-4">
-                        <%= f.select :category, %w(私募债 理财产品 收益权转让), {}, class: "form-control" %>
+                        <%= f.text_field :platform, class: "form-control" %>
                       </div>
                     </div>
                     <div class="form-group">
-                      <%= f.label '执行环境', class: "col-sm-2 control-label" %>
+                      <%= f.label '产品类型', class: "col-sm-2 control-label" %>
                       <div class="col-sm-4">
-                        <label class="radio-inline">
-                          <%= f.radio_button :env, :test, checked: 'checked' %> 测试
-                        </label>
-                        <label class="radio-inline">
-                          <%= f.radio_button :env, :online %> 上线
-                        </label>
+                        <%= f.select :category, %w(私募债 理财产品 收益权转让), {}, class: "form-control" %>
                       </div>
                     </div>
                     <div class="form-group">
@@ -96,6 +93,17 @@
                         </label>
                         <label class="radio-inline">
                           <%= f.radio_button :recipe, :other %> 其他
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <%= f.label '执行环境', class: "col-sm-2 control-label" %>
+                      <div class="col-sm-4">
+                        <label class="radio-inline">
+                          <%= f.radio_button :env, :test, checked: 'checked' %> 测试
+                        </label>
+                        <label class="radio-inline">
+                          <%= f.radio_button :env, :online %> 上线
                         </label>
                       </div>
                     </div>

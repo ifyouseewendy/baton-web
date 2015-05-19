@@ -18,6 +18,7 @@ class Project
   field :description, :type => String
   field :recipe,      :type => Symbol
   field :category,    :type => String
+  field :platform,    :type => String
 
   # Validations
   validates :name, presence: true, uniqueness: true
