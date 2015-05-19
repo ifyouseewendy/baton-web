@@ -28,16 +28,22 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @project = Project.new(project_params)
+    begin
+      project = Project.build_by(project_params[:recipe])
+      project.update_attributes!(project_params)
+
+      flash[:notice] = "项目 #{project.name} 创建成功"
+    rescue => e
+      project.delete
+
+      messages = e.message.split("\n")
+      i = messages.index('Summary:')
+      j = messages.index('Resolution:')
+      flash[:alert] = messages[i+1...j].join("\n")
+    end
 
     respond_to do |format|
-      if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
-        format.json { render :show, status: :created, location: @project }
-      else
-        format.html { render :new }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
-      end
+      format.html { redirect_to projects_path }
     end
   end
 
@@ -73,6 +79,7 @@ class ProjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      params[:project]
+      params.require(:project).permit(:name, :category, :env, :recipe)
     end
+
 end

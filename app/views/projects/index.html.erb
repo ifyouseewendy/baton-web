@@ -5,7 +5,9 @@
   <section id="content">
     <section class="vbox">
       <header class="header bg-light bg-gradient b-b">
-        <p></p>
+        <% flash.each do |name, msg| %>
+          <%= content_tag(:p, msg, class: "flash-#{name}") %>
+        <% end %>
       </header>
 
       <section class="scrollable wrapper">
