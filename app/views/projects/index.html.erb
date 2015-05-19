@@ -30,7 +30,7 @@
               <% @projects.each do |project| %>
                 <% current_stage  = project.current_stage %>
                 <% current_task   = project.current_task %>
-                <%= content_tag(:tr)  do %>
+                <%= content_tag(:tr, nil, data: {project_id: project.id.to_s} )  do %>
                   <%= content_tag(:td, project.name) %>
                   <%= content_tag(:td, project.category) %>
                   <%= content_tag(:td, project.zh_env) %>
@@ -39,7 +39,10 @@
                   <%= content_tag(:td, current_task.name) %>
                   <%# <%= content_tag(:td, current_task.owner) %>
                   <%# <%= content_tag(:td, current_stage.pending_time) %>
-                  <%= content_tag(:td, link_to('进入项目', project_path(project))) %>
+                  <%= content_tag(:td) do %>
+                    <%= link_to '进入项目', project_path(project) %>
+                    <%= link_to content_tag(:i, nil, class: 'fa fa-times'), project_path(project), method: :delete, class: 'pull-right project-delete' %>
+                  <% end %>
                 <% end %>
               <% end %>
             </tbody>
