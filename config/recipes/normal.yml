@@ -1,0 +1,63 @@
+name: 'Normal Project'
+description: ''
+recipe: 'normal'
+stages:
+  - name: '准备期'
+    description: ''
+    tasks:
+      - name: '获取广交所上传的准备文件'
+        description: ''
+        steps:
+          - name: '检查广交所是否上传文件至 FTP'
+            description: ''
+            job_id: "111"
+      - name: '填写《产品发布文件》，并上传、校验'
+        description: ''
+        steps:
+          - name: '上传《产品发布文件》'
+            description: ''
+            job_id: "121"
+          - name: '检验文件内容与编码'
+            description: ''
+            job_id: "122"
+          - name: '生成京东指定格式 txt'
+            description: ''
+            job_id: "123"
+      - name: '生成《产品合同文件》'
+        description: ''
+        steps:
+          - name: '批量生成产品合同'
+            description: ''
+            job_id: "131"
+      - name: '发送给京东，等待确认'
+        description: ''
+        steps:
+          - name: '发送'
+            description: ''
+            job_id: "141"
+          - name: '京东确认'
+            description: ''
+            job_id: "142"
+      - name: '为广交所提供相关文件'
+        description: ''
+        steps:
+          - name: '填写《产品销售计划表》，并上传、校验'
+            description: ''
+            job_id: "151"
+          - name: '生成《产品合同文件》'
+            description: ''
+            job_id: "152"
+          - name: '发送'
+            description: ''
+            job_id: "153"
+          - name: '广交所确认'
+            description: ''
+            job_id: "154"
+  - name: '募集期'
+    description: ''
+  - name: '起息日'
+    description: ''
+  - name: '到期日'
+    description: ''
+
+

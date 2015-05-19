@@ -9,6 +9,7 @@ class Project
   # References
   has_many :stages, dependent: :destroy
   belongs_to :jingdong_recipe
+  belongs_to :normal_recipe
 
   # Fields
   enum :env,    [:test, :online] # :test by default
