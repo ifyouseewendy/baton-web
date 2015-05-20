@@ -25,8 +25,8 @@ $(document).on 'ready', ->
         $('body').append "AJAX Error: #{textStatus}"
       success: (data, textStatus, jqXHR) ->
         current_item = $('.baton-step-list a[data-step-id='+step_id+']')
+        current_item.closest('li').find('.step-result').show().find('.panel-heading').html( data['html'] )
         if data['status'] == 'succeed'
           current_item.find('i').removeClass('fa-spinner fa-pulse').addClass('fa-check')
         else
           current_item.find('i').removeClass('fa-spinner fa-pulse').addClass('fa-play')
-          current_item.closest('.baton-step-list').find('.error-message').text( data['message'] )
