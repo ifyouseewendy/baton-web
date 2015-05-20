@@ -2,16 +2,13 @@ class StepsController < ApplicationController
   before_action :set_step, only: [:run]
 
   def run
-    sleep(3)
+    args = stage_params.merge({
+      direction: :upload,
+      date: '20150428'
+    })
+    @step.run(args)
 
-    begin
-      @step.run(params)
-      render json: { status: 'succeed' }
-    rescue => e
-      puts e.message
-      puts e.backtrace
-      render json: { status: 'failed', message: "Sorry dude, it's sucked" }
-    end
+    render json: html_format(@step.result)
   end
 
   private
