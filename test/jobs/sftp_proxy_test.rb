@@ -23,11 +23,12 @@ class SftpProxyTest < ActiveSupport::TestCase
 
     assert_empty files_in(to)
 
-    SftpProxy.download_dir(from, to)
+    files = SftpProxy.download_dir(from, to)
+      # ["/Users/wendi/Workspace/kaitong/baton-web/public/resources/test_dir/download/a.txt"]
+    files = files.map{|fn| File.split(fn) }.map{|fn| fn[1]}
+      # ["a.txt"]
 
-    files_in_sftp = nil
-    SftpProxy.start{ |sftp| files_in_sftp = sftp.dir.entries(from).map{|e| e.name}.reject{|e| base_dir.include?(e)} }
-    assert_equal files_in_sftp.to_set, files_in(to).to_set
+    assert_equal files, files_in(to).sort
   end
 
   private

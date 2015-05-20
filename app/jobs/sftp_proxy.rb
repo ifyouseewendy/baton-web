@@ -13,12 +13,17 @@ class SftpProxy
 
     # Download from/a, from/b -> to/a, to/b. No nested dir support.
     def download_dir(from, to)
+      files = []
+
       start do |sftp|
         sftp.dir.foreach(from) do |file|
           next if file.name =~ /^\./
           sftp.download! File.join(from,file.name), File.join(to,file.name)
+          files << File.join(to,file.name)
         end
       end
+
+      files.sort
     end
   end
 end
