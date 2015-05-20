@@ -17,6 +17,18 @@ class SftpProxyTest < ActiveSupport::TestCase
     assert_equal Net::SFTP::Session, proxy.class
   end
 
+  def test_download
+    from  = "/home/wendi/download/test_dir"
+    to    = File.join( local_test_dir, "download" )
+    file = 'a.txt'
+
+    refute Pathname.new(File.join(to, file)).exist?
+
+    SftpProxy.download(file, from, to)
+
+    assert Pathname.new(File.join(to, file)).exist?
+  end
+
   def test_download_dir
     from  = "/home/wendi/download/test_dir"
     to    = File.join( local_test_dir, "download" )

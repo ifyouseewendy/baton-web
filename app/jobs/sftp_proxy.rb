@@ -8,7 +8,12 @@ class SftpProxy
       end
     end
 
-    def download
+    def download(file, from, to)
+      start do |sftp|
+        sftp.download! File.join(from,file), File.join(to,file)
+      end
+
+      File.join(to,file)
     end
 
     # Download from/a, from/b -> to/a, to/b. No nested dir support.
