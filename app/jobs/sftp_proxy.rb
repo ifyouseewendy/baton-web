@@ -8,9 +8,15 @@ class SftpProxy
       end
     end
 
-    def download(file, from, to)
+    def download(type, from, to)
+      Array.wrap self.public_send( "download_#{type}", from, to )
+    end
+
+    # Expecting from: 'dir/a.txt', to: 'dir'
+    def download_file(from, to)
+      file = Pathname.new(from).basename
       start do |sftp|
-        sftp.download! File.join(from,file), File.join(to,file)
+        sftp.download! from, File.join(to,file)
       end
 
       Pathname.new File.join(to,file)

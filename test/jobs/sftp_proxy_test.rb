@@ -18,6 +18,15 @@ class SftpProxyTest < ActiveSupport::TestCase
   end
 
   def test_download
+    SftpProxy.expects(:download_file).with('from', 'to')
+    ret = SftpProxy.download(:file, 'from', 'to')
+    assert_kind_of(Array, ret)
+
+    SftpProxy.expects(:download_dir).with('from', 'to')
+    SftpProxy.download(:dir, 'from', 'to')
+  end
+
+  def test_download_file
     from  = "/home/wendi/download/test_dir"
     to    = File.join( local_test_dir, "download" )
     file = 'a.txt'
@@ -26,7 +35,7 @@ class SftpProxyTest < ActiveSupport::TestCase
 
     refute target_file.exist?
 
-    file = SftpProxy.download(file, from, to)
+    file = SftpProxy.download_file(File.join(from,file), to)
 
     assert target_file.exist?
     assert_equal target_file, file
@@ -40,7 +49,7 @@ class SftpProxyTest < ActiveSupport::TestCase
 
     files = SftpProxy.download_dir(from, to)
       # ["/Users/wendi/Workspace/kaitong/baton-web/public/resources/test_dir/download/a.txt"]
-    files = files.map{|pn| pn.split.last}.map(&:to_s)
+    files = files.map(&:basename).map(&:to_s)
       # ["a.txt"]
 
     assert_equal files, files_in(to).sort
