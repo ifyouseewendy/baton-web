@@ -46,6 +46,10 @@ class FileAgent
     ::SftpProxy.download(type, from, to)
   end
 
+  def name_mapping(files)
+    files.map(&:basename).map(&:to_s).map{|fn| NameMapping.parse(platform, fn)}
+  end
+
   private
 
     def server_path(args)
@@ -70,4 +74,5 @@ class FileAgent
     def assert_present_keys(ha, *keys)
       keys.each{|k| ha.fetch(k){ raise "No #{k} passed." }}
     end
+
 end

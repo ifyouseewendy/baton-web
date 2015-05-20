@@ -15,7 +15,7 @@ class FileAgentTest < ActiveSupport::TestCase
     to    = File.join( local_test_dir, "download" )
     file  = 'a.txt'
 
-    ::SftpProxy.expects(:download).with(:file, File.join(from,file), to)
+    ::SftpProxy.expects(:download_file).with( File.join(from,file), to)
 
     fa = ::FileAgent.new(:wendi)
     fa.download(
@@ -24,7 +24,7 @@ class FileAgentTest < ActiveSupport::TestCase
       date:       'test_dir',
       direction:  'download',
       file:       file
-     )
+    )
 
     ::SftpProxy.expects(:download).with(:dir, from, to)
 
@@ -34,7 +34,22 @@ class FileAgentTest < ActiveSupport::TestCase
       project_id: 'test_dir',
       date:       'test_dir',
       direction:  'download',
-     )
+    )
+  end
+
+  def test_download_names_mapping_default
+    file  = 'a.txt'
+
+    fa = ::FileAgent.new(:wendi)
+    files = fa.download(
+      :file,
+      project_id: 'test_dir',
+      date:       'test_dir',
+      direction:  'download',
+      file:       file
+    )
+
+    assert_equal [file], fa.name_mapping(files)
   end
 
   private
