@@ -25,7 +25,7 @@ class Step
   def run(args)
     begin
       job = "#{project.recipe.capitalize}Job::Step#{job_id}".constantize.new
-      data = job.run(args)
+      data = job.run args.merge({project_id: project.id.to_s})
 
       self.update_attribute(:result, data)
       self.done! if data[:status] == :succeed

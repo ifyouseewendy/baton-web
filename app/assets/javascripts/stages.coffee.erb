@@ -16,16 +16,18 @@ $(document).on 'ready', ->
     console.log(task_id)
     console.log(step_id)
 
+    step_list = $(this).closest('li')
     $.ajax
       url: "/projects/"+project_id+"/stages/"+stage_id+"/tasks/"+task_id+"/steps/"+step_id+"/run"
       data:
-        stub: "succeed"
+        date: step_list.find('.param-date').val()
+        direction: step_list.find('.param-direction').val()
       type: 'POST'
       error: (jqXHR, textStatus, errorThrown) ->
         $('body').append "AJAX Error: #{textStatus}"
       success: (data, textStatus, jqXHR) ->
         current_item = $('.baton-step-list a[data-step-id='+step_id+']')
-        current_item.closest('li').find('.step-result').show().find('.panel-heading').html( data['html'] )
+        current_item.closest('li').find('.step-result').show().find('.panel-body').html( data['html'] )
         if data['status'] == 'succeed'
           current_item.find('i').removeClass('fa-spinner fa-pulse').addClass('fa-check')
         else

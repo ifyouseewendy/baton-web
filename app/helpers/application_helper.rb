@@ -25,7 +25,7 @@ module ApplicationHelper
       else
       end
     else
-      ret[:html] = content_tag(:p, result[:message])
+      ret[:html] = content_tag(:p, result[:message], class: 'error-message')
     end
 
     ret

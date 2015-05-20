@@ -2,11 +2,7 @@ class StepsController < ApplicationController
   before_action :set_step, only: [:run]
 
   def run
-    args = stage_params.merge({
-      direction: :upload,
-      date: '20150428'
-    })
-    @step.run(args)
+    @step.run(stage_params)
 
     render json: ApplicationController.helpers.html_format(@step.result)
   end
@@ -18,7 +14,7 @@ class StepsController < ApplicationController
     end
 
     def stage_params
-      params.permit(:project_id, :stage_id, :task_id, :id, :stub)
+      params.permit(:id, :direction, :date)
     end
 
 end

@@ -13,7 +13,7 @@ class FileAgent
   #
   # type - Symbol used to identify :file or :dir
   # args - The Hash options used to identify server and local path.
-  #        :date - Server path param, format: '20150501'
+  #        :date - Server path param, format: '2015-05-01'
   #        :direction  - Used to identify :download or :upload
   #        :project_id - Local path param
   #        :file - File name. Optional when download a dir.
@@ -24,7 +24,7 @@ class FileAgent
   #   fa.download(
   #     :file,
   #     project_id: 'project_id',
-  #     date:       '20150501',
+  #     date:       '2015-05-01',
   #     direction:  'download',
   #     file:       'a.txt'
   #    )
@@ -34,7 +34,7 @@ class FileAgent
   #   fa.download(
   #     :dir,
   #     project_id: 'project_id',
-  #     date:       '20150501',
+  #     date:       '2015-05-01',
   #     direction:  'download'
   #    )
   #   # from server-side  "/home/jingdong/download/20150501"
@@ -61,7 +61,7 @@ class FileAgent
       assert_present_keys(args, :date, :direction)
 
       direction, file = args.values_at(:direction, :file)
-      date = args.fetch(:date, Date.today.to_s.gsub('-', '') )
+      date = args.fetch(:date, Date.today.to_s).gsub('-', '')
 
       "/home/#{platform}/#{direction}/#{date}/#{file}"
     end

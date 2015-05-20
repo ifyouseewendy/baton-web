@@ -4,12 +4,22 @@
   }
 
   .error-message {
+    margin-bottom: 0;
     position: relative;
-    right: 10px;
-    color: red
+    left:8px;
+    color: #a94442;
   }
 
   .step-result {
     margin-top: 10px
+  }
+
+  .step-param {
+    position: relative;
+    right: 10px;
+    bottom: 2px;
+  }
+  .param-date {
+    line-height: 8px;
   }
 }
