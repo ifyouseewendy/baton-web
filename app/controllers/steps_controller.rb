@@ -8,7 +8,7 @@ class StepsController < ApplicationController
     })
     @step.run(args)
 
-    render json: html_format(@step.result)
+    render json: ApplicationController.helpers.html_format(@step.result)
   end
 
   private
