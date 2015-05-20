@@ -13,7 +13,7 @@ class SftpProxy
         sftp.download! File.join(from,file), File.join(to,file)
       end
 
-      File.join(to,file)
+      Pathname.new File.join(to,file)
     end
 
     # Download from/a, from/b -> to/a, to/b. No nested dir support.
@@ -24,7 +24,7 @@ class SftpProxy
         sftp.dir.foreach(from) do |file|
           next if file.name =~ /^\./
           sftp.download! File.join(from,file.name), File.join(to,file.name)
-          files << File.join(to,file.name)
+          files << Pathname(File.join(to,file.name))
         end
       end
 

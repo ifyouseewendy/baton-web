@@ -22,11 +22,14 @@ class SftpProxyTest < ActiveSupport::TestCase
     to    = File.join( local_test_dir, "download" )
     file = 'a.txt'
 
-    refute Pathname.new(File.join(to, file)).exist?
+    target_file = Pathname.new(File.join(to, file))
 
-    SftpProxy.download(file, from, to)
+    refute target_file.exist?
 
-    assert Pathname.new(File.join(to, file)).exist?
+    file = SftpProxy.download(file, from, to)
+
+    assert target_file.exist?
+    assert_equal target_file, file
   end
 
   def test_download_dir
@@ -37,7 +40,7 @@ class SftpProxyTest < ActiveSupport::TestCase
 
     files = SftpProxy.download_dir(from, to)
       # ["/Users/wendi/Workspace/kaitong/baton-web/public/resources/test_dir/download/a.txt"]
-    files = files.map{|fn| File.split(fn) }.map{|fn| fn[1]}
+    files = files.map{|pn| pn.split.last}.map(&:to_s)
       # ["a.txt"]
 
     assert_equal files, files_in(to).sort
