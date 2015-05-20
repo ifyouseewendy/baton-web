@@ -4,7 +4,7 @@ class FileAgent
     class << self
       def parse(platform, fn)
         "::FileAgent::#{platform.capitalize}NameMapping".constantize
-          .parse(fn.force_encoding(Encoding::UTF_8) ) rescue fn
+          .parse(fn) rescue fn
       end
     end
   end
