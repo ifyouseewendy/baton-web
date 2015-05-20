@@ -18,20 +18,22 @@ class FileAgentTest < ActiveSupport::TestCase
     ::SftpProxy.expects(:download).with(:file, File.join(from,file), to)
 
     fa = ::FileAgent.new(:wendi)
-    fa.download(:file,\
+    fa.download(
+      :file,
       project_id: 'test_dir',
-      date: 'test_dir',
-      dir: 'download',
-      file: file
+      date:       'test_dir',
+      direction:  'download',
+      file:       file
      )
 
     ::SftpProxy.expects(:download).with(:dir, from, to)
 
     fa = ::FileAgent.new(:wendi)
-    fa.download(:dir,\
+    fa.download(
+      :dir,
       project_id: 'test_dir',
-      date: 'test_dir',
-      dir: 'download',
+      date:       'test_dir',
+      direction:  'download',
      )
   end
 
