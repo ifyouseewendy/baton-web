@@ -7,16 +7,16 @@ module JingdongJob
 
       names, links = fa.names, fa.links
 
-      if fa.files.count == 3
+      if fa.files.count == 0
+        {
+          status: 'failed',
+          message: "未检查到文件"
+        }
+      else
         {
           status: :succeed,
           type: :file_list,
           stat: names.zip(links)
-        }
-      else
-        {
-          status: 'failed',
-          message: "No files"
         }
       end
     end

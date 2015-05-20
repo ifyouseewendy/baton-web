@@ -1,8 +1,15 @@
-.error-message {
-  position: relative;
-  right: 10px;
-  color: red
-}
-.step-result {
-  margin-top: 10px
+.baton-step-list{
+  .fa-check {
+    color: green
+  }
+
+  .error-message {
+    position: relative;
+    right: 10px;
+    color: red
+  }
+
+  .step-result {
+    margin-top: 10px
+  }
 }

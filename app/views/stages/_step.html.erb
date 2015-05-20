@@ -1,25 +1,18 @@
 <% content ||= nil %>
 
 <li class="list-group-item baton-step-list">
-  <% unless done %>
-    <a href="#" class="pull-right step-run" data-step-id="<%= step_id %>"><i class="fa fa-play"></i></a>
-    <p class='pull-right error-message'></p>
-    <span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i> <%= number %></span>
-    <div class="clear">
-      <%= content || yield %>
-    </div>
-  <% else %>
-    <a href="#" class="pull-right" data-step-id="<%= step_id %>"><i class="fa fa-check"></i></a>
-    <p class='pull-right error-message'></p>
-    <span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i> <%= number %></span>
-    <div class="clear">
-      <%= content || yield %>
-    </div>
-  <% end %>
+  <a href="#" class="pull-right <%= done ? '' : 'step-run' %>" data-step-id="<%= step_id %>"><i class="fa <%= done ? 'fa-check' : 'fa-play' %>"></i></a>
+  <p class='pull-right error-message'></p>
+  <span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i> <%= number %></span>
+  <div class="clear">
+    <%= content || yield %>
+  </div>
 
   <div class="panel task-panel step-result" style="<%= done ? '' : 'display:none' %>">
     <div class="panel-heading">
-
+      <% if done %>
+        <%= result[:html] %>
+      <% end %>
     </div>
   </div>
 </li>
