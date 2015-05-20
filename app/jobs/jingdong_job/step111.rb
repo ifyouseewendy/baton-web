@@ -16,6 +16,7 @@ module JingdongJob
         {
           status: :succeed,
           type: :file_list,
+          date: args[:date],
           stat: names.zip(links)
         }
       end

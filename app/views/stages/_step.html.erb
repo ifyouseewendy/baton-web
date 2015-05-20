@@ -4,7 +4,7 @@
   <a href="#" class="pull-right step-run" data-step-id="<%= step_id %>"><i class="fa <%= done ? 'fa-repeat' : 'fa-play' %>"></i></a>
 
   <%= hidden_field_tag 'param_direction', direction, class: 'param-direction'  %>
-  <%= tag(:input, type: 'date', class: 'param-date pull-right step-param', value: Date.today.to_s) %>
+  <%= tag(:input, type: 'date', class: 'param-date pull-right step-param', value: date) %>
 
   <span class="pull-left media-xs step-status"><i class="fa <%= done ? 'fa-check' : 'fa-arrow-right' %> text-muted fa-sm"></i> <%= number %></span>
   <div class="clear">

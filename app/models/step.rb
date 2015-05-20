@@ -33,4 +33,10 @@ class Step
       self.update_attribute(:result, {status: :failed, message: e.message} )
     end
   end
+
+  def file_list_date
+    return Date.today.to_s if result.blank?
+
+    result[:date]
+  end
 end
