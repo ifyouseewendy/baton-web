@@ -2,10 +2,11 @@
 #   + params handling
 #   + naming
 class FileAgent
-  attr_reader :platform
+  attr_accessor :platform, :files
 
   def initialize(platform)
     @platform = platform
+    @files    = []
   end
 
   # Public: Download file or dir through SftpProxy
@@ -43,11 +44,15 @@ class FileAgent
   def download(type, args)
     from, to = server_path(args), local_path(args)
 
-    ::SftpProxy.download(type, from, to)
+    self.files = ::SftpProxy.download(type, from, to)
   end
 
-  def name_mapping(files)
+  def names
     files.map(&:basename).map(&:to_s).map{|fn| NameMapping.parse(platform, fn)}
+  end
+
+  def links
+    files.map(&:basename).map(&:to_s).map{|fn| fn.gsub(Rails.root.to_s, '')}
   end
 
   private
@@ -65,7 +70,7 @@ class FileAgent
       assert_present_keys(args, :direction, :project_id)
 
       direction, project_id = args.values_at(:direction, :project_id)
-      to_dir = Pathname.new File.join(Rails.root, "public", "resources", project_id, direction)
+      to_dir = Pathname.new File.join(Rails.root, "public", "resources", project_id, direction.to_s)
       to_dir.mkpath
 
       to_dir.to_s
