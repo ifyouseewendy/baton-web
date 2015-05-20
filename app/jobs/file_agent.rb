@@ -52,7 +52,7 @@ class FileAgent
   end
 
   def links
-    files.map(&:basename).map(&:to_s).map{|fn| fn.gsub(Rails.root.to_s, '')}
+    files.map(&:to_s).map{|fn| fn.gsub( File.join(Rails.root.to_s,'public'), '')}
   end
 
   private
