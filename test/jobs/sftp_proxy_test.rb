@@ -2,12 +2,12 @@ require 'test_helper'
 
 class SftpProxyTest < ActiveSupport::TestCase
   def setup
-    FileUtils.mkdir_p(local_test_dir)
-    %w(download upload).each{|dir| FileUtils.mkdir_p File.join(local_test_dir, dir) }
+    local_test_dir.mkpath
+    %w(download upload).each{|dir| local_test_dir.join(dir).mkpath}
   end
 
   def teardown
-    FileUtils.rm_rf(local_test_dir)
+    local_test_dir.rmtree
   end
 
   def test_start
@@ -66,6 +66,6 @@ class SftpProxyTest < ActiveSupport::TestCase
     end
 
     def local_test_dir
-      File.join( Rails.root, "public", "resources", "test_dir")
+      @_local_test_dir ||= Pathname.new File.join( Rails.root, "public", "resources", "test_dir")
     end
 end
