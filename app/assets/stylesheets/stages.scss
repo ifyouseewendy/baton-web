@@ -22,4 +22,15 @@
   .param-date {
     line-height: 8px;
   }
+
+  .step-status {
+    .fa-check: {
+      color: green
+    }
+
+    .failed {
+      color: #a94442
+    }
+  }
+
 }

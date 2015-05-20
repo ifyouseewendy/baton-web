@@ -28,7 +28,9 @@ $(document).on 'ready', ->
       success: (data, textStatus, jqXHR) ->
         current_item = $('.baton-step-list a[data-step-id='+step_id+']')
         current_item.closest('li').find('.step-result').show().find('.panel-body').html( data['html'] )
+        current_item.find('i').removeClass('fa-spinner fa-pulse').addClass('fa-repeat')
+
         if data['status'] == 'succeed'
-          current_item.find('i').removeClass('fa-spinner fa-pulse').addClass('fa-check')
+          current_item.closest('li').find('.step-status i').removeClass('fa-arrow-right').removeClass('failed').addClass('fa-check')
         else
-          current_item.find('i').removeClass('fa-spinner fa-pulse').addClass('fa-play')
+          current_item.closest('li').find('.step-status i').addClass('failed')
