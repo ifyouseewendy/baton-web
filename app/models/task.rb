@@ -21,7 +21,7 @@ class Task
   end
 
   def files
-    steps.map(&:file).reject{|f| f.url.nil?}
+    steps.flat_map(&:files)
   end
 
 end

@@ -15,7 +15,11 @@ class Step
   field :result,      :type => Hash
 
   # Files
-  mount_uploader :file, FileUploader
+  #
+  # st.files << File.open('a.txt')  # => No support on << operation
+  # st.files += File.open('a.txt')  # => Right
+  # st.save!
+  mount_uploaders :files, FileUploader
 
   def stage
     task.stage
