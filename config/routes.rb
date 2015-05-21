@@ -6,13 +6,17 @@ Rails.application.routes.draw do
       resources :tasks, only: [] do
         resources :steps, only: [] do
           member do
-            post 'run'
-            get :file
+            post  :run
+            get   :send_file
           end
         end
       end
     end
+
+    member do
+      get :send_file
+    end
   end
 
-  get '/resources/uploads/step/file/:id/:filename' => 'steps#file'
+  get '/resources/:recipe/:id/:direction/:filename' => 'projects#send_file'
 end

@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :update, :destroy]
+  before_action :set_project, only: [:show, :update, :destroy, :send_file]
 
   # GET /projects
   def index
@@ -66,6 +66,21 @@ class ProjectsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def send_file
+    request_filename = [params.require(:filename), params.require(:format)].join('.')
+    idx = @project.filenames.index(request_filename)
+
+    render text: "No file<#{request_filename}> found." and return if idx.nil?
+
+    file = @project.files[idx]
+    content = file.read
+    if stale?(etag: content, last_modified: @project.updated_at.utc, public: true)
+      send_data content, type: file.content_type, disposition: "inline"
+      expires_in 0, public: true
+    end
+  end
+
 
   private
     def set_project
