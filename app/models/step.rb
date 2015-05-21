@@ -25,9 +25,13 @@ class Step
     stage.project
   end
 
+  def recipe
+    project.recipe
+  end
+
   def run(args)
     begin
-      job = "#{project.recipe.capitalize}Job::Step#{job_id}".constantize.new
+      job = "#{recipe.capitalize}Job::Step#{job_id}".constantize.new
       data = job.run args.merge({project_id: project.id.to_s})
 
       self.update_attribute(:result, data)

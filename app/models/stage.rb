@@ -28,4 +28,8 @@ class Stage
     "#{(tasks.index(current_task) + 1)} / #{tasks.to_a.count}"
   end
 
+  def files
+    tasks.flat_map(&:files)
+  end
+
 end

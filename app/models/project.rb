@@ -57,4 +57,13 @@ class Project
   def category_index
     CATEGORY.index(category) + 1
   end
+
+  def files
+    stages.flat_map(&:files).reject{|f| f.url.nil?}
+  end
+
+  def filenames
+    files.map(&:url).map{|fn| fn.split('/').last}
+  end
+
 end

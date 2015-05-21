@@ -20,4 +20,8 @@ class Task
     steps.detect(&:undone?)
   end
 
+  def files
+    steps.map(&:file).reject{|f| f.url.nil?}
+  end
+
 end
