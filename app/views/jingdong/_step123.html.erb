@@ -1,2 +1,15 @@
-<%= render partial: 'jingdong/step', locals: { number: step_idx+1, content: step.name, step_id: "#{step.id}", done: step.done?, result: html_format(step.result), direction: 'upload', date: step.file_list_date } %>
+<%= render\
+  partial: 'jingdong/step',
+  locals: {
+    number:     step_idx+1,
+    content:    step.name,
+    step_id:    "#{step.id}",
+    done:       step.done?,
+    result:     html_format(step.result),
+    query: {
+      date:       step.file_list_date,
+      direction:  'upload'
+    }
+  }
+%>
 
