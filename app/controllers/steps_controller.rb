@@ -1,10 +1,18 @@
 class StepsController < ApplicationController
-  before_action :set_step, only: [:run]
+  before_action :set_step, only: [:run, :file]
 
   def run
     @step.run(stage_params)
 
     render json: ApplicationController.helpers.html_format(@step.result)
+  end
+
+  def file
+    content = @step.file.read
+    if stale?(etag: content, last_modified: @step.updated_at.utc, public: true)
+      send_data content, type: @step.file.content_type, disposition: "inline"
+      expires_in 0, public: true
+    end
   end
 
   private

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         resources :steps, only: [] do
           member do
             post 'run'
+            get :file
           end
         end
       end
