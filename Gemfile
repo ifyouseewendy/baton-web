@@ -56,6 +56,10 @@ gem 'charlock_holmes'
 # SFTP
 gem 'net-sftp'
 
+# Uploading
+gem 'carrierwave'
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+
 group :development do
   gem 'quiet_assets'
 end
