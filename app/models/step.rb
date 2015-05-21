@@ -14,6 +14,9 @@ class Step
   field :job_id,      :type => String
   field :result,      :type => Hash
 
+  # Files
+  mount_uploader :file, FileUploader
+
   def stage
     task.stage
   end
@@ -39,4 +42,5 @@ class Step
 
     result[:date]
   end
+
 end
