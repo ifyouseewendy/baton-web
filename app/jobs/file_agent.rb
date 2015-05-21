@@ -29,7 +29,7 @@ class FileAgent
   #     file:       'a.txt'
   #    )
   #   # from server-side  "/home/jingdong/download/20150501/a.txt"
-  #   # to local-side     "#{Rails.root}/public/resources/project_id/download/a.txt"
+  #   # to local-side     "#{Rails.root}/public/resources/jingdong/project_id/download/a.txt"
   #
   #   fa.download(
   #     :dir,
@@ -38,7 +38,7 @@ class FileAgent
   #     direction:  'download'
   #    )
   #   # from server-side  "/home/jingdong/download/20150501"
-  #   # to local-side     "#{Rails.root}/public/resources/project_id/download"
+  #   # to local-side     "#{Rails.root}/public/resources/jingdong/project_id/download"
   #
   # Returns an Array of files.
   def download(type, args)
@@ -70,7 +70,7 @@ class FileAgent
       assert_present_keys(args, :direction, :project_id)
 
       direction, project_id = args.values_at(:direction, :project_id)
-      to_dir = Pathname.new File.join(Rails.root, "public", "resources", project_id, direction.to_s)
+      to_dir = Pathname.new File.join(Rails.root, "public", "resources", platform.to_s, project_id, direction.to_s)
       to_dir.mkpath
 
       to_dir.to_s

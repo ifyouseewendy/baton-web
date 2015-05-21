@@ -2,6 +2,7 @@ require 'test_helper'
 
 class FileAgentTest < ActiveSupport::TestCase
   def setup
+    @platform = :wendi
     local_test_dir.mkpath
     %w(download upload).each{|dir| local_test_dir.join(dir).mkpath}
   end
@@ -17,7 +18,7 @@ class FileAgentTest < ActiveSupport::TestCase
 
     ::SftpProxy.expects(:download_file).with( File.join(from,file), to)
 
-    fa = ::FileAgent.new(:wendi)
+    fa = ::FileAgent.new(@platform)
     fa.download(
       :file,
       project_id: 'test_dir',
@@ -28,7 +29,7 @@ class FileAgentTest < ActiveSupport::TestCase
 
     ::SftpProxy.expects(:download).with(:dir, from, to)
 
-    fa = ::FileAgent.new(:wendi)
+    fa = ::FileAgent.new(@platform)
     fa.download(
       :dir,
       project_id: 'test_dir',
@@ -40,8 +41,8 @@ class FileAgentTest < ActiveSupport::TestCase
   def test_download_names_mapping_default
     file  = 'a.txt'
 
-    fa = ::FileAgent.new(:wendi)
-    files = fa.download(
+    fa = ::FileAgent.new(@platform)
+    fa.download(
       :file,
       project_id: 'test_dir',
       date:       'test_dir',
@@ -49,13 +50,13 @@ class FileAgentTest < ActiveSupport::TestCase
       file:       file
     )
 
-    assert_equal [file], fa.name_mapping(files)
+    assert_equal [file], fa.names
   end
 
   private
 
     def local_test_dir
-      @_local_test_dir ||= Pathname.new File.join( Rails.root, "public", "resources", "test_dir")
+      @_local_test_dir ||= Pathname.new File.join( Rails.root, "public", "resources", @platform.to_s, "test_dir")
     end
 end
 
