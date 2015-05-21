@@ -13,4 +13,6 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  get '/resources/uploads/step/file/:id/:filename' => 'steps#file'
 end
