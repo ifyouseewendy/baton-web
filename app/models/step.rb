@@ -42,7 +42,7 @@ class Step
   def file_list_date
     return Date.today.to_s if result.blank?
 
-    result[:date]
+    result[:query][:date]
   end
 
   def add_file(filename)
