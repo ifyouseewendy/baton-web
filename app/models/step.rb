@@ -5,6 +5,7 @@ class Step
 
   # References
   belongs_to :task
+  has_many :files, foreign_key: 'step_id', class_name: 'AttachFile'
 
   # Fields
   enum :status, [:undone, :done] # :undone by default
@@ -13,13 +14,6 @@ class Step
   field :description, :type => String
   field :job_id,      :type => String
   field :result,      :type => Hash
-
-  # Files
-  #
-  # st.files << File.open('a.txt')  # => No support on << operation
-  # st.files += File.open('a.txt')  # => Right
-  # st.save!
-  mount_uploaders :files, FileUploader
 
   def stage
     task.stage
