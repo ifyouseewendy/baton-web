@@ -5,7 +5,7 @@ class Step
 
   # References
   belongs_to :task
-  has_many :files, foreign_key: 'step_id', class_name: 'AttachFile'
+  has_many :files, foreign_key: 'step_id', class_name: 'AttachFile', dependent: :destroy
 
   # Fields
   enum :status, [:undone, :done] # :undone by default
@@ -30,7 +30,7 @@ class Step
   def run(args)
     begin
       job = "#{recipe.capitalize}Job::Step#{job_id}".constantize.new
-      data = job.run args.merge({project_id: project.id.to_s})
+      data = job.run self, args.merge({project_id: project.id.to_s})
 
       self.update_attribute(:result, data)
       self.done! if data[:status] == :succeed
@@ -43,6 +43,10 @@ class Step
     return Date.today.to_s if result.blank?
 
     result[:date]
+  end
+
+  def add_file(filename)
+    self.files << AttachFile.create(step: self, file: File.open(filename))
   end
 
 end

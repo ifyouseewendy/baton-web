@@ -1,11 +1,9 @@
 module JingdongJob
   class Step111
     # 检查广交所是否上传文件至 FTP
-    def run(args)
+    def run(step, args)
       fa = FileAgent.new(:guangjiaosuo)
       fa.download(:dir, args)
-
-      names, links = fa.names, fa.links
 
       if fa.files.count == 0
         {
@@ -13,10 +11,15 @@ module JingdongJob
           message: "未检查到文件"
         }
       else
+        fa.files.each {|pa| step.add_file(pa) }
+
+        names, links = fa.names, fa.links
         {
           status: :succeed,
           type: :file_list,
-          date: args[:date],
+          query: {
+            date: args[:date]
+          },
           stat: names.zip(links)
         }
       end
