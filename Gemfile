@@ -57,7 +57,7 @@ gem 'charlock_holmes'
 gem 'net-sftp'
 
 # Uploading
-gem 'carrierwave', github:'carrierwaveuploader/carrierwave' # Enable multiple file uploads
+gem 'carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 
 group :development do
