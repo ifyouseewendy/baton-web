@@ -12,6 +12,8 @@
  *
  *= require bootstrap/bootstrap.min
  *= require app
+ *= require jquery.fileupload
+ *= require jquery.fileupload-ui
  *= require_tree .
  *= require_self
  */

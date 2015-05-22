@@ -33,5 +33,7 @@ module Baton
       g.test_framework      :test_unit, fixture_replacement: :fabrication
       g.fixture_replacement :fabrication, dir: "test/fabricators"
     end
+
+    Rails.application.config.middleware.use JQuery::FileUpload::Rails::Middleware
   end
 end
