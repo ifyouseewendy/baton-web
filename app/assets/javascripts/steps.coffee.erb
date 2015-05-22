@@ -20,8 +20,7 @@ $(document).on 'ready', ->
     $.ajax
       url: "/projects/"+project_id+"/stages/"+stage_id+"/tasks/"+task_id+"/steps/"+step_id+"/run"
       data:
-        date: step_list.find('.param-date').val()
-        direction: step_list.find('.param-direction').val()
+        file: step_list.find('.param-file').files[0]
       type: 'POST'
       error: (jqXHR, textStatus, errorThrown) ->
         $('body').append "AJAX Error: #{textStatus}"
@@ -34,3 +33,19 @@ $(document).on 'ready', ->
           current_item.closest('li').find('.step-status i').removeClass('fa-arrow-right').removeClass('failed').addClass('fa-check')
         else
           current_item.closest('li').find('.step-status i').addClass('failed')
+
+  step121_step_id = $('.step121-run').attr('data-step-id')
+  step121_task_id = $('.step121-run').closest('.task-panel').attr('data-task-id')
+  file_upload_url = "/projects/"+get_project_id()+"/stages/"+get_stage_id()+"/tasks/"+step121_task_id+"/steps/"+step121_step_id+"/run"
+
+  console.log(file_upload_url)
+
+  $('#fileupload121').fileupload
+    url: file_upload_url
+    dataType: 'json'
+    done: (e, data) ->
+      current_item = $('.baton-step-list a[data-step-id='+step121_step_id+']')
+      current_item.closest('li').find('.step-result').show().find('.panel-body').html( data['html'] )
+      current_item.find('i').removeClass('fa-spinner fa-pulse').addClass('fa-repeat')
+
+
