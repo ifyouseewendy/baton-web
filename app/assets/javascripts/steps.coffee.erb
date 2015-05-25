@@ -20,7 +20,8 @@ $(document).on 'ready', ->
     $.ajax
       url: "/projects/"+project_id+"/stages/"+stage_id+"/tasks/"+task_id+"/steps/"+step_id+"/run"
       data:
-        file: step_list.find('.param-file').files[0]
+        date: step_list.find('.param-date').val()
+        direction: step_list.find('.param-direction').val()
       type: 'POST'
       error: (jqXHR, textStatus, errorThrown) ->
         $('body').append "AJAX Error: #{textStatus}"

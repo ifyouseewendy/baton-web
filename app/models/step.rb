@@ -42,7 +42,7 @@ class Step
   end
 
   def file_list_date
-    return Date.today.to_s if result.blank?
+    return Date.today.to_s if result.blank? or result[:status].to_sym == :failed
 
     result[:query][:date]
   end
