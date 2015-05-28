@@ -28,16 +28,17 @@ class Step
   end
 
   def run(args)
-    begin
-      job = "#{recipe.capitalize}Job::Step#{job_id}".constantize.new
-      data = job.run self, args.merge({
-        project_id: project.id.to_s,
-      })
+    job = "#{recipe.capitalize}Job::Step#{job_id}".constantize.new
+    data = job.run self, args.merge({
+      project_id: project.id.to_s,
+    })
 
-      self.update_attribute(:result, data)
-      self.done! if data[:status] == :succeed
-    rescue => e
-      self.update_attribute(:result, {status: :failed, message: e.message} )
+    self.update_attribute(:result, data)
+
+    if data[:status] == :succeed
+      self.done!
+    else
+      self.undone!
     end
   end
 
