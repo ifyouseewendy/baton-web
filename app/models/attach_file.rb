@@ -11,7 +11,8 @@ class AttachFile
   mount_uploader :file, FileUploader
 
   def store_dir
-    "resources/#{platform}/#{project.id}/upload"
+    # Use download directory to be consistant with file structure on FTP
+    "resources/#{platform}/#{project.id}/download"
   end
 
   def recipe

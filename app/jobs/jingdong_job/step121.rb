@@ -7,9 +7,8 @@ module JingdongJob
         original_filename = args[:file].original_filename
         target_path       = Pathname(source.dirname).join(original_filename)
         FileUtils.mv( source, target_path)
-        raise 'hello world'
 
-        step.add_file(target_path, override: true)
+        step.add_file(target_path, step.recipe, override: true)
 
         {
           status: :succeed,
