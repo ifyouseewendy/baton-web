@@ -73,7 +73,7 @@ class ProjectsController < ApplicationController
 
     render text: "No file<#{request_filename}> found." and return if idx.nil?
 
-    file = @project.files[idx]
+    file = @project.files[idx].file
     content = file.read
     if stale?(etag: content, last_modified: @project.updated_at.utc, public: true)
       send_data content, type: file.content_type, disposition: "inline"
