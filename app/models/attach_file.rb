@@ -5,6 +5,9 @@ class AttachFile
   # References
   belongs_to :step
 
+  # Hooks
+  before_destroy ->{ self.remove_file! }
+
   # Fields
   field :platform, :type => Symbol
 
@@ -22,4 +25,5 @@ class AttachFile
   def project
     step.try(:project) || raise("You need to set Step relation first")
   end
+
 end
