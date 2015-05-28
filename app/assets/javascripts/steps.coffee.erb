@@ -33,7 +33,7 @@ $(document).on 'ready', ->
         if data['status'] == 'succeed'
           current_item.closest('li').find('.step-status i').removeClass('fa-arrow-right').removeClass('failed').addClass('fa-check')
         else
-          current_item.closest('li').find('.step-status i').addClass('failed')
+          current_item.closest('li').find('.step-status i').removeClass('fa-check').addClass('fa-arrow-right').addClass('failed')
 
   step121_step_id = $('.step121-run').attr('data-step-id')
   step121_task_id = $('.step121-run').closest('.task-panel').attr('data-task-id')
