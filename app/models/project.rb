@@ -59,11 +59,11 @@ class Project
   end
 
   def files
-    stages.flat_map(&:files).reject{|f| f.url.nil?}
+    stages.flat_map(&:files)
   end
 
   def filenames
-    files.map(&:url).map{|fn| fn.split('/').last}
+    files.map(&:file_identifier)
   end
 
 end
