@@ -35,5 +35,7 @@ module Baton
     end
 
     Rails.application.config.middleware.use JQuery::FileUpload::Rails::Middleware
+
+    CarrierWave::SanitizedFile.sanitize_regexp = /[^[:word:]\.\-\+]/
   end
 end
