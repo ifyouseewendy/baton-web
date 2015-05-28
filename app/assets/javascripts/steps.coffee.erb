@@ -44,9 +44,23 @@ $(document).on 'ready', ->
   $('#fileupload121').fileupload
     url: file_upload_url
     dataType: 'json'
+    add: (e, data) ->
+      data.context = $('.step121-run').click ->
+        icon = $(this).find('i')
+        icon.removeClass('fa-play').addClass('fa-spinner fa-pulse')
+        data.submit()
     done: (e, data) ->
-      current_item = $('.baton-step-list a[data-step-id='+step121_step_id+']')
-      current_item.closest('li').find('.step-result').show().find('.panel-body').html( data['html'] )
-      current_item.find('i').removeClass('fa-spinner fa-pulse').addClass('fa-repeat')
+      data = data.result
+
+      step_button = $('.step121-run i')
+      step_list   = $('.step121-run').closest('li')
+
+      step_button.removeClass('fa-spinner fa-pulse').addClass('fa-repeat')
+      step_list.find('.step-result').show().find('.panel-body').html( data['html'] )
+
+      if data['status'] == 'succeed'
+        step_list.find('.step-status i').removeClass('fa-arrow-right').removeClass('failed').addClass('fa-check')
+      else
+        step_list.find('.step-status i').removeClass('fa-check').addClass('fa-arrow-right').addClass('failed')
 
 
