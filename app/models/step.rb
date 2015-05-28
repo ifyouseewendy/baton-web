@@ -48,8 +48,8 @@ class Step
     result[:query][:date]
   end
 
-  def add_file(filename, options = {})
-    af = AttachFile.create(step: self, file: File.open(filename))
+  def add_file(filename, platform, options = {})
+    af = AttachFile.create(step: self, file: File.open(filename), platform: platform)
     unless options[:override]
       self.files << af
     else

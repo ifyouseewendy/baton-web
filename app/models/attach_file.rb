@@ -5,10 +5,13 @@ class AttachFile
   # References
   belongs_to :step
 
+  # Fields
+  field :platform, :type => Symbol
+
   mount_uploader :file, FileUploader
 
   def store_dir
-    "resources/#{recipe}/#{project.id}/upload"
+    "resources/#{platform}/#{project.id}/upload"
   end
 
   def recipe
