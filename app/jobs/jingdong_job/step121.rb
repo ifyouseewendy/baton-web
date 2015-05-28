@@ -3,10 +3,10 @@ module JingdongJob
     # 上传《产品发布文件》
     def run(step, args)
       begin
-        source            = Pathname(args[:file].tempfile)
-        original_filename = args[:file].original_filename
-        target_path       = Pathname(source.dirname).join(original_filename)
-        FileUtils.mv( source, target_path)
+        source      = Pathname(args[:file].tempfile)
+        target_name = ["kaitong_product_apply_#{Date.today.to_s.gsub('-','')}", source.extname].join # Auto correct file, or it should be args[:file].original_filename
+        target_path = Pathname(source.dirname).join(target_name)
+        FileUtils.mv(source, target_path)
 
         step.add_file(target_path, step.recipe, override: true)
 
