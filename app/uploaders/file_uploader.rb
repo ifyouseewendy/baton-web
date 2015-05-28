@@ -42,4 +42,11 @@ class FileUploader < CarrierWave::Uploader::Base
   #   "something.jpg" if original_filename
   # end
 
+  def rename!(new_name)
+    new_path = File.join(File.dirname(file.file), new_name)
+    file.move_to(new_path)
+
+    model.file = File.open(new_path)
+    model.save!
+  end
 end
