@@ -31,6 +31,8 @@ $(document).on 'ready', ->
 
         if data['html']?
           current_item.closest('li').find('.step-result').show().find('.panel-body').html( data['html'] )
+        else
+          current_item.closest('li').find('.step-result').hide()
 
         if data['status'] == 'succeed'
           current_item.closest('li').find('.step-status i').removeClass('fa-arrow-right').removeClass('failed').addClass('fa-check')
