@@ -47,8 +47,21 @@ class Step
     result[:query][:date]
   end
 
-  def add_file(filename)
-    self.files << AttachFile.create(step: self, file: File.open(filename))
+  def add_file(filename, options = {})
+    af = AttachFile.create(step: self, file: File.open(filename))
+    unless options[:override]
+      self.files << af
+    else
+      self.files = Array.wrap(af)
+    end
+  end
+
+  def file_names
+    files.map(&:file_identifier)
+  end
+
+  def file_urls
+    files.map(&:file_url)
   end
 
 end
