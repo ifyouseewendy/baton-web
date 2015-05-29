@@ -22,10 +22,9 @@ $(document).on 'ready', ->
       data:
         date: step_list.find('.param-date').val()
         direction: step_list.find('.param-direction').val()
-        template:
-          start_code: step_list.find('.param-group .start-code').val()
-          count: step_list.find('.param-group .count').val()
-          index: step_list.find('.param-group .index').val()
+        product_start_code: step_list.find('.param-group .start-code').val()
+        product_count: step_list.find('.param-group .count').val()
+        product_index: step_list.find('.param-group .index').val()
       type: 'POST'
       error: (jqXHR, textStatus, errorThrown) ->
         $('body').append "AJAX Error: #{textStatus}"

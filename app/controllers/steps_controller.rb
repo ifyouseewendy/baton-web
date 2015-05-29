@@ -22,7 +22,7 @@ class StepsController < ApplicationController
     end
 
     def stage_params
-      params.permit(:id, :file, :direction, :date, :template)
+      params.permit(:id, :file, :direction, :date, :product_start_code, :product_count, :product_index)
     end
 
 end

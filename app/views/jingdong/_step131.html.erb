@@ -10,21 +10,21 @@
           <%= label_tag 'start_code', '产品代码起始', class: 'col-sm-3 control-label' %>
           <%= content_tag :div, class: 'col-sm-4' do %>
             <%= text_field_tag('start_code', nil, class: 'start-code') %>
-            <%= link_to content_tag(:i, nil, class: 'fa fa-info-circle', data: {toggle: 'tooltip', placement: 'right'}, title: '交易所提供的起始产品代码'), '#', class: 'control-label' %>
+            <%= link_to content_tag(:i, nil, class: 'fa fa-info', data: {toggle: 'tooltip', placement: 'right'}, title: '交易所提供的起始产品代码'), '#', class: 'control-label' %>
           <% end %>
         </div>
         <div class="form-group">
           <%= label_tag 'count', '产品代码数目', class: 'col-sm-3 control-label' %>
           <%= content_tag :div, class: 'col-sm-4' do %>
             <%= text_field_tag('count', nil, class: 'count') %>
-            <%= link_to content_tag(:i, nil, class: 'fa fa-info-circle', data: {toggle: 'tooltip', placement: 'right'}, title: ''), '#', class: 'control-label' %>
+            <%= link_to content_tag(:i, nil, class: 'fa fa-info', data: {toggle: 'tooltip', placement: 'right'}, title: ''), '#', class: 'control-label' %>
           <% end %>
         </div>
         <div class="form-group">
           <%= label_tag 'index', '产品名称编号长度', class: 'col-sm-3 control-label' %>
           <%= content_tag :div, class: 'col-sm-4' do %>
             <%= text_field_tag('index', '2' , class: 'index') %>
-            <%= link_to content_tag(:i, nil, class: 'fa fa-info-circle', data: {toggle: 'tooltip', placement: 'right'}, title: "若该值为2, 生成'京银宝'01, '京银宝'02；若该值为3, 生成'京银宝'001, '京银宝'002"), '#', class: 'control-label' %>
+            <%= link_to content_tag(:i, nil, class: 'fa fa-info', data: {toggle: 'tooltip', placement: 'right'}, title: "若该值为2, 生成'京银宝'01, '京银宝'02；若该值为3, 生成'京银宝'001, '京银宝'002"), '#', class: 'control-label' %>
           <% end %>
         </div>
       </form>
