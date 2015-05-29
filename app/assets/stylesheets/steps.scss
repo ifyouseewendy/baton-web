@@ -37,4 +37,17 @@
     margin-right: 2px;
   }
 
+  .param-group {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #ebeff6;
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .tooltip-inner {
+      width: 400px;
+    }
+  }
 }

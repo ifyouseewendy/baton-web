@@ -1,15 +1,43 @@
-<%= render\
-  partial: 'jingdong/step',
-  locals: {
-    number:     step_idx+1,
-    content:    step.name,
-    step_id:    "#{step.id}",
-    done:       step.done?,
-    result:     html_format(step.result),
-    query: {
-      date:       step.file_list_date,
-      direction:  'upload'
-    }
-  }
-%>
+<li class="list-group-item baton-step-list">
+  <a href="#" class="pull-right step-run" data-step-id="<%= step.id.to_s %>"><i class="fa <%= step.done? ? 'fa-repeat' : 'fa-play' %>"></i></a>
+
+  <span class="pull-left media-xs step-status"><i class="fa <%= step.done? ? 'fa-check' : 'fa-arrow-right' %> text-muted fa-sm"></i> <%= step_idx+1 %></span>
+  <div class="clear">
+    <%= step.name %>
+    <div class='param-group'>
+      <form class="form-horizontal">
+        <div class="form-group">
+          <%= label_tag 'start_code', '产品代码起始', class: 'col-sm-3 control-label' %>
+          <%= content_tag :div, class: 'col-sm-4' do %>
+            <%= text_field_tag('start_code', nil, class: 'start-code') %>
+            <%= link_to content_tag(:i, nil, class: 'fa fa-info-circle', data: {toggle: 'tooltip', placement: 'right'}, title: '交易所提供的起始产品代码'), '#', class: 'control-label' %>
+          <% end %>
+        </div>
+        <div class="form-group">
+          <%= label_tag 'count', '产品代码数目', class: 'col-sm-3 control-label' %>
+          <%= content_tag :div, class: 'col-sm-4' do %>
+            <%= text_field_tag('count', nil, class: 'count') %>
+            <%= link_to content_tag(:i, nil, class: 'fa fa-info-circle', data: {toggle: 'tooltip', placement: 'right'}, title: ''), '#', class: 'control-label' %>
+          <% end %>
+        </div>
+        <div class="form-group">
+          <%= label_tag 'index', '产品名称编号长度', class: 'col-sm-3 control-label' %>
+          <%= content_tag :div, class: 'col-sm-4' do %>
+            <%= text_field_tag('index', '2' , class: 'index') %>
+            <%= link_to content_tag(:i, nil, class: 'fa fa-info-circle', data: {toggle: 'tooltip', placement: 'right'}, title: "若该值为2, 生成'京银宝'01, '京银宝'02；若该值为3, 生成'京银宝'001, '京银宝'002"), '#', class: 'control-label' %>
+          <% end %>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="panel task-panel step-result" style="display:none">
+    <div class="panel-body">
+      <% if step.done? %>
+        <%= html_format(step.result)[:html] %>
+      <% end %>
+    </div>
+  </div>
+</li>
+
 
