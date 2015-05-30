@@ -37,6 +37,7 @@ module JingdongJob
         Dir.chdir(output_dir)
         zip_name = "kaitong_contract_#{date}.zip"
         `7z a #{zip_name} *`
+        Dir.chdir(Rails.root)
 
         step.add_file(output_dir.join(zip_name), step.recipe, override: true)
 
@@ -65,7 +66,7 @@ module JingdongJob
 
       def prefill_zero(num, length)
         res = num.to_s
-        res = ([0]*(length - res.length) + res.to_s.chars).join if num.to_s.length < length
+        res = ([0]*(length.to_i - res.length) + res.to_s.chars).join if num.to_s.length < length.to_i
         return res
       end
 
