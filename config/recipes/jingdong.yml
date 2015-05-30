@@ -32,12 +32,9 @@ stages:
       - name: '发送给京东，等待确认'
         description: ''
         steps:
-          - name: '发送'
+          - name: '发送，并等待确认'
             description: ''
             job_id: "141"
-          - name: '京东确认'
-            description: ''
-            job_id: "142"
       - name: '为广交所提供相关文件'
         description: ''
         steps:
