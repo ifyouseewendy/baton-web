@@ -22,7 +22,18 @@ module ApplicationHelper
             nil,
             false
           )
-      else
+      elsif result[:type] == :message_list
+        ret[:html] = \
+          content_tag(
+            :ul,
+            -> {
+              data.reduce('') do |str, ele|
+                str << content_tag(:li, ele)
+              end
+            }.call,
+            nil,
+            false
+          )
       end
     else
       ret[:html] = content_tag(:p, result[:message], class: 'error-message')
