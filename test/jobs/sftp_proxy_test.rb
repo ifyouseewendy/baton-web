@@ -64,7 +64,7 @@ class SftpProxyTest < ActiveSupport::TestCase
 
     refute SftpProxy.ls(to).include?( Pathname(from).basename.to_s )
 
-    SftpProxy.upload(from, to)
+    SftpProxy.upload(:file, from, to)
     assert SftpProxy.ls(to).include?( Pathname(from).basename.to_s )
 
     FileUtils.rm from

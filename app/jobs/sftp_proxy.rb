@@ -37,14 +37,22 @@ class SftpProxy
       files.sort
     end
 
-    # Expecting from: 'dir/a.txt', to: 'dir'. No nested dir support.
-    def upload(from, to)
+    def upload(type, from, to)
+      self.public_send( "upload_#{type}", from, to )
+    end
+
+    # Expecting from: 'dir/a.txt', to: 'dir'
+    def upload_file(from, to)
       file = Pathname.new(from).basename
       start do |sftp|
         sftp.upload! from.to_s, File.join(to,file)
       end
 
       Pathname.new File.join(to,file)
+    end
+
+    def upload_dir(from, to)
+      raise NotImplementedError
     end
 
     def ls(path)
