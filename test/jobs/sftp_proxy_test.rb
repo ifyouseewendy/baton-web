@@ -27,7 +27,7 @@ class SftpProxyTest < ActiveSupport::TestCase
   end
 
   def test_download_file
-    from  = "/home/wendi/download/test_dir"
+    from  = "/home/wendi/upload/test_dir"
     to    = File.join( local_test_dir, "download" )
     file = 'a.txt'
 
@@ -42,7 +42,7 @@ class SftpProxyTest < ActiveSupport::TestCase
   end
 
   def test_download_dir
-    from  = "/home/wendi/download/test_dir"
+    from  = "/home/wendi/upload/test_dir"
     to    = File.join( local_test_dir, "download" )
 
     assert_empty files_in(to)
@@ -53,6 +53,21 @@ class SftpProxyTest < ActiveSupport::TestCase
       # ["a.txt"]
 
     assert_equal files, files_in(to).sort
+  end
+
+  def test_upload
+    dir  = Rails.root
+    to    = '/home/wendi/download/test_dir'
+
+    from = dir.join('tmp').join("test-upload-#{SecureRandom.hex(4)}")
+    FileUtils.cp dir.join('Gemfile'), from
+
+    refute SftpProxy.ls(to).include?( Pathname(from).basename.to_s )
+
+    SftpProxy.upload(from, to)
+    assert SftpProxy.ls(to).include?( Pathname(from).basename.to_s )
+
+    FileUtils.rm from
   end
 
   private

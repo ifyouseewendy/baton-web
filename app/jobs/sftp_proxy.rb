@@ -36,5 +36,25 @@ class SftpProxy
 
       files.sort
     end
+
+    # Expecting from: 'dir/a.txt', to: 'dir'. No nested dir support.
+    def upload(from, to)
+      file = Pathname.new(from).basename
+      start do |sftp|
+        sftp.upload! from.to_s, File.join(to,file)
+      end
+
+      Pathname.new File.join(to,file)
+    end
+
+    def ls(path)
+      files = []
+
+      start do |sftp|
+        files = sftp.dir.entries(path.to_s).map{|e| e.name }
+      end
+
+      files.reject{|e| %w(. ..).include?(e)}
+    end
   end
 end
