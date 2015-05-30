@@ -12,7 +12,7 @@ class FileAgentTest < ActiveSupport::TestCase
   end
 
   def test_download
-    from  = "/home/wendi/download/test_dir/"
+    from  = "/home/wendi/upload/test_dir/"
     to    = File.join( local_test_dir, "download" )
     file  = 'a.txt'
 
@@ -51,6 +51,24 @@ class FileAgentTest < ActiveSupport::TestCase
     )
 
     assert_equal [file], fa.names
+  end
+
+  def test_upload
+    dir  = Rails.root
+    to    = '/home/wendi/download/test_dir'
+
+    from = dir.join('tmp').join("test-upload-#{SecureRandom.hex(4)}")
+    FileUtils.cp dir.join('Gemfile'), from
+
+    ::SftpProxy.expects(:upload_file).with(from.to_s, to)
+
+    fa = ::FileAgent.new(@platform)
+    fa.upload(
+      :file,
+      date:       'test_dir',
+      platform:   @platform,
+      file:       from.to_s
+    )
   end
 
   private

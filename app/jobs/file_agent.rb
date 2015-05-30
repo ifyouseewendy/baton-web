@@ -42,9 +42,15 @@ class FileAgent
   #
   # Returns an Array of files.
   def download(type, args)
-    from, to = server_path(args), local_path(args)
+    from, to = download_server_path(args), download_local_path(args)
 
     self.files = ::SftpProxy.download(type, from, to)
+  end
+
+  def upload(type, args)
+    from, to = upload_local_path(args), upload_server_path(args)
+
+    ::SftpProxy.upload(type, from, to)
   end
 
   def names
@@ -57,7 +63,8 @@ class FileAgent
 
   private
 
-    def server_path(args)
+
+    def download_server_path(args)
       assert_present_keys(args, :date, :direction)
 
       direction, file = args.values_at(:direction, :file)
@@ -66,7 +73,7 @@ class FileAgent
       "/home/#{platform}/#{direction}/#{date}/#{file}"
     end
 
-    def local_path(args)
+    def download_local_path(args)
       assert_present_keys(args, :direction, :project_id)
 
       direction, project_id = args.values_at(:direction, :project_id)
@@ -74,6 +81,15 @@ class FileAgent
       to_dir.mkpath
 
       to_dir.to_s
+    end
+
+    def upload_server_path(args)
+      date = args.fetch(:date, Date.today.to_s).gsub('-', '')
+      "/home/#{args[:platform]}/download/#{date}"
+    end
+
+    def upload_local_path(args)
+      args[:file]
     end
 
     def assert_present_keys(ha, *keys)
