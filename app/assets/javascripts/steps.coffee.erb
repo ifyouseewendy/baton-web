@@ -42,32 +42,35 @@ $(document).on 'ready', ->
         else
           current_item.closest('li').find('.step-status i').removeClass('fa-check').addClass('fa-arrow-right').addClass('failed')
 
-  step121_step_id = $('.step121-run').attr('data-step-id')
-  step121_task_id = $('.step121-run').closest('.task-panel').attr('data-task-id')
-  file_upload_url = "/projects/"+get_project_id()+"/stages/"+get_stage_id()+"/tasks/"+step121_task_id+"/steps/"+step121_step_id+"/run"
+  get_upload_url = (element) ->
+    project_id = get_project_id()
+    stage_id = get_stage_id()
+    task_id = element.closest('.task-panel').attr('data-task-id')
+    step_id = element.closest('li').find('a').attr('data-step-id')
+    "/projects/"+project_id+"/stages/"+stage_id+"/tasks/"+task_id+"/steps/"+step_id+"/run"
 
-  console.log(file_upload_url)
+  generate_upload_handler = (num) ->
+    $("#fileupload#{num}").fileupload
+      url: get_upload_url( $("#fileupload#{num}") )
+      dataType: 'json'
+      add: (e, data) ->
+        data.context = $(".step#{num}-run").click ->
+          icon = $(this).find('i')
+          icon.removeClass('fa-play').addClass('fa-spinner fa-pulse')
+          data.submit()
+      done: (e, data) ->
+        data = data.result
 
-  $('#fileupload121').fileupload
-    url: file_upload_url
-    dataType: 'json'
-    add: (e, data) ->
-      data.context = $('.step121-run').click ->
-        icon = $(this).find('i')
-        icon.removeClass('fa-play').addClass('fa-spinner fa-pulse')
-        data.submit()
-    done: (e, data) ->
-      data = data.result
+        step_button = $(".step#{num}-run i")
+        step_list   = $(".step#{num}-run").closest('li')
 
-      step_button = $('.step121-run i')
-      step_list   = $('.step121-run').closest('li')
+        step_button.removeClass('fa-spinner fa-pulse').addClass('fa-repeat')
+        step_list.find('.step-result').show().find('.panel-body').html( data['html'] )
 
-      step_button.removeClass('fa-spinner fa-pulse').addClass('fa-repeat')
-      step_list.find('.step-result').show().find('.panel-body').html( data['html'] )
-
-      if data['status'] == 'succeed'
-        step_list.find('.step-status i').removeClass('fa-arrow-right').removeClass('failed').addClass('fa-check')
-      else
-        step_list.find('.step-status i').removeClass('fa-check').addClass('fa-arrow-right').addClass('failed')
+        if data['status'] == 'succeed'
+          step_list.find('.step-status i').removeClass('fa-arrow-right').removeClass('failed').addClass('fa-check')
+        else
+          step_list.find('.step-status i').removeClass('fa-check').addClass('fa-arrow-right').addClass('failed')
 
 
+  generate_upload_handler('121')
