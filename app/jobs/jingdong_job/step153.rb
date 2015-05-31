@@ -1,15 +1,12 @@
 module JingdongJob
-  class Step141
-    # 发送给京东，等待确认
+  class Step153
+    # 发送给广交所，等待确认
     def run(step, args)
       begin
-        files = [
-          Pathname(step.stage.tasks[1].files.first.file.current_path),  # 产品发布文件
-          Pathname(step.stage.tasks[2].files.first.file.current_path)   # 产品合同文件
-        ]
+        files = step.task.files.map{|f| Pathname(f.file.current_path) }
         files.each{|pa| check_existence_of!(pa)}
 
-        platform = step.recipe
+        platform = :guangjiaosuo
         fa = FileAgent.new(platform)
         server_files = files.map{|pa| fa.upload(:file, file: pa.to_s, platform: platform)}
 
