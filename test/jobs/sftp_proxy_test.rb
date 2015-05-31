@@ -59,7 +59,7 @@ class SftpProxyTest < ActiveSupport::TestCase
     dir  = Rails.root
     to    = '/home/wendi/download/test_dir'
 
-    from = dir.join('tmp').join("test-upload-#{SecureRandom.hex(4)}")
+    from = dir.join('tmp').join("test-upload-中文-#{SecureRandom.hex(4)}")
     FileUtils.cp dir.join('Gemfile'), from
 
     refute SftpProxy.ls(to).include?( Pathname(from).basename.to_s )
