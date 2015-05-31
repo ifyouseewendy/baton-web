@@ -44,12 +44,9 @@ stages:
           - name: '生成《产品合同文件》'
             description: ''
             job_id: "152"
-          - name: '发送'
+          - name: '发送给广交所，等待确认'
             description: ''
             job_id: "153"
-          - name: '广交所确认'
-            description: ''
-            job_id: "154"
   - name: '募集期'
     description: ''
   - name: '起息日'
