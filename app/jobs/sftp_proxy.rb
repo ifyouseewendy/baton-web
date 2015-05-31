@@ -59,7 +59,7 @@ class SftpProxy
       files = []
 
       start do |sftp|
-        files = sftp.dir.entries(path.to_s).map{|e| e.name }
+        files = sftp.dir.entries(path.to_s).map{|e| e.name.force_encoding('UTF-8') }
       end
 
       files.reject{|e| %w(. ..).include?(e)}
