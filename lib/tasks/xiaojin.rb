@@ -204,6 +204,82 @@ class KaitongCli < Thor
     puts ">> Generate file: #{output}"
   end
 
+  desc 'load_user_detail', "初始化客户资产明细"
+  long_desc <<-LONGDESC
+    Examples:
+
+      ruby lib/tasks/xiaojin.rb load_user_detail
+        --from=/Users/wendi/Workspace/kaitong/baton-web/test/tasks/resources/xiaojin/客户资产明细.init.csv
+  LONGDESC
+  option :from, required: true
+  def load_user_detail
+    raise "Invalid <from> file position: #{options[:from]}" unless File.exist?(options[:from])
+
+    load_rails
+
+    CSV.foreach(options[:from]) do |row|
+      next if row[0].empty?
+
+      UserDetail.create(
+        product_code: row[0],
+        user_name: row[1],
+        user_id_card: row[2],
+        amount: row[3].to_f
+      )
+    end
+
+    puts ">> Record user details into DB"
+  end
+
+  desc 'check_transfer_detail', "根据小金每天上传的《客户资产转让明细》，生成转让后客户资产信息，并与小金上传的《客户资产明细》做对比校验。无误后，更新 DB 中的客户资产信息。"
+  long_desc <<-LONGDESC
+    Examples:
+
+      ruby lib/tasks/xiaojin.rb check_transfer_detail
+        --transfer-detail=/Users/wendi/Workspace/kaitong/baton-web/test/tasks/resources/xiaojin/客户资产转让明细.csv
+        --user-detail=/Users/wendi/Workspace/kaitong/baton-web/test/tasks/resources/xiaojin/客户资产明细.csv
+  LONGDESC
+  option :transfer_detail, required: true
+  option :user_detail,     required: true
+  def check_transfer_detail
+    raise "Invalid <transfer_detail> file position: #{options[:transfer_detail]}" unless File.exist?(options[:transfer_detail])
+    raise "Invalid <user_detail> file position: #{options[:user_detail]}" unless File.exist?(options[:user_detail])
+
+    load_rails
+
+    @user_details_cache = []
+
+    CSV.foreach(options[:transfer_detail]) do |row|
+      next if row[0].empty?
+
+      product_code, amount, from_user, from_user_id, to_user, to_user_id = *row[2..-1]
+      amount = amount.to_f
+
+      from_ud = find_by(product_code, from_user_id)
+      to_ud = find_or_initialize_by(product_code, to_user, to_user_id, amount)
+
+      from_ud.amount -= amount
+      to_ud.amount   += amount
+
+      @user_details_cache << from_ud unless already_in_cache?(from_ud.product_code, from_ud.user_id_card)
+      @user_details_cache << to_ud   unless already_in_cache?(to_ud.product_code, to_ud.user_id_card)
+    end
+
+    CSV.foreach(options[:user_detail]) do |row|
+      next if row[0].empty?
+
+      product_code, user_name, user_id, amount = *row
+      amount = amount.to_f
+
+      user = find_by(product_code, user_id)
+      raise "Not consistent for User<#{user_name}> amount: calculated<#{user.amount}> - passed<#{amount}>" unless user.amount == amount
+    end
+
+    save_cache_in_db!
+
+    puts ">> Validate succeed"
+  end
+
 
   private
 
@@ -216,6 +292,26 @@ class KaitongCli < Thor
     def convert_file_encoding!(file, from="UTF-8", to="GBK")
       content = File.read(file, encoding:from)
       File.open(file, "w:#{to}:#{from}"){|wf| wf.write content }
+    end
+
+    def find_by(product_code, from_user_id)
+      @user_details_cache.detect{|ud| ud.product_code == product_code && ud.user_id_card == from_user_id}\
+        || UserDetail.where(product_code: product_code, user_id_card: from_user_id).first \
+        || raise( "Couldn't find user by product_code: #{product_code}, user_id_card: #{from_user_id}" )
+    end
+
+    def find_or_initialize_by(product_code, to_user, to_user_id, amount)
+      @user_details_cache.detect{|ud| ud.product_code == product_code && ud.user_id_card == to_user_id}\
+        || UserDetail.where(product_code: product_code, user_id_card: to_user_id).first \
+        || UserDetail.new(product_code: product_code, user_name: to_user, user_id_card: to_user_id, amount: 0)
+    end
+
+    def already_in_cache?(product_code, user_id)
+      @user_details_cache.any?{|ud| ud.product_code == product_code && ud.user_id_card == user_id}
+    end
+
+    def save_cache_in_db!
+      @user_details_cache.map(&:save!)
     end
 end
 
