@@ -1,0 +1,47 @@
+<li class="list-group-item baton-step-list">
+  <a href="#" class="pull-right step121-run" data-step-id="<%= step.id.to_s %>"><i class="fa <%= step.done? ? 'fa-repeat' : 'fa-play' %>"></i></a>
+
+  <%# <%= content_tag(:span, class: 'fileinput-button') do %>
+  <%#   <%= tag(:input, type: 'file', class: 'param-file pull-right step-param', data: {url: '/projects'}, multiple: '') %>
+  <%# <% end %>
+
+  <form id="fileupload121" class='pull-right step-param' action="#" method="POST" enctype="multipart/form-data">
+    <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+    <div class="row fileupload-buttonbar">
+      <div class="">
+        <!-- The fileinput-button span is used to style the file input field as button -->
+        <span class="btn btn-link btn-xs fileinput-button">
+          <i class="fa fa-plus"></i>
+          <span>上传</span>
+          <input type="file" name="file" multiple="">
+        </span>
+      </div>
+      <!-- The global progress state -->
+      <!-- <div class="col-lg-5 fileupload-progress fade"> -->
+        <!-- The global progress bar -->
+        <!-- <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"> -->
+        <!--   <div class="progress-bar progress-bar-success" style="width:0%;"></div> -->
+        <!-- </div> -->
+        <!-- The extended global progress state -->
+        <!-- <div class="progress-extended">&nbsp;</div> -->
+      <!-- </div> -->
+    </div>
+    <!-- The table listing the files available for upload/download -->
+    <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+  </form>
+
+  <span class="pull-left media-xs step-status"><i class="fa <%= step.done? ? 'fa-check' : 'fa-arrow-right' %> text-muted fa-sm"></i> <%= step_idx+1 %></span>
+  <div class="clear">
+    <%= step.name %>
+  </div>
+
+  <div class="panel task-panel step-result" style="<%= step.done? ? '' : 'display:none' %>">
+    <div class="panel-body">
+      <% if step.done? %>
+        <%= html_format(step.result)[:html] %>
+      <% end %>
+    </div>
+  </div>
+</li>
+
+
