@@ -35,7 +35,7 @@
                 <%= content_tag(:tr, nil, data: {project_id: project.id.to_s} )  do %>
                   <%= content_tag(:td, project.name) %>
                   <%= content_tag(:td, project.category) %>
-                  <%= content_tag(:td, project.platform) %>
+                  <%= content_tag(:td, project.platform_zh) %>
                   <%= content_tag(:td, Project::BOURSE[project.bourse]) %>
                   <%= content_tag(:td, project.zh_env) %>
                   <%= content_tag(:td, current_stage.name) %>

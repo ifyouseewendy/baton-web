@@ -30,7 +30,7 @@ class ProjectsController < ApplicationController
   def create
     begin
       project = Project.build_by(project_params[:recipe])
-      project.update_attributes!(project_params)
+      project.update_attributes!(project_params.merge({platform: project_params[:platform_zh].to_pinyin}))
 
       flash[:notice] = "项目 #{project.name} 创建成功"
     rescue => e
@@ -90,6 +90,6 @@ class ProjectsController < ApplicationController
     end
 
     def project_params
-      params.require(:project).permit(:name, :category, :env, :recipe, :platform, :bourse)
+      params.require(:project).permit(:name, :category, :env, :recipe, :platform, :platform_zh, :bourse)
     end
 end

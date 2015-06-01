@@ -20,6 +20,7 @@ class Project
   field :recipe,      :type => Symbol
   field :category,    :type => String
   field :platform,    :type => String
+  field :platform_zh, :type => String
   field :bourse,      :type => Symbol
 
   # Validations
@@ -27,9 +28,7 @@ class Project
 
   # Constants
   CATEGORY = Rails.application.secrets.product_category
-
-  BOURSE = Rails.application.secrets.bourse.reduce({}){|ha, b| ha[ b.to_pinyin.to_sym ] = b; ha }
-
+  BOURSE   = Rails.application.secrets.bourse.reduce({}){|ha, b| ha[ b.to_pinyin.to_sym ] = b; ha }
 
   class << self
     def build_by(recipe)
