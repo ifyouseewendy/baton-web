@@ -18,11 +18,11 @@ class SftpProxyTest < ActiveSupport::TestCase
   end
 
   def test_download
-    SftpProxy.expects(:download_file).with('from', 'to')
+    SftpProxy.expects(:download_file).with('from', 'to', {env: :online})
     ret = SftpProxy.download(:file, 'from', 'to')
     assert_kind_of(Array, ret)
 
-    SftpProxy.expects(:download_dir).with('from', 'to')
+    SftpProxy.expects(:download_dir).with('from', 'to', {env: :online})
     SftpProxy.download(:dir, 'from', 'to')
   end
 
