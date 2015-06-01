@@ -11,8 +11,12 @@ module JingdongJob
           :product_index_length
         )
 
-        template = step.stage.files.detect{|af| Pathname(af.file.current_path).extname == '.html' }.file.current_path
-        content = read_utf8_content(template)
+        if step.env == :online
+          template = step.stage.files.detect{|af| Pathname(af.file.current_path).extname == '.html' }.file.current_path
+          content = read_utf8_content(template)
+        else
+          content = Rails.root.join('lib').join('fake_files').join('guangjiaosuo_产品合同模板_20150601.html').read
+        end
 
         date = Date.today.to_s.gsub('-', '')
         output_dir = Rails.root.join('tmp').join("kaitong_contract_#{date}")

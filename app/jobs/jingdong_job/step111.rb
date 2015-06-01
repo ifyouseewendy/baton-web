@@ -4,7 +4,7 @@ module JingdongJob
     def run(step, args)
       bourse = step.bourse
       begin
-        fa = FileAgent.new(bourse)
+        fa = FileAgent.new(bourse, env: args[:env])
         fa.download(:dir, args)
 
         if fa.files.count == 0
@@ -16,14 +16,13 @@ module JingdongJob
           step.clear_file!
           fa.files.each {|pa| step.add_file(pa, bourse) }
 
-          names, links = fa.names, fa.links
           {
             status: :succeed,
             type: :file_list,
             query: {
               date: args[:date]
             },
-            stat: names.zip(links)
+            stat: step.file_names.zip(step.file_urls)
           }
         end
       rescue => e

@@ -4,7 +4,7 @@ module JingdongJob
     def run(step, args)
       platform = step.platform
       begin
-        fa = FileAgent.new(platform)
+        fa = FileAgent.new(platform, env: args[:env])
         fa.download(:dir, args)
 
         if fa.files.count == 0
