@@ -28,7 +28,7 @@ class Project
   # Constants
   CATEGORY = Rails.application.secrets.product_category
 
-  BOURSE = Rails.application.secrets.bourse.reduce({}){|ha, b| ha[ Pinyin.t(b, splitter: '').to_sym ] = b; ha }
+  BOURSE = Rails.application.secrets.bourse.reduce({}){|ha, b| ha[ b.to_pinyin.to_sym ] = b; ha }
 
 
   class << self
