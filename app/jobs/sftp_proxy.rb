@@ -15,38 +15,40 @@ class SftpProxy
     # Expecting from: 'dir/a.txt', to: 'dir'
     def download_file(from, to, options = {env: :online})
       file = Pathname.new(from).basename
-      start do |sftp|
-        source, target = from, File.join(to,file)
-        puts "--> Fetching from SFTP:#{target}"
+      source, target = from, File.join(to,file)
 
-        if options[:env] == :online
+      unless options[:env] == :online
+        fake_download_file(target)
+      else
+        start do |sftp|
+          puts "--> Fetching from SFTP:#{target}"
           sftp.download! source, target
-        else
-          fake_download_file(source)
         end
       end
 
-      Pathname.new File.join(to,file).force_encoding(Encoding::UTF_8)
+      Pathname.new target.force_encoding(Encoding::UTF_8)
     end
 
     # Download from/a, from/b -> to/a, to/b. No nested dir support.
     def download_dir(from, to, options = {env: :online})
       files = []
 
-      start do |sftp|
-        sftp.dir.foreach(from) do |file|
-          next if file.name =~ /^\./
+      unless options[:env] == :online
+        (1..3).each do |num|
+          target = File.join(to, "test_#{num}.txt")
+          files << fake_download_file(target)
+        end
+      else
+        start do |sftp|
+          sftp.dir.foreach(from) do |file|
+            next if file.name =~ /^\./
+            source, target = File.join(from,file.name), File.join(to,file.name)
 
-          source, target = File.join(from,file.name), File.join(to,file.name)
-          puts "--> Fetching from SFTP:#{target}"
-
-          if options[:env] == :online
+            puts "--> Fetching from SFTP:#{target}"
             sftp.download! source, target
-          else
-            fake_download_file(source)
-          end
 
-          files << Pathname.new(target.force_encoding(Encoding::UTF_8))
+            files << Pathname.new(target.force_encoding(Encoding::UTF_8))
+          end
         end
       end
 
@@ -91,6 +93,7 @@ class SftpProxy
     private
 
       def fake_download_file(path)
+        FileUtils.mkdir_p( Pathname(path).dirname )
         File.open(path, 'w'){|of| of.write "This is a test file, buddy"}
       end
 
