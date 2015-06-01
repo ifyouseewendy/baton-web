@@ -17,7 +17,7 @@ module JingdongJob
 
           if pa.extname == '.zip'
             Dir.chdir(pa.dirname)
-            `7z e #{pa.basename}`
+            `7z e -y #{pa.basename}`
             Dir.chdir(Rails.root)
 
             pa = Pathname pa.to_s.sub('.zip', '.txt')
