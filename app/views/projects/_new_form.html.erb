@@ -15,15 +15,21 @@
             </div>
           </div>
           <div class="form-group">
-            <%= f.label '对接平台', class: "col-sm-2 control-label" %>
+            <%= f.label '互联网平台', class: "col-sm-2 control-label" %>
             <div class="col-sm-4">
               <%= f.text_field :platform, class: "form-control" %>
             </div>
           </div>
           <div class="form-group">
+            <%= f.label '交易所', class: "col-sm-2 control-label" %>
+            <div class="col-sm-4">
+              <%= f.select :bourse, Project::BOURSE.map(&:reverse), {}, class: "form-control" %>
+            </div>
+          </div>
+          <div class="form-group">
             <%= f.label '产品类型', class: "col-sm-2 control-label" %>
             <div class="col-sm-4">
-              <%= f.select :category, %w(私募债 理财产品 收益权转让), {}, class: "form-control" %>
+              <%= f.select :category, Project::CATEGORY, {}, class: "form-control" %>
             </div>
           </div>
           <div class="form-group">

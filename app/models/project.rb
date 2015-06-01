@@ -20,12 +20,16 @@ class Project
   field :recipe,      :type => Symbol
   field :category,    :type => String
   field :platform,    :type => String
+  field :bourse,      :type => Symbol
 
   # Validations
   validates :name, presence: true, uniqueness: true
 
   # Constants
-  CATEGORY = %w(私募债 理财产品 收益权转让)
+  CATEGORY = Rails.application.secrets.product_category
+
+  BOURSE = Rails.application.secrets.bourse.reduce({}){|ha, b| ha[ Pinyin.t(b, splitter: '').to_sym ] = b; ha }
+
 
   class << self
     def build_by(recipe)
@@ -56,6 +60,10 @@ class Project
 
   def category_index
     CATEGORY.index(category) + 1
+  end
+
+  def bourse_index
+    BOURSE.keys.index(bourse) + 1
   end
 
   def files

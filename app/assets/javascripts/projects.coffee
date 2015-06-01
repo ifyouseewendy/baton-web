@@ -25,5 +25,6 @@ $(document).on 'ready', ->
         edit_project_form.find('#project_name').attr('value', data['name'])
         edit_project_form.find('#project_platform').attr('value', data['platform'])
         edit_project_form.find('#project_category option:nth-child('+data['category_index']+')').attr('selected', 'selected')
+        edit_project_form.find('#project_bourse option:nth-child('+data['category_index']+')').attr('selected', 'selected')
 
     edit_project_form.modal()

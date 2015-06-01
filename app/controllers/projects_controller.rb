@@ -17,7 +17,9 @@ class ProjectsController < ApplicationController
           env:            @project.zh_env,
           platform:       @project.platform,
           category:       @project.category,
-          category_index: @project.category_index
+          category_index: @project.category_index,
+          bourse:         @project.bourse,
+          bourse_index:   @project.bourse_index
         }
       end
     end
@@ -88,6 +90,6 @@ class ProjectsController < ApplicationController
     end
 
     def project_params
-      params.require(:project).permit(:name, :category, :env, :recipe, :platform)
+      params.require(:project).permit(:name, :category, :env, :recipe, :platform, :bourse)
     end
 end
