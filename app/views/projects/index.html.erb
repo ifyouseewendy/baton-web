@@ -38,7 +38,7 @@
                   <%= content_tag(:td, project.zh_env) %>
                   <%= content_tag(:td, current_stage.name) %>
                   <%= content_tag(:td, current_stage.progress) %>
-                  <%= content_tag(:td, current_task.name) %>
+                  <%= content_tag(:td, current_task.try(:name)) %>
                   <%# <%= content_tag(:td, current_task.owner) %>
                   <%# <%= content_tag(:td, current_stage.pending_time) %>
                   <%= content_tag(:td, class: 'col-sm-2') do %>

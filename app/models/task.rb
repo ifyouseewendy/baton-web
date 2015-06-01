@@ -17,7 +17,7 @@ class Task
   field :description, :type => String
 
   def current_step
-    steps.detect(&:undone?)
+    steps[steps.map(&:done?).index(false)]
   end
 
   def files

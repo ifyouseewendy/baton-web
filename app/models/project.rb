@@ -42,7 +42,7 @@ class Project
   end
 
   def current_stage
-    stages.detect(&:undone?)
+    stages[stages.map(&:done?).index(false)]
   end
 
   def current_task
