@@ -28,10 +28,10 @@ class StageTest < ActiveSupport::TestCase
 
   def test_progress
     task_count = @stage.tasks.to_a.count
-    assert_equal "1 / #{task_count}", @stage.progress
+    assert_equal "0 / #{task_count}", @stage.progress
 
     @stage.tasks.first.done!
-    assert_equal "2 / #{task_count}", @stage.progress
+    assert_equal "1 / #{task_count}", @stage.progress
   end
 
 end

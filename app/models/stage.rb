@@ -25,7 +25,7 @@ class Stage
   end
 
   def progress
-    "#{tasks.map(&:done?).index(false) + 1} / #{tasks.to_a.count}"
+    "#{tasks.map(&:done?).index(false)} / #{tasks.to_a.count}"
   end
 
   def files
