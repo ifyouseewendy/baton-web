@@ -2,6 +2,7 @@ require 'test_helper'
 
 class SftpProxyTest < ActiveSupport::TestCase
   def setup
+    @organization = :wendi
     local_test_dir.mkpath
     %w(download upload).each{|dir| local_test_dir.join(dir).mkpath}
   end
@@ -27,7 +28,7 @@ class SftpProxyTest < ActiveSupport::TestCase
   end
 
   def test_download_file
-    from  = "/home/wendi/upload/test_dir"
+    from  = "/home/#@organization/upload/test_dir"
     to    = File.join( local_test_dir, "download" )
     file = 'a.txt'
 
@@ -42,13 +43,13 @@ class SftpProxyTest < ActiveSupport::TestCase
   end
 
   def test_download_dir
-    from  = "/home/wendi/upload/test_dir"
+    from  = "/home/#@organization/upload/test_dir"
     to    = File.join( local_test_dir, "download" )
 
     assert_empty files_in(to)
 
     files = SftpProxy.download_dir(from, to)
-      # ["/Users/wendi/Workspace/kaitong/baton-web/public/resources/test_dir/download/a.txt"]
+      # ["/Users/#@organization/Workspace/kaitong/baton-web/public/resources/test_dir/download/a.txt"]
     files = files.map(&:basename).map(&:to_s)
       # ["a.txt"]
 
@@ -56,7 +57,7 @@ class SftpProxyTest < ActiveSupport::TestCase
   end
 
   def test_download_file_test_env
-    from  = "/home/wendi/upload/test_dir"
+    from  = "/home/#@organization/upload/test_dir"
     to    = File.join( local_test_dir, "download" )
     file = 'a.txt'
 
@@ -69,7 +70,7 @@ class SftpProxyTest < ActiveSupport::TestCase
   end
 
   def test_download_dir_test_env
-    from  = "/home/wendi/upload/test_dir"
+    from  = "/home/#@organization/upload/test_dir"
     to    = File.join( local_test_dir, "download" )
 
     assert_empty files_in(to)
@@ -80,7 +81,7 @@ class SftpProxyTest < ActiveSupport::TestCase
 
   def test_upload
     dir  = Rails.root
-    to    = '/home/wendi/download/test_dir'
+    to    = "/home/#@organization/download/test_dir"
 
     from = dir.join('tmp').join("test-upload-中文-#{SecureRandom.hex(4)}")
     FileUtils.cp dir.join('Gemfile'), from
