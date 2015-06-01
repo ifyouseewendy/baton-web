@@ -27,6 +27,14 @@ class Step
     project.recipe
   end
 
+  def bourse
+    project.bourse
+  end
+
+  def platform
+    project.platform
+  end
+
   def run(args)
     job = "#{recipe.capitalize}Job::Step#{job_id}".constantize.new
     data = job.run self, args.merge({
@@ -48,8 +56,8 @@ class Step
     result[:query][:date]
   end
 
-  def add_file(filename, platform, options = {})
-    af = AttachFile.create(step: self, file: File.open(filename), platform: platform)
+  def add_file(filename, organization, options = {})
+    af = AttachFile.create(step: self, file: File.open(filename), organization: organization)
     unless options[:override]
       self.files << af
     else
