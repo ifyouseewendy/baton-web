@@ -13,6 +13,7 @@ module JingdongJob
             message: "未检查到文件"
           }
         else
+          step.clear_file!
           fa.files.each {|pa| step.add_file(pa, bourse) }
 
           names, links = fa.names, fa.links

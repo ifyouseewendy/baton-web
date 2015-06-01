@@ -65,6 +65,10 @@ class Step
     end
   end
 
+  def clear_file!
+    files.map(&:delete)
+  end
+
   def file_names
     files.map(&:file_identifier)
   end
