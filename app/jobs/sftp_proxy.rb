@@ -16,6 +16,7 @@ class SftpProxy
     def download_file(from, to)
       file = Pathname.new(from).basename
       start do |sftp|
+        puts "--> Fetching from SFTP:#{File.join(to,file)}"
         sftp.download! from, File.join(to,file)
       end
 
@@ -29,6 +30,7 @@ class SftpProxy
       start do |sftp|
         sftp.dir.foreach(from) do |file|
           next if file.name =~ /^\./
+          puts "--> Fetching from SFTP:#{File.join(to,file.name)}"
           sftp.download! File.join(from,file.name), File.join(to,file.name)
           files << Pathname.new(File.join(to,file.name).force_encoding(Encoding::UTF_8))
         end
@@ -45,6 +47,7 @@ class SftpProxy
     def upload_file(from, to)
       file = Pathname.new(from).basename
       start do |sftp|
+        puts "--> Upload to SFTP:#{File.join(to,file)}"
         sftp.upload! from.to_s, File.join(to,file).force_encoding('Binary') # net-sftp transfers binary
       end
 
