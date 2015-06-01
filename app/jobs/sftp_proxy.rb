@@ -47,7 +47,7 @@ class SftpProxy
     def upload_file(from, to)
       file = Pathname.new(from).basename
       start do |sftp|
-        puts "--> Upload to SFTP:#{File.join(to,file)}"
+        puts "--> Uploading to SFTP:#{File.join(to,file)}"
         sftp.upload! from.to_s, File.join(to,file).force_encoding('Binary') # net-sftp transfers binary
       end
 

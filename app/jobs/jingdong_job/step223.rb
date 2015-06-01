@@ -6,7 +6,7 @@ module JingdongJob
         @file = step.stage.tasks[0].files.first.try(:file) # 京东上传的《交易确认文件》
         @pa = Pathname.new @file.try(:current_path)
 
-        output = @pa.dirname.join( "guangjiaosuo_客户明细销售表_#{Date.today.to_s.gsub('-','')}.csv" )
+        output = @pa.dirname.join( "#{step.bourse}_客户明细销售表_#{Date.today.to_s.gsub('-','')}.csv" )
 
         File.open(output, 'w:GBK') do |wf|
 
@@ -26,7 +26,7 @@ module JingdongJob
           end
         end
 
-        step.add_file(output, step.platform, override: true)
+        step.add_file(output, step.bourse, override: true)
 
         {
           status: :succeed,

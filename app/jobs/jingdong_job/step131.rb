@@ -39,7 +39,7 @@ module JingdongJob
         `7z a #{zip_name} *`
         Dir.chdir(Rails.root)
 
-        step.add_file(output_dir.join(zip_name), step.recipe, override: true)
+        step.add_file(output_dir.join(zip_name), step.platform, override: true)
 
         output_dir.rmtree
 

@@ -6,12 +6,12 @@ module JingdongJob
         file = Pathname(step.stage.tasks[2].files.first.file.current_path)
         check_existence_of!(file)
 
-        new_name = "guangjiaosuo_产品合同文件_#{Date.today.to_s.gsub('-','')}.zip"
+        new_name = "#{step.bourse}_产品合同文件_#{Date.today.to_s.gsub('-','')}.zip"
         target = file.dirname.join(new_name)
 
         FileUtils.cp file, target
 
-        step.add_file(target.to_s, step.recipe, override: true)
+        step.add_file(target.to_s, step.bourse, override: true)
 
         {
           status: :succeed,

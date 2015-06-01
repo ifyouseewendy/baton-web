@@ -8,7 +8,7 @@ module JingdongJob
 
         platform = step.bourse
         fa = FileAgent.new(platform)
-        server_files = files.map{|pa| fa.upload(:file, file: pa.to_s, platform: platform)}
+        server_files = files.map{|pa| fa.upload(:file, file: pa.to_s, organization: platform)}
 
         {
           status: :succeed,

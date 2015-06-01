@@ -4,11 +4,11 @@ module JingdongJob
     def run(step, args)
       begin
         source      = Pathname(args[:file].tempfile)
-        target_name = ["guangjiaosuo_产品销售表_#{Date.today.to_s.gsub('-','')}", source.extname].join # Auto correct file, or it should be args[:file].original_filename
+        target_name = ["#{step.bourse}_产品销售表_#{Date.today.to_s.gsub('-','')}", source.extname].join # Auto correct file, or it should be args[:file].original_filename
         target_path = Pathname(source.dirname).join(target_name)
         FileUtils.mv(source, target_path)
 
-        step.add_file(target_path, step.recipe, override: true)
+        step.add_file(target_path, step.bourse, override: true)
 
         {
           status: :succeed,
