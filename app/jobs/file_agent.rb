@@ -4,8 +4,9 @@
 class FileAgent
   attr_accessor :organization, :files
 
-  def initialize(organization)
+  def initialize(organization, options = {env: :online})
     @organization = organization
+    @options      = options
     @files        = []
   end
 
@@ -44,13 +45,13 @@ class FileAgent
   def download(type, args)
     from, to = download_server_path(args), download_local_path(args)
 
-    self.files = ::SftpProxy.download(type, from, to)
+    self.files = ::SftpProxy.download(type, from, to, @options)
   end
 
   def upload(type, args)
     from, to = upload_local_path(args), upload_server_path(args)
 
-    ::SftpProxy.upload(type, from, to)
+    ::SftpProxy.upload(type, from, to, @options)
   end
 
   def names
