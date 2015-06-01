@@ -23,8 +23,8 @@ $(document).on 'ready', ->
       success: (data, textStatus, jqXHR) ->
         edit_project_form.find('form').attr('action', '/projects/'+project_id)
         edit_project_form.find('#project_name').attr('value', data['name'])
-        edit_project_form.find('#project_platform').attr('value', data['platform'])
+        edit_project_form.find('#project_platform_zh').attr('value', data['platform_zh'])
         edit_project_form.find('#project_category option:nth-child('+data['category_index']+')').attr('selected', 'selected')
-        edit_project_form.find('#project_bourse option:nth-child('+data['category_index']+')').attr('selected', 'selected')
+        edit_project_form.find('#project_bourse option:nth-child('+data['bourse_index']+')').attr('selected', 'selected')
 
     edit_project_form.modal()

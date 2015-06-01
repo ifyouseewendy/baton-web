@@ -16,6 +16,7 @@ class ProjectsController < ApplicationController
           name:           @project.name,
           env:            @project.zh_env,
           platform:       @project.platform,
+          platform_zh:    @project.platform_zh,
           category:       @project.category,
           category_index: @project.category_index,
           bourse:         @project.bourse,
