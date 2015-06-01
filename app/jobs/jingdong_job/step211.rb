@@ -2,7 +2,7 @@ module JingdongJob
   class Step211
     # 获取京东上传的《交易确认文件》
     def run(step, args)
-      platform = :jingdong
+      platform = step.platform
       begin
         fa = FileAgent.new(platform)
         fa.download(:dir, args)

@@ -26,7 +26,7 @@ module JingdongJob
           end
         end
 
-        step.add_file(output, :jingdong, override: true)
+        step.add_file(output, step.platform, override: true)
 
         {
           status: :succeed,

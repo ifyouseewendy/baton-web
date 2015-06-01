@@ -3,7 +3,7 @@ require 'roo-xls'
 
 module JingdongJob
   class Step123
-    # 检验文件内容与编码
+    # 生成京东指定格式 txt
     def run(step, args)
       begin
         @file = step.task.files.first.try(:file)
@@ -23,7 +23,7 @@ module JingdongJob
           end
         end
 
-        step.add_file(output, :jingdong)
+        step.add_file(output, step.platform)
 
         {
           status: :succeed,

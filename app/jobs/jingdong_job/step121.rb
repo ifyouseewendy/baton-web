@@ -8,7 +8,7 @@ module JingdongJob
         target_path = Pathname(source.dirname).join(target_name)
         FileUtils.mv(source, target_path)
 
-        step.add_file(target_path, step.recipe, override: true)
+        step.add_file(target_path, step.platform, override: true)
 
         {
           status: :succeed,
