@@ -49,6 +49,31 @@ stages:
             job_id: "153"
   - name: '募集期'
     description: ''
+    tasks:
+      - name: '获取京东的《交易确认文件》，并检验'
+        description: ''
+        steps:
+          - name: '获取京东上传的《交易确认文件》'
+            description: ''
+            job_id: "211"
+          - name: '检验'
+            description: ''
+            job_id: "212"
+      - name: '为广交所准备相关文件，并发送'
+        description: ''
+        steps:
+          - name: '上传《产品销售表》'
+            description: ''
+            job_id: "221"
+          - name: '检验文件内容与编码'
+            description: ''
+            job_id: "222"
+          - name: '生成《客户明细销售表》'
+            description: ''
+            job_id: "223"
+          - name: '发送，并等待确认'
+            description: ''
+            job_id: "224"
   - name: '起息日'
     description: ''
   - name: '到期日'
