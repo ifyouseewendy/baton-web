@@ -54,9 +54,11 @@
 
         <div>
 
-          <%= render partial: 'edit_form', locals: {modal_id: "edit-project-form"} %>
+          <% if Project.count > 0 %>
+            <%= render partial: 'edit_form', locals: {modal_id: "edit-project-form"} %>
+          <% end %>
 
-          <%= button_tag "添加新项目", type: 'button', class: "btn btn-primary", data: {toggle: "modal", target: "#new-project-form" } %>
+          <%= link_to content_tag(:i,  ' 添加新项目', class: 'fa fa-plus-circle'),  "#", class: "btn btn-link", data: {toggle: "modal", target: "#new-project-form"} %>
           <%= render partial: 'new_form', locals: {modal_id: "new-project-form"} %>
 
         </div>
