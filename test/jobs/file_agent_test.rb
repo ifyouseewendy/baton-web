@@ -13,7 +13,7 @@ class FileAgentTest < ActiveSupport::TestCase
 
   def test_download
     from  = "/home/wendi/upload/test_dir/"
-    to    = File.join( local_test_dir, "download" )
+    to    = File.join( local_test_dir, "upload" )
     file  = 'a.txt'
 
     ::SftpProxy.expects(:download_file).with( File.join(from,file), to)
@@ -23,7 +23,7 @@ class FileAgentTest < ActiveSupport::TestCase
       :file,
       project_id: 'test_dir',
       date:       'test_dir',
-      direction:  'download',
+      direction:  'upload',
       file:       file
     )
 
@@ -34,7 +34,7 @@ class FileAgentTest < ActiveSupport::TestCase
       :dir,
       project_id: 'test_dir',
       date:       'test_dir',
-      direction:  'download',
+      direction:  'upload',
     )
   end
 
@@ -46,7 +46,7 @@ class FileAgentTest < ActiveSupport::TestCase
       :file,
       project_id: 'test_dir',
       date:       'test_dir',
-      direction:  'download',
+      direction:  'upload',
       file:       file
     )
 
