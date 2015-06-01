@@ -9,7 +9,6 @@ module JingdongJob
         @file = step.task.files.first.try(:file)
         @pa = Pathname.new @file.try(:current_path)
 
-        binding.pry
         output = @pa.dirname.join( @pa.basename(@pa.extname) ).to_s.chomp('/') + ".txt"
 
         File.open(output, 'w:GBK:UTF-8') do |wf|

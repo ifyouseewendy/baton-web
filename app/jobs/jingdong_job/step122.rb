@@ -11,6 +11,8 @@ module JingdongJob
         # Make this operation in step 121
         # auto_correct_name!
 
+        # As @file is an xls(x), no need to convert encoding.
+        # Check Step222 for encode converting.
         {
           status: :succeed
         }
