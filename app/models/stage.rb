@@ -21,11 +21,11 @@ class Stage
   end
 
   def current_task
-    tasks.detect(&:undone?)
+    tasks.map(&:done?).index(false)
   end
 
   def progress
-    "#{(tasks.index(current_task) + 1)} / #{tasks.to_a.count}"
+    "#{(tasks.index(current_task) + 1 rescue tasks.to_a.count)} / #{tasks.to_a.count}"
   end
 
   def files
