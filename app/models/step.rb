@@ -35,10 +35,15 @@ class Step
     project.platform
   end
 
+  def env
+    project.env
+  end
+
   def run(args)
     job = "#{recipe.capitalize}Job::Step#{job_id}".constantize.new
     data = job.run self, args.merge({
       project_id: project.id.to_s,
+      env: env
     })
 
     self.update_attribute(:result, data)
@@ -67,6 +72,7 @@ class Step
 
   def clear_file!
     files.map(&:delete)
+    self.reload
   end
 
   def file_names
