@@ -12,7 +12,7 @@ class AttachFileTest < ActiveSupport::TestCase
   end
 
   def test_store_dir
-    @attach_file.platform = :jingdong
+    @attach_file.organization = :jingdong
     project = stub(id: 'test')
     @attach_file.stubs(:project).returns(project)
     @attach_file.file = File.open( Tempfile.new('_') )

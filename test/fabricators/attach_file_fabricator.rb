@@ -1,4 +1,4 @@
 Fabricator(:attach_file) do
-  platform :jingdong
+  organization :jingdong
   step { Fabricate(:step) }
 end

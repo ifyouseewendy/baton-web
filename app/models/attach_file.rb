@@ -9,13 +9,13 @@ class AttachFile
   before_destroy ->{ self.remove_file! }
 
   # Fields
-  field :platform, :type => Symbol
+  field :organization, :type => Symbol # Project's bourse or platform
 
   mount_uploader :file, FileUploader
 
   def store_dir
     # Use download directory to be consistant with file structure on FTP
-    "resources/#{platform}/#{project.id}/download"
+    "resources/#{organization}/#{project.id}/download"
   end
 
   def recipe
