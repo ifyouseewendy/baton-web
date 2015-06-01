@@ -2,11 +2,11 @@
 #   + params handling
 #   + naming
 class FileAgent
-  attr_accessor :platform, :files
+  attr_accessor :organization, :files
 
-  def initialize(platform)
-    @platform = platform
-    @files    = []
+  def initialize(organization)
+    @organization = organization
+    @files        = []
   end
 
   # Public: Download file or dir through SftpProxy
@@ -54,7 +54,7 @@ class FileAgent
   end
 
   def names
-    files.map(&:basename).map(&:to_s).map{|fn| NameMapping.parse(platform, fn)}
+    files.map(&:basename).map(&:to_s).map{|fn| NameMapping.parse(organization, fn)}
   end
 
   def links
@@ -70,14 +70,14 @@ class FileAgent
       direction, file = args.values_at(:direction, :file)
       date = args.fetch(:date, Date.today.to_s).gsub('-', '')
 
-      "/home/#{platform}/#{direction}/#{date}/#{file}"
+      "/home/#{organization}/#{direction}/#{date}/#{file}"
     end
 
     def download_local_path(args)
       assert_present_keys(args, :direction, :project_id)
 
       direction, project_id = args.values_at(:direction, :project_id)
-      to_dir = Pathname.new File.join(Rails.root, "public", "resources", platform.to_s, project_id, direction.to_s)
+      to_dir = Pathname.new File.join(Rails.root, "public", "resources", organization.to_s, project_id, direction.to_s)
       to_dir.mkpath
 
       to_dir.to_s
@@ -85,7 +85,7 @@ class FileAgent
 
     def upload_server_path(args)
       date = args.fetch(:date, Date.today.to_s).gsub('-', '')
-      "/home/#{args[:platform]}/download/#{date}"
+      "/home/#{args[:organization]}/download/#{date}"
     end
 
     def upload_local_path(args)
