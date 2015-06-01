@@ -76,7 +76,21 @@ stages:
             job_id: "224"
   - name: '起息日'
     description: ''
+    tasks:
+      - name: 'TODO'
+        description: ''
+        steps:
+          - name: 'TODO'
+            description: ''
+            job_id: "311"
   - name: '到期日'
     description: ''
+    tasks:
+      - name: 'TODO'
+        description: ''
+        steps:
+          - name: 'TODO'
+            description: ''
+            job_id: "312"
 
 
