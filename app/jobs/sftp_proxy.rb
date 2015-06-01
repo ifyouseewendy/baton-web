@@ -95,6 +95,8 @@ class SftpProxy
       def fake_download_file(path)
         FileUtils.mkdir_p( Pathname(path).dirname )
         File.open(path, 'w'){|of| of.write "This is a test file, buddy"}
+
+        Pathname(path)
       end
 
       def fake_upload_file
