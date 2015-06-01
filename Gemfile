@@ -64,6 +64,9 @@ gem 'net-sftp'
 gem 'carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 
+# Pinyin
+gem 'chinese_pinyin'
+
 group :development do
   gem 'quiet_assets'
 end
