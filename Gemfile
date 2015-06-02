@@ -69,6 +69,9 @@ gem 'chinese_pinyin'
 
 group :development do
   gem 'quiet_assets'
+
+  # UML Diagram
+  gem 'railroady'
 end
 
 group :development, :test do
