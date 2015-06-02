@@ -224,7 +224,7 @@ class KaitongCli < Thor
         product_code: row[0],
         user_name: row[1],
         user_id_card: row[2],
-        amount: row[3].to_f
+        amount: row[3].to_i
       )
     end
 
@@ -253,9 +253,9 @@ class KaitongCli < Thor
       next if row[0].empty?
 
       product_code, amount, from_user, from_user_id, to_user, to_user_id = *row[2..-1]
-      amount = amount.to_f
+      amount = amount.to_i
 
-      from_ud = find_by(product_code, from_user_id)
+      from_ud = find_or_initialize_by(product_code, from_user, from_user_id, amount)
       to_ud = find_or_initialize_by(product_code, to_user, to_user_id, amount)
 
       from_ud.amount -= amount
@@ -269,7 +269,7 @@ class KaitongCli < Thor
       next if row[0].empty?
 
       product_code, user_name, user_id, amount = *row
-      amount = amount.to_f
+      amount = amount.to_i
 
       user = find_by(product_code, user_id)
       raise "Not consistent for User<#{user_name}> amount: calculated<#{user.amount}> - passed<#{amount}>" unless user.amount == amount

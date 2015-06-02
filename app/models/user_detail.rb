@@ -6,6 +6,6 @@ class UserDetail
   field :product_code,  type: String
   field :user_name,     type: String
   field :user_id_card,  type: String
-  field :amount,        type: Float
+  field :amount,        type: Integer # Xiaojin uses fen as the basic unit, that save 10000 for 100.00 yuan.
 
 end
