@@ -271,7 +271,7 @@ class KaitongCli < Thor
       product_code, user_name, user_id, amount = *row
       amount = amount.to_i
 
-      user = find_by(product_code, user_id)
+      user = find_in_cache_by(product_code, user_id)
       raise "Not consistent for User<#{user_name}> amount: calculated<#{user.amount}> - passed<#{amount}>" unless user.amount == amount
     end
 
@@ -294,20 +294,18 @@ class KaitongCli < Thor
       File.open(file, "w:#{to}:#{from}"){|wf| wf.write content }
     end
 
-    def find_by(product_code, from_user_id)
-      @user_details_cache.detect{|ud| ud.product_code == product_code && ud.user_id_card == from_user_id}\
-        || UserDetail.where(product_code: product_code, user_id_card: from_user_id).first \
-        || raise( "Couldn't find user by product_code: #{product_code}, user_id_card: #{from_user_id}" )
+    def find_in_cache_by(product_code, user_id)
+      @user_details_cache.detect{|ud| ud.product_code == product_code && ud.user_id_card == user_id}
     end
 
     def find_or_initialize_by(product_code, to_user, to_user_id, amount)
-      @user_details_cache.detect{|ud| ud.product_code == product_code && ud.user_id_card == to_user_id}\
+      find_in_cache_by(product_code, to_user_id)\
         || UserDetail.where(product_code: product_code, user_id_card: to_user_id).first \
         || UserDetail.new(product_code: product_code, user_name: to_user, user_id_card: to_user_id, amount: 0)
     end
 
     def already_in_cache?(product_code, user_id)
-      @user_details_cache.any?{|ud| ud.product_code == product_code && ud.user_id_card == user_id}
+      find_in_cache_by(product_code, user_id).present?
     end
 
     def save_cache_in_db!
