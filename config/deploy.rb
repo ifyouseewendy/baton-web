@@ -9,7 +9,7 @@ set :repository, 'git@github.com:ifyouseewendy/baton-web.git'
 set :branch, 'master'
 
 # They will be linked in the 'deploy:link_shared_paths' step.
-set :shared_paths, ['config/database.yml', 'log', 'tmp']
+set :shared_paths, ['config/mongoid.yml', 'log', 'tmp']
 
 # set :user, 'deploy'    # Username in the server to SSH to.
 # set :port, '10080'     # SSH port number.
@@ -25,14 +25,14 @@ end
 # For Rails apps, we'll make some of the shared paths that are shared between
 # all releases.
 task :setup => :environment do
+  queue! %[touch "#{deploy_to}/#{shared_path}/config/mongoid.yml"]
+  queue  %[echo "-----> Be sure to edit '#{deploy_to}/#{shared_path}/config/mongoid.yml'."]
+
   queue! %[mkdir -p "#{deploy_to}/#{shared_path}/log"]
   queue! %[chmod g+rx,u+rwx "#{deploy_to}/#{shared_path}/log"]
 
   queue! %[mkdir -p "#{deploy_to}/#{shared_path}/config"]
   queue! %[chmod g+rx,u+rwx "#{deploy_to}/#{shared_path}/config"]
-
-  queue! %[touch "#{deploy_to}/#{shared_path}/config/mongoid.yml"]
-  queue  %[echo "-----> Be sure to edit '#{deploy_to}/#{shared_path}/config/mongoid.yml'."]
 
   queue! %[mkdir -p "#{deploy_to}/#{shared_path}/tmp/pids"]
   queue! %[chmod g+rx,u+rwx "#{deploy_to}/#{shared_path}/tmp/pids"]
@@ -55,5 +55,41 @@ task :deploy => :environment do
     to :launch do
       queue "touch #{deploy_to}/#{current_path}/tmp/restart.txt"
     end
+  end
+end
+
+namespace :unicorn do
+  set :unicorn_pid, "#{deploy_to}/#{current_path}/tmp/pids/unicorn.pid"
+  set :unicorn_config, "#{deploy_to}/#{current_path}/config/unicorn.rb"
+
+  set :start_unicorn, %{
+    cd "#{deploy_to}/#{current_path}"
+    bundle exec unicorn -c #{unicorn_config} -E #{rails_env} -D
+  }
+
+  desc "Start unicorn"
+  task :start => :environment do
+    queue 'echo "-----> Start Unicorn"'
+    queue! start_unicorn
+  end
+
+  desc "Stop unicorn"
+  task :stop do
+    queue 'echo "-----> Stop Unicorn"'
+    queue! %{
+      test -s "#{unicorn_pid}" && kill -QUIT `cat "#{unicorn_pid}"` && echo "Stop Ok" && exit 0
+      echo >&2 "Not running"
+    }
+  end
+
+  desc "Restart unicorn"
+  task :restart => :environment do
+    queue 'echo "-----> Restart Unicorn"'
+    #invoke :'unicorn:stop'
+    #invoke :'unicorn:start'
+    queue! %{
+      test -s "#{unicorn_pid}" && kill -USR2 `cat "#{unicorn_pid}"` && echo "Restart Ok" && exit 0
+      echo >&2 "Not running"
+    }
   end
 end
