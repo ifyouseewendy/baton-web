@@ -56,8 +56,18 @@ task :deploy => :environment do
     invoke :'deploy:cleanup'
 
     to :launch do
+      invoke :'deploy:link_dotenv'
       invoke :'unicorn:restart'
     end
+  end
+end
+
+namespace :deploy do
+  task :link_dotenv do
+    set :env_file, 'env.production'
+    queue! %{
+      ln -svf #{deploy_to}/#{shared_path}/config/#{env_file} #{deploy_to}/#{current_path}/.#{env_file}
+    }
   end
 end
 
@@ -88,11 +98,11 @@ namespace :unicorn do
   desc "Restart unicorn"
   task :restart => :environment do
     queue 'echo "-----> Restart Unicorn"'
-    #invoke :'unicorn:stop'
-    #invoke :'unicorn:start'
-    queue! %{
-      test -s "#{unicorn_pid}" && kill -USR2 `cat "#{unicorn_pid}"` && echo "Restart Ok" && exit 0
-      echo >&2 "Not running"
-    }
+    invoke :'unicorn:stop'
+    invoke :'unicorn:start'
+    # queue! %{
+    #   test -s "#{unicorn_pid}" && kill -USR2 `cat "#{unicorn_pid}"` && echo "Restart Ok" && exit 0
+    #   echo >&2 "Not running"
+    # }
   end
 end
