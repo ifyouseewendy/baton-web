@@ -39,8 +39,8 @@ gem 'font-awesome-sass'
 # Server
 gem 'thin'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+# Deployment
+gem 'mina'
 
 # Console
 gem 'pry-rails'
