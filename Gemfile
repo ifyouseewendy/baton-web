@@ -38,6 +38,7 @@ gem 'font-awesome-sass'
 
 # Server
 gem 'thin'
+gem 'unicorn', '~> 4.8.0'
 
 # Deployment
 gem 'mina'
