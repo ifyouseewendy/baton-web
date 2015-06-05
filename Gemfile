@@ -68,6 +68,9 @@ gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 # Pinyin
 gem 'chinese_pinyin'
 
+# Env
+gem 'dotenv'
+
 group :development do
   gem 'quiet_assets'
 
