@@ -9,7 +9,7 @@ set :repository, 'git@github.com:ifyouseewendy/baton-web.git'
 set :branch, 'master'
 
 # They will be linked in the 'deploy:link_shared_paths' step.
-set :shared_paths, ['config/mongoid.yml', 'log', 'tmp']
+set :shared_paths, ['config/mongoid.yml', 'config/unicorn.rb', 'log', 'tmp']
 
 # set :user, 'deploy'    # Username in the server to SSH to.
 # set :port, '10080'     # SSH port number.
@@ -27,6 +27,9 @@ end
 task :setup => :environment do
   queue! %[touch "#{deploy_to}/#{shared_path}/config/mongoid.yml"]
   queue  %[echo "-----> Be sure to edit '#{deploy_to}/#{shared_path}/config/mongoid.yml'."]
+
+  queue! %[touch "#{deploy_to}/#{shared_path}/config/unicorn.rb"]
+  queue  %[echo "-----> Be sure to edit '#{deploy_to}/#{shared_path}/config/unicorn.rb'."]
 
   queue! %[mkdir -p "#{deploy_to}/#{shared_path}/log"]
   queue! %[chmod g+rx,u+rwx "#{deploy_to}/#{shared_path}/log"]
@@ -53,7 +56,7 @@ task :deploy => :environment do
     invoke :'deploy:cleanup'
 
     to :launch do
-      queue "touch #{deploy_to}/#{current_path}/tmp/restart.txt"
+      invoke :'unicorn:restart'
     end
   end
 end
