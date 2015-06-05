@@ -1,6 +1,6 @@
 source 'https://ruby.taobao.org'
 
-ruby '2.2.0'
+ruby '2.2.2'
 
 gem 'rails', '4.2.0'
 gem 'mongoid'
