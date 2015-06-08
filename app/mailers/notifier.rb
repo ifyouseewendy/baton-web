@@ -1,5 +1,5 @@
 class Notifier < ApplicationMailer
-  default from: "wendi@example.com"
+  default from: ENV['EMAIL_USER']
 
   RECIPIENTS = Rails.application.secrets.recipients
 

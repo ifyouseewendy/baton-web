@@ -37,5 +37,18 @@ module Baton
     Rails.application.config.middleware.use JQuery::FileUpload::Rails::Middleware
 
     CarrierWave::SanitizedFile.sanitize_regexp = /[^[:word:]\.\-\+]/
+
+    # Mailer
+    config.action_mailer.delivery_method = :smtp
+
+    # SMTP settings for mailgun
+    config.action_mailer.smtp_settings = {
+      :port           => 465,
+      :address        => "smtp.exmail.qq.com",
+      :user_name      => ENV['EMAIL_USER'],
+      :password       => ENV['EMAIL_PASSWORD'],
+      :authentication => :plain,
+      :ssl            => true
+    }
   end
 end
