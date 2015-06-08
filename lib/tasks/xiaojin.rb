@@ -265,6 +265,7 @@ class KaitongCli < Thor
       @user_details_cache << to_ud   unless already_in_cache?(to_ud.product_code, to_ud.user_id_card)
     end
 
+    failed = []
     CSV.foreach(options[:user_detail]) do |row|
       next if row[0].empty?
 
@@ -272,12 +273,24 @@ class KaitongCli < Thor
       amount = amount.to_i
 
       user = find_in_cache_by(product_code, user_id)
-      raise "Not consistent for User<#{user_name}> amount: calculated<#{user.amount}> - passed<#{amount}>" unless user.amount == amount
+
+      unless user.amount == amount
+        failed << [user_name, user.amount, amount]
+      end
     end
 
-    save_cache_in_db!
-
-    puts ">> Validate succeed"
+    if failed.blank?
+      save_cache_in_db!
+      puts ">> Validate succeed"
+    else
+      subject = "小金转让信息校验失败 #{Date.today}"
+      body = {
+        type: :table,
+        stat: [ ['用户', '开通计算转让后用户资产', '小金提供转让后用户资产'] ] + failed
+      }
+      Notifier.notify(subject, body).deliver
+      puts ">> Failed, sent messages"
+    end
   end
 
   desc 'postman', 'test Notifier'
