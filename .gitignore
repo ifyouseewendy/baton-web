@@ -16,8 +16,8 @@ db/resources
 config/thin.yml
 logs
 vendor/bundle
-*.swn
-*.swp
+*.sw[nmp]
 public/resources
 !doc
 .envrc
+.env.*
