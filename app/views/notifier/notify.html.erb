@@ -1,11 +1,29 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-  </head>
-  <body>
-    <p>
-      <%= @body %>
-    </p>
-  </body>
-</html>
+<% if @body[:type] == :table %>
+
+  <table class='table'>
+
+    <thead>
+      <tr>
+        <th>#</th>
+        <% @body[:stat][0].each do |header| %>
+          <th><%= header %></th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @body[:stat][1..-1].each_with_index do |row, idx| %>
+        <tr>
+          <td><%= idx %></td>
+          <% row.each do |data| %>
+            <td><%= data %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+<% else %>
+  <%= @body[:stat] %>
+<% end %>
