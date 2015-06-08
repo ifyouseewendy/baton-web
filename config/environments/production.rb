@@ -73,4 +73,17 @@ Rails.application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  # Mailer
+  config.action_mailer.delivery_method = :smtp
+
+  # SMTP settings
+  config.action_mailer.smtp_settings = {
+    :port           => 465,
+    :address        => "smtp.exmail.qq.com",
+    :user_name      => ENV['EMAIL_USER'],
+    :password       => ENV['EMAIL_PASSWORD'],
+    :authentication => :plain,
+    :ssl            => true
+  }
 end
