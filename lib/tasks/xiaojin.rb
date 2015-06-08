@@ -280,6 +280,17 @@ class KaitongCli < Thor
     puts ">> Validate succeed"
   end
 
+  desc 'postman', 'test Notifier'
+  long_desc <<-LONGDESC
+    Examples:
+
+      ruby lib/tasks/xiaojin.rb postman
+  LONGDESC
+  def postman
+    load_rails
+
+    Notifier.notify("Test", "This a test mail").deliver
+  end
 
   private
 
