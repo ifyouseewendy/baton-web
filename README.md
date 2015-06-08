@@ -76,6 +76,8 @@ $ sudo yum install p7zip p7zip-plugins # CentOS
 $ sudo apt-get install p7zip-full p7zip-rar # Ubuntu
 ```
 
+Update production configurations in mina-relevant config, `/home/deploy/apps/baton-web/shared/config`.
+
 
 ## Changelog
 
