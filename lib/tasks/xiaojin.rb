@@ -7,41 +7,39 @@ class KaitongCli < Thor
   long_desc <<-LONGDESC
     Parameters:
 
-      from      - 为 convert 任务生成的文件地址
-      platform  - 请填写中文名称
+      from - 为记录"专业执行人"信息的文件地址，格式为 "姓名,身份证"
+
     Examples:
 
-      ruby lib/tasks/xiaojin.rb generate_gjs_details --platform='小金理财'
-        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/tmp/xiaojin_客户明细销售表_20150423.detail.csv
+      ruby lib/tasks/xiaojin.rb generate_gjs_details
+        --from=/Users/wendi/Workspace/kaitong/baton-web/lib/fake_files/xiaojin_专业执行人.csv
   LONGDESC
   option :from,     required: true
-  option :platform, required: true
   def generate_gjs_details
     raise "Invalid <from> file position: #{options[:from]}" unless File.exist?(options[:from])
 
-    convert_file_encoding!(options[:from], 'GBK', 'UTF-8')
+    today = Date.today.to_s.gsub('-','')
+    out_filename = "guangjiaosuo_客户销售明细表_#{today}.csv"
+    output = File.join(File.expand_path("../../../tmp", __FILE__), out_filename)
 
-    out_filename = File.basename(options[:from]).split('.')[0]
-    output = File.join(File.expand_path("../../../tmp", __FILE__), "#{out_filename}.detail.csv")
-
-    platform = options[:platform]
+    headers = "客户姓名,客户全称,机构标志,证件类别,证件编号,证件地址,性别,电话,邮政编码,联系地址,传真,股权代码,股权数量,股权性质,上市日期,持仓均价,手机,风险级别,股权代码,营业部"
+    platform = '小金平台'
+    post_code = '100000'
+    business_code = '3002'
 
     File.open(output, 'w') do |wf|
-
-      wf.puts "客户姓名,客户全称,机构标志,证件类别,证件编号,证件地址,性别,电话,邮政编码,联系地址,传真,股权代码,股权数量,股权性质,上市日期,持仓均价,手机,风险级别,股权代码,营业部"
+      wf.puts headers.split(',').map{|str| str.encode(Encoding::GBK)}.join(",")
 
       File.open(options[:from], 'r') do |rf|
         rf.each_with_index do |line, i|
           next if line.empty?
 
-          columns = line.split(',')
-          code = columns[2]
-          wf.puts [columns[4], nil, 0, 0, columns[5], platform, columns[7], columns[6], '100000', platform, nil, columns[2], columns[3].to_i, nil, nil, 1, columns[6], 1, code, '2002' ].join(',')
+          name, id, mobile, product_code, amount = line.strip.split(',').map(&:strip)
+          row = [name, nil, 0, 0, id, platform, nil, mobile, post_code, platform, nil, product_code, amount, nil, nil, 1, mobile, 1, product_code, business_code]
+          wf.puts row.map(&:to_s).map{|str| str.encode(Encoding::GBK)}.join(",")
         end
       end
     end
-
-    convert_file_encoding!(output)
 
     puts ">> Generate file: #{output}"
 
