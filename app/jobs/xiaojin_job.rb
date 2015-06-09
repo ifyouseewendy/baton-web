@@ -6,8 +6,8 @@ class XiaojinJob
     options[:transfer_detail]  ||= "/home/xiaojin/upload/#{today}/xiaojin_客户资产转让明细_#{today}.csv"
     options[:user_detail]      ||= "/home/xiaojin/upload/#{today}/xiaojin_客户资产明细_#{today}.csv"
 
-    raise "Invalid <transfer_detail> file position: #{options[:transfer_detail]}" unless File.exist?(options[:transfer_detail])
-    raise "Invalid <user_detail> file position: #{options[:user_detail]}" unless File.exist?(options[:user_detail])
+    proc { puts "[#{Time.now.to_s(:db)}] No such file: #{options[:transfer_detail]}"; return }.call unless File.exist?(options[:transfer_detail])
+    proc { puts "[#{Time.now.to_s(:db)}] No such file: #{options[:user_detail]}"; return }.call     unless File.exist?(options[:user_detail])
 
     @user_details_cache = []
 
@@ -43,7 +43,7 @@ class XiaojinJob
 
     if failed.blank?
       save_cache_in_db!
-      puts ">> Validate succeed"
+      puts "[#{Time.now.to_s(:db)}] Validate succeed"
     else
       subject = "小金转让信息校验失败 #{Date.today}"
       body = {
@@ -51,7 +51,7 @@ class XiaojinJob
         stat: [ ['用户', '开通计算转让后用户资产', '小金提供转让后用户资产'] ] + failed
       }
       Notifier.notify(subject, body).deliver
-      puts ">> Failed, sent messages"
+      puts "[#{Time.now.to_s(:db)}] Failed, sent messages"
     end
   end
 end
