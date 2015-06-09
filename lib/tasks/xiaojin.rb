@@ -305,7 +305,7 @@ class KaitongCli < Thor
   def postman
     load_rails
 
-    Notifier.notify("Test", "This a test mail").deliver
+    Notifier.notify("Test", {type: :message, stat: "This a test mail"}).deliver
   end
 
   private
