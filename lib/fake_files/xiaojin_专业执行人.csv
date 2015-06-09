@@ -1,5 +1,5 @@
-User1,id1,mobile1,product_code1,amount1
-User2,id2,mobile2,product_code2,amount2
-User3,id3,mobile3,product_code3,amount3
-User4,id4,mobile4,product_code4,amount4
-User5,id5,mobile5,product_code5,amount5
+User1,id1,mobile1,gender1,product_code1,10000
+User2,id2,mobile2,gender1,product_code2,10000
+User3,id3,mobile3,gender1,product_code3,10000
+User4,id4,mobile4,gender1,product_code4,10000
+User5,id5,mobile5,gender1,product_code5,10000
