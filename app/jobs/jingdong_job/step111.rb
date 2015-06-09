@@ -26,6 +26,8 @@ module JingdongJob
           }
         end
       rescue => e
+          Rails.logger.error "--> Exception raised: #{e.message}"
+          Rails.logger.error e.backtrace
           {
             status: :failed,
             message: e.message
