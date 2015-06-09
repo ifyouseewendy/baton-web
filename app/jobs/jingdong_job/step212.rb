@@ -46,6 +46,8 @@ module JingdongJob
           status: :succeed
         }
       rescue => e
+        Rails.logger.error e.message
+        Rails.logger.error e.backtrace
         {
           status: :failed,
           message: e.message

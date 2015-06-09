@@ -19,6 +19,8 @@ module JingdongJob
           stat:   server_files.map{|sf| "已上传至SFTP #{sf}"}
         }
       rescue => e
+        Rails.logger.error e.message
+        Rails.logger.error e.backtrace
         {
           status: :failed,
           message: e.message
