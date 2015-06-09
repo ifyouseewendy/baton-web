@@ -83,6 +83,33 @@ class KaitongCli < Thor
 
   end
 
+  desc 'generate_xiaojin_contract', "生成小金需要的《产品合同模板》"
+  long_desc <<-LONGDESC
+    Examples:
+
+      ruby lib/tasks/xiaojin.rb generate_xiaojin_contract
+        --from=/Users/wendi/Workspace/kaitong/baton-web/lib/fake_files/guangjiaosuo_产品合同模板_20150601.html
+  LONGDESC
+  option :from, required: true
+  def generate_xiaojin_contract
+    raise "Invalid <from> file position: #{options[:from]}" unless File.exist?(options[:from])
+
+    today = Date.today.to_s.gsub('-','')
+    out_filename = "xiaojin_产品合同模板_#{today}.html"
+    output = File.join(File.expand_path("../../../tmp", __FILE__), out_filename)
+
+    content = File.read(options[:from])
+    File.open(output, 'w') do |wf|
+      wf.write content\
+                .gsub('__contract_index__', '')\
+                .gsub('__period_index__', '')\
+                .gsub('__product_code__', '')
+    end
+
+    puts ">> Generate file: #{output}"
+
+  end
+
   desc 'generate_gjs_overview', "生成广交所需要的《产品销售表》"
   long_desc <<-LONGDESC
     Parameters:
