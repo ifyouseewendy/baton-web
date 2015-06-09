@@ -36,9 +36,16 @@ stages:
 
 通过 `job_id` 指定该 `step` 需执行的任务，即上例中 step 对应 `app/jobs/jingdong_job/step111.rb` 所定义的任务。
 
-### Mailer
+### Thor
 
-[mailcatcher](http://mailcatcher.me/), not included in Gemfile.
+Use thors to generate organization specific files, then integrate into step jobs.
+
+```
+$ ruby lib/tasks/jingdong.rb
+$ ruby lib/tasks/xiaojin.rb
+```
+
+Note: Mailer, debug by [mailcatcher](http://mailcatcher.me/), not included in Gemfile.
 
 ## Test
 
