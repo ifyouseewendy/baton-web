@@ -1,18 +1,7 @@
+# Learn more: http://github.com/javan/whenever
+
 set :output, "log/schedule.log"
 
-every 1.minute do
-  runner "HourlyOrder.new('xiaojin').check"
+every :day, :at => '12:20am' do
+  runner "XiaojinJob.new.check_transfer_detail"
 end
-
-#
-# every 2.hours do
-#   command "/usr/bin/some_great_command"
-#   runner "MyModel.some_method"
-#   rake "some:great:rake:task"
-# end
-#
-# every 4.days do
-#   runner "AnotherModel.prune_old_records"
-# end
-
-# Learn more: http://github.com/javan/whenever
