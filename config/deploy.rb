@@ -2,6 +2,7 @@ require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
 require 'mina/rvm'
+require 'mina/whenever'
 
 set :domain, 'kaitong.aliyun'
 set :deploy_to, '/home/deploy/apps/baton-web'
@@ -54,6 +55,7 @@ task :deploy => :environment do
     invoke :'bundle:install'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
+    invoke :'whenever:update'
 
     to :launch do
       invoke :'deploy:link_dotenv'
@@ -104,5 +106,29 @@ namespace :unicorn do
     #   test -s "#{unicorn_pid}" && kill -USR2 `cat "#{unicorn_pid}"` && echo "Restart Ok" && exit 0
     #   echo >&2 "Not running"
     # }
+  end
+end
+
+namespace :whenever do
+  desc "Clear crontab"
+  task :clear do
+    queue %{
+      echo "-----> Clear crontab for #{domain}_#{rails_env}"
+      #{echo_cmd %[cd #{deploy_to!}/#{current_path!} ; #{bundle_bin} exec whenever --clear-crontab #{domain}_#{rails_env} --set 'environment=#{rails_env}&path=#{deploy_to!}/#{current_path!}']}
+    }
+  end
+  desc "Update crontab"
+  task :update do
+    queue %{
+      echo "-----> Update crontab for #{domain}_#{rails_env}"
+      #{echo_cmd %[cd #{deploy_to!}/#{current_path!} ; #{bundle_bin} exec whenever --update-crontab #{domain}_#{rails_env} --set 'environment=#{rails_env}&path=#{deploy_to!}/#{current_path!}']}
+    }
+  end
+  desc "Write crontab"
+  task :write do
+    queue %{
+      echo "-----> Update crontab for #{domain}_#{rails_env}"
+      #{echo_cmd %[cd #{deploy_to!}/#{current_path!} ; #{bundle_bin} exec whenever --write-crontab #{domain}_#{rails_env} --set 'environment=#{rails_env}&path=#{deploy_to!}/#{current_path!}']}
+    }
   end
 end
