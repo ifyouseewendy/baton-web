@@ -7,7 +7,7 @@ class KaitongCli < Thor
   long_desc <<-LONGDESC
     Parameters:
 
-      from - 为记录"专业执行人"信息的文件地址，格式为 "姓名,身份证,手机号,性别,产品代码,购买金额"
+      from - 为记录"专业执行人"信息的文件地址，格式为 "姓名,身份证,手机号,性别,产品代码,购买金额,证件地址,联系地址,邮政编码"
 
     Examples:
 
@@ -23,8 +23,6 @@ class KaitongCli < Thor
     output = File.join(File.expand_path("../../../tmp", __FILE__), out_filename)
 
     headers = "客户姓名,客户全称,机构标志,证件类别,证件编号,证件地址,性别,电话,邮政编码,联系地址,传真,股权代码,股权数量,股权性质,上市日期,持仓均价,手机,风险级别,股权代码,营业部"
-    platform = '小金平台'
-    post_code = '100000'
     business_code = '3002'
 
     File.open(output, 'w') do |wf|
@@ -33,9 +31,9 @@ class KaitongCli < Thor
       File.open(options[:from], 'r') do |rf|
         rf.each_with_index do |line, i|
           next if line.empty?
-          name, id, mobile, gender, product_code, amount = line.strip.split(',').map(&:strip)
+          name, id, mobile, gender, product_code, amount, id_address, contact_address, post_code = line.strip.split(',').map(&:strip)
 
-          row = [name, nil, 0, 0, id, platform, gender, mobile, post_code, platform, nil, product_code, amount.to_i*100, nil, nil, 1, mobile, 1, product_code, business_code]
+          row = [name, nil, 0, 0, id, id_address, gender, mobile, post_code, contact_address, nil, product_code, amount, nil, nil, 1, mobile, 1, product_code, business_code]
           wf.puts row.map(&:to_s).map{|str| str.encode(Encoding::GBK)}.join(",")
         end
       end

@@ -1,5 +1,5 @@
-User1,id1,mobile1,gender1,product_code1,10000
-User2,id2,mobile2,gender1,product_code2,10000
-User3,id3,mobile3,gender1,product_code3,10000
-User4,id4,mobile4,gender1,product_code4,10000
-User5,id5,mobile5,gender1,product_code5,10000
+User1,id1,mobile1,gender1,product_code1,10000,id_address1,contact_address1,post_code1
+User2,id2,mobile2,gender1,product_code2,10000,id_address2,contact_address2,post_code2
+User3,id3,mobile3,gender1,product_code3,10000,id_address3,contact_address3,post_code3
+User4,id4,mobile4,gender1,product_code4,10000,id_address4,contact_address4,post_code4
+User5,id5,mobile5,gender1,product_code5,10000,id_address5,contact_address5,post_code5
