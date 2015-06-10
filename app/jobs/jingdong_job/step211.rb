@@ -20,7 +20,7 @@ module JingdongJob
             `7z e -y #{pa.basename}`
             Dir.chdir(Rails.root)
 
-            pa = Pathname pa.to_s.sub('.zip', '.txt')
+            pa = pa.dirname.entries.detect{|_pa| _pa.extname == '.txt'}.expand_path(pa.dirname)
           end
 
           step.add_file(pa, platform, override: true)

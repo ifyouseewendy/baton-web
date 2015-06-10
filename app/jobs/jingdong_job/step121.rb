@@ -4,7 +4,7 @@ module JingdongJob
     def run(step, args)
       begin
         source      = Pathname(args[:file].tempfile)
-        target_name = ["kaitong_product_apply_#{Date.today.to_s.gsub('-','')}", source.extname].join # Auto correct file, or it should be args[:file].original_filename
+        target_name = ["kaitong_product_apply_#{step.project.get_serial}", source.extname].join # Auto correct file, or it should be args[:file].original_filename
         target_path = Pathname(source.dirname).join(target_name)
         FileUtils.mv(source, target_path)
 

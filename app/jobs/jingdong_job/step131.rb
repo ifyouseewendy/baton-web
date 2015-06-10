@@ -18,8 +18,7 @@ module JingdongJob
           content = Rails.root.join('samples').join('guangjiaosuo').join('产品合同模板.html').read
         end
 
-        date = Date.today.to_s.gsub('-', '')
-        output_dir = Rails.root.join('tmp').join("kaitong_contract_#{date}")
+        output_dir = Rails.root.join('tmp').join("kaitong_contract_#{step.project.get_serial}")
         FileUtils.mkdir_p output_dir
 
         (1..count.to_i).each do |idx|
@@ -39,7 +38,7 @@ module JingdongJob
         end
 
         Dir.chdir(output_dir)
-        zip_name = "kaitong_contract_#{date}.zip"
+        zip_name = "kaitong_contract_#{step.project.get_serial}.zip"
         `7z a #{zip_name} *`
         Dir.chdir(Rails.root)
 
