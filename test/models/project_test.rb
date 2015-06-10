@@ -44,4 +44,15 @@ class ProjectTest < ActiveSupport::TestCase
     Project.build_by(:jingdong)
   end
 
+  def test_get_serial_by
+    assert @project.serial.nil?
+
+    Date.stubs(:today).returns("20150101")
+    @project.get_serial_by
+    assert "20150101", @project.serial
+
+    @project.get_serial_by(:jingdong)
+    assert "20150101_001", @project.serial
+  end
+
 end

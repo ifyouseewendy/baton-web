@@ -22,6 +22,7 @@ class Project
   field :platform,    :type => String
   field :platform_zh, :type => String
   field :bourse,      :type => Symbol
+  field :serial,      :type => String
 
   # Validations
   validates :name, presence: true, uniqueness: true
@@ -71,6 +72,21 @@ class Project
 
   def filenames
     files.map(&:file_identifier)
+  end
+
+  # Used in file naming. Jingdong append an number after date.
+  def get_serial_by(platform = nil)
+    return serial if serial.present?
+
+    serial = \
+      if platform == :jingdong
+        "#{Date.today.to_s.gsub('-','')}_001"
+      else
+        "#{Date.today.to_s.gsub('-','')}"
+      end
+
+    self.update_attribute(:serial, serial)
+    serial
   end
 
 end
