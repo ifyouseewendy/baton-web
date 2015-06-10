@@ -130,15 +130,27 @@ $ mina deploy
 
 ## Changelog
 
-#### Version 0.1
+#### Version 0.1.0
 
 项目原名为 ftp-monitor，用来监控 FTP 以及执行一些 thor 任务来完成与各机构的文件交互，这部分代码保存在 ftp-monitor 分支。
 
-#### Version 1.0
+#### Version 1.0.0
 
 1. 页面样式取自 [Departure](https://tryblocks.com/departure/index.html)，保存在 `lib/assets`
 1. 项目级别 CRUD
 2. 项目、阶段、任务、步骤，四层嵌套模型
 3. 京东的流程模板（互联网平台：京东，交易所：广交所）
 
-## Todo List
+## Todo
+
+*Version 1.1.0*
+
+1. 添加小金流程模板
+2. 跟武金所连调后，做相应调整
+
+*Version 2.0.0*
+
+现有的使用场景为内部使用，方便对接与上线流程，后续应该添加用户视角:
+
+1. 将现有功能开放给开通内部用户
+2. 允许机构注册使用，并只能查看各在在当前阶段需要完成的任务
