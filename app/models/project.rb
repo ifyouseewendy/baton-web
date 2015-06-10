@@ -75,11 +75,11 @@ class Project
   end
 
   # Used in file naming. Jingdong append an number after date.
-  def get_serial_by(platform = nil)
+  def get_serial
     return serial if serial.present?
 
     serial = \
-      if platform == :jingdong
+      if platform == 'jingdong'
         "#{Date.today.to_s.gsub('-','')}_001"
       else
         "#{Date.today.to_s.gsub('-','')}"

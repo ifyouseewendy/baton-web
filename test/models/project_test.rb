@@ -44,14 +44,15 @@ class ProjectTest < ActiveSupport::TestCase
     Project.build_by(:jingdong)
   end
 
-  def test_get_serial_by
+  def test_get_serial
     assert @project.serial.nil?
+    assert @project.platform.nil?
 
     Date.stubs(:today).returns("20150101")
-    @project.get_serial_by
-    assert "20150101", @project.serial
+    assert "20150101", @project.get_serial
 
-    @project.get_serial_by(:jingdong)
+    @project.platform = 'jingdong'
+    @project.get_serial
     assert "20150101_001", @project.serial
   end
 
