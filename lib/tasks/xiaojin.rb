@@ -69,10 +69,10 @@ class KaitongCli < Thor
       File.open(options[:from], 'r') do |rf|
         rf.each_with_index do |line, i|
           next if line.empty?
-          name, id, mobile, gender, product_code, amount = line.strip.split(',').map(&:strip)
+          name, id, mobile, gender, product_code, amount, id_address, contact_address, post_code = line.strip.split(',').map(&:strip)
 
-          row = [timestamp, timestamp, product_code, amount.to_i*100, name, id, mobile, gender, '北京市', mobile, '100000', '北京市']
-          wf.puts row.map(&:to_s).map{|str| str.encode(Encoding::GBK)}.join(",")
+          row = [timestamp, timestamp, product_code, amount.to_i*100, name, id, mobile, gender, id_address, mobile, post_code, contact_address]
+          wf.puts row.join(",")
         end
       end
     end
