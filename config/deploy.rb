@@ -58,17 +58,18 @@ task :deploy => :environment do
     invoke :'whenever:update'
 
     to :launch do
-      invoke :'deploy:link_dotenv'
+      invoke :'deploy:link_files'
       invoke :'unicorn:restart'
     end
   end
 end
 
 namespace :deploy do
-  task :link_dotenv do
+  task :link_files do
     set :env_file, 'env.production'
     queue! %{
       ln -svf #{deploy_to}/#{shared_path}/config/#{env_file} #{deploy_to}/#{current_path}/.#{env_file}
+      ln -svf ~/resources #{deploy_to}/#{current_path}/public
     }
   end
 end

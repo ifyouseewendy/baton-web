@@ -59,6 +59,8 @@ Note: Mailer, debug by [mailcatcher](http://mailcatcher.me/), not included in Ge
 
 ## Deployment
 
+> Also work for your local project setup.
+
 Add ssh host, make local and online server ssh connect by `ssh kaitong.aliyun` without password needed.
 
 ```
@@ -70,11 +72,13 @@ Host kaitong.aliyun
   Port 10080
 ```
 
-Add public/resources link
+Add `resources` directory, used for SFTP download and local upload.
 
 ```
 $ mkdir ~/resources
-$ ln -svf ~/resources {path-to-baton-web}/public
+
+# mina make auto link when deploy
+# ln -svf ~/resources {path-to-baton-web}/public
 ```
 
 Dependent on [p7zip](https://wiki.archlinux.org/index.php/P7zip) for generating OSX/Linux/Win compatible zip file.
