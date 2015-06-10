@@ -10,7 +10,7 @@
 + 京东金融非标理财合作接口方案.pdf
 + [对接京东 - 技术注意事项](https://quip.com/WLduAlYbiBPH)
 + [京东 - 开通 - 广交所上线操作流程](https://quip.com/ClscABmJ9SGn)
-+ [SFTP 帐户信息](https://quip.com/LKnJAgidOEs5)
++ [SFTP 相关信息](https://quip.com/FjxaAkaag8LR)
 
 ## Specification
 
