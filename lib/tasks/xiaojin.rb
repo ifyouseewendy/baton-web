@@ -12,7 +12,7 @@ class KaitongCli < Thor
     Examples:
 
       ruby lib/tasks/xiaojin.rb generate_gjs_details
-        --from=/Users/wendi/Workspace/kaitong/baton-web/lib/fake_files/xiaojin_专业执行人.csv
+        --from=/Users/wendi/Workspace/kaitong/baton-web/samples/xiaojin/专业执行人.csv
   LONGDESC
   option :from,     required: true
   def generate_gjs_details
@@ -54,7 +54,7 @@ class KaitongCli < Thor
     Examples:
 
       ruby lib/tasks/xiaojin.rb generate_xiaojin_details
-        --from=/Users/wendi/Workspace/kaitong/baton-web/lib/fake_files/xiaojin_专业执行人.csv
+        --from=/Users/wendi/Workspace/kaitong/baton-web/samples/xiaojin/专业执行人.csv
   LONGDESC
   option :from,     required: true
   def generate_xiaojin_details
@@ -88,7 +88,7 @@ class KaitongCli < Thor
     Examples:
 
       ruby lib/tasks/xiaojin.rb generate_xiaojin_contract
-        --from=/Users/wendi/Workspace/kaitong/baton-web/lib/fake_files/guangjiaosuo_产品合同模板_20150601.html
+        --from=/Users/wendi/Workspace/kaitong/baton-web/samples/guangjiaosuo/产品合同模板.html
   LONGDESC
   option :from, required: true
   def generate_xiaojin_contract

@@ -15,7 +15,7 @@ module JingdongJob
           template = step.stage.files.detect{|af| Pathname(af.file.current_path).extname == '.html' }.file.current_path
           content = read_utf8_content(template)
         else
-          content = Rails.root.join('lib').join('fake_files').join('guangjiaosuo_产品合同模板_20150601.html').read
+          content = Rails.root.join('samples').join('guangjiaosuo').join('产品合同模板.html').read
         end
 
         date = Date.today.to_s.gsub('-', '')

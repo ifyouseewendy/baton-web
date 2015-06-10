@@ -8,7 +8,7 @@ module JingdongJob
         if step.env == :online
           @pa = Pathname.new @file.try(:current_path)
         else
-          @pa = Rails.root.join('lib').join('fake_files').join('kaitong_invest_20150601.txt')
+          @pa = Rails.root.join('samples').join('jingdong').join('交易确认文件.txt')
         end
 
         total_rows, total_amount, total_fee, rows, amount, fee = [0]*6
