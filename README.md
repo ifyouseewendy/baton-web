@@ -2,8 +2,12 @@
 
 本项目旨在自动化开通与第三方机构（互联网平台、交易所）的对接过程。
 
-参考文档
+## Reference
 
++ 开通金融与交易所合作解决方案.pdf
++ 开通金融与小金理财技术合作解决方案.pdf
++ 开通金融与互联网平台技术合作解决方案.pdf
++ 京东金融非标理财合作接口方案.pdf
 + [对接京东 - 技术注意事项](https://quip.com/WLduAlYbiBPH)
 + [京东 - 开通 - 广交所上线操作流程](https://quip.com/ClscABmJ9SGn)
 
@@ -49,13 +53,13 @@ Note: Mailer, debug by [mailcatcher](http://mailcatcher.me/), not included in Ge
 
 ## Test
 
-```
-$ rake
-```
++ Unit test, by `$ rake`
++ Sample files to upload on web page, check [samples](samples/) directory.
+
 
 ## Deployment
 
-Add ssh host
+Add ssh host, make local and online server ssh connect by `ssh kaitong.aliyun` without password needed.
 
 ```
 # ~/.ssh/config
@@ -83,7 +87,7 @@ $ sudo yum install p7zip p7zip-plugins # CentOS
 $ sudo apt-get install p7zip-full p7zip-rar # Ubuntu
 ```
 
-Update production configurations in mina-relevant config, `/home/deploy/apps/baton-web/shared/config`.
+Update production configurations in mina-relevant config, `/home/deploy/apps/baton-web/shared/config/`.
 
 
 ## Changelog
