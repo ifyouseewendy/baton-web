@@ -172,7 +172,7 @@ class KaitongCli < Thor
     Examples:
 
       ruby lib/tasks/xiaojin.rb load_user_detail
-        --from=/Users/wendi/Workspace/kaitong/baton-web/test/tasks/resources/xiaojin/客户资产明细.init.csv
+        --from=/Users/wendi/Workspace/kaitong/baton-web/samples/xiaojin/客户销售明细表.csv
   LONGDESC
   option :from, required: true
   def load_user_detail
@@ -183,11 +183,13 @@ class KaitongCli < Thor
     CSV.foreach(options[:from]) do |row|
       next if row[0].empty?
 
+      product_code, name, id, amount = row[2], row[4], row[5], row[3].to_i
+
       UserDetail.create(
-        product_code: row[0],
-        user_name: row[1],
-        user_id_card: row[2],
-        amount: row[3].to_i
+        product_code: product_code,
+        user_name:    name,
+        user_id_card: id,
+        amount:       amount
       )
     end
 
