@@ -12,7 +12,7 @@ class KaitongCli < Thor
     Examples:
 
       ruby lib/tasks/xiaojin.rb generate_gjs_details
-        --from=/Users/wendi/Workspace/kaitong/baton-web/samples/xiaojin/专业执行人.csv
+        --from=/Users/wendi/Workspace/kaitong/baton-web/samples/xiaojin/客户销售明细表.csv
   LONGDESC
   option :from,     required: true
   def generate_gjs_details
@@ -31,7 +31,7 @@ class KaitongCli < Thor
       File.open(options[:from], 'r') do |rf|
         rf.each_with_index do |line, i|
           next if line.empty?
-          name, id, mobile, gender, product_code, amount, id_address, contact_address, post_code = line.strip.split(',').map(&:strip)
+          serial, timestamp, product_code, amount, name, id, mobile, gender, id_address, telephone, post_code, contact_address = line.strip.split(',').map(&:strip)
 
           row = [name, nil, 0, 0, id, id_address, gender, mobile, post_code, contact_address, nil, product_code, amount, nil, nil, 1, mobile, 1, product_code, business_code]
           wf.puts row.map(&:to_s).map{|str| str.encode(Encoding::GBK)}.join(",")
