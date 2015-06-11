@@ -214,6 +214,8 @@ class KaitongCli < Thor
 
     @user_details_cache = []
 
+    puts "[#{Time.now.to_s(:db)}] --> Start parsing transfer detail (#{CSV.foreach(options[:transfer_detail]).count} records)"
+
     CSV.foreach(options[:transfer_detail]) do |row|
       next if row[0].empty?
 
@@ -229,6 +231,8 @@ class KaitongCli < Thor
       @user_details_cache << from_ud unless already_in_cache?(from_ud.product_code, from_ud.user_id_card)
       @user_details_cache << to_ud   unless already_in_cache?(to_ud.product_code, to_ud.user_id_card)
     end
+
+    puts "[#{Time.now.to_s(:db)}] --> Start parsing user detail (#{CSV.foreach(options[:user_detail]).count} records)"
 
     failed = []
     CSV.foreach(options[:user_detail]) do |row|
@@ -246,7 +250,7 @@ class KaitongCli < Thor
 
     if failed.blank?
       save_cache_in_db!
-      puts ">> Validate succeed"
+      puts "[#{Time.now.to_s(:db)}] <-- Validate succeed"
     else
       subject = "小金转让信息校验失败 #{Date.today}"
       body = {
@@ -254,7 +258,7 @@ class KaitongCli < Thor
         stat: [ ['用户', '开通计算转让后用户资产', '小金提供转让后用户资产'] ] + failed
       }
       Notifier.notify(subject, body).deliver
-      puts ">> Failed, sent messages"
+      puts "[#{Time.now.to_s(:db)}] <-- Failed, sent messages"
     end
   end
 
