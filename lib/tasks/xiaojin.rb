@@ -71,7 +71,7 @@ class KaitongCli < Thor
           next if line.empty?
           name, id, mobile, gender, product_code, amount, id_address, contact_address, post_code = line.strip.split(',').map(&:strip)
 
-          row = [timestamp, timestamp, product_code, amount.to_i*100, name, id, mobile, gender, id_address, mobile, post_code, contact_address]
+          row = [timestamp, timestamp, product_code, amount, name, id, mobile, gender, id_address, mobile, post_code, contact_address]
           wf.puts row.join(",")
         end
       end
