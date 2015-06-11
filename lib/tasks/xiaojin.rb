@@ -7,7 +7,7 @@ class KaitongCli < Thor
   long_desc <<-LONGDESC
     Parameters:
 
-      from - 为记录"专业执行人"信息的文件地址，格式为 "姓名,身份证,手机号,性别,产品代码,购买金额,证件地址,联系地址,邮政编码"
+      from - 小金上传的《客户销售明细》
 
     Examples:
 
@@ -35,44 +35,6 @@ class KaitongCli < Thor
 
           row = [name, nil, 0, 0, id, id_address, gender, mobile, post_code, contact_address, nil, product_code, amount, nil, nil, 1, mobile, 1, product_code, business_code]
           wf.puts row.map(&:to_s).map{|str| str.encode(Encoding::GBK)}.join(",")
-        end
-      end
-    end
-
-    puts ">> Generate file: #{output}"
-
-  end
-
-  desc 'generate_xiaojin_details', "生成小金需要的《客户明细销售表》"
-  long_desc <<-LONGDESC
-    Parameters:
-
-      from - 为记录"专业执行人"信息的文件地址，格式为 "姓名,身份证,手机号,性别,产品代码,购买金额"
-
-    Examples:
-
-      ruby lib/tasks/xiaojin.rb generate_xiaojin_details
-        --from=/Users/wendi/Workspace/kaitong/baton-web/samples/xiaojin/专业执行人.csv
-  LONGDESC
-  option :from,     required: true
-  def generate_xiaojin_details
-    raise "Invalid <from> file position: #{options[:from]}" unless File.exist?(options[:from])
-
-    today = Date.today.to_s.gsub('-','')
-    out_filename = "xiaojin_客户销售明细表_#{today}.csv"
-    output = File.join(File.expand_path("../../../tmp", __FILE__), out_filename)
-
-    timestamp = Time.now.to_s.gsub(/[\-\s:\+]/, '')
-
-    File.open(output, 'w') do |wf|
-
-      File.open(options[:from], 'r') do |rf|
-        rf.each_with_index do |line, i|
-          next if line.empty?
-          name, id, mobile, gender, product_code, amount, id_address, contact_address, post_code = line.strip.split(',').map(&:strip)
-
-          row = [timestamp, timestamp, product_code, amount, name, id, mobile, gender, id_address, mobile, post_code, contact_address]
-          wf.puts row.join(",")
         end
       end
     end
