@@ -3,6 +3,8 @@ class XiaojinJob
   def check_transfer_detail
     today = Date.today.to_s.gsub('-','')
     options = {}
+    # options[:transfer_detail]  ||= "/Users/wendi/Workspace/kaitong/baton-web/samples/xiaojin/客户资产转让明细.csv"
+    # options[:user_detail]      ||= "/Users/wendi/Workspace/kaitong/baton-web/samples/xiaojin/客户资产明细.csv"
     options[:transfer_detail]  ||= "/home/xiaojin/upload/#{today}/xiaojin_客户资产转让明细_#{today}.csv"
     options[:user_detail]      ||= "/home/xiaojin/upload/#{today}/xiaojin_客户资产明细_#{today}.csv"
 
@@ -14,7 +16,7 @@ class XiaojinJob
     puts "[#{Time.now.to_s(:db)}] --> Start parsing transfer detail (#{CSV.foreach(options[:transfer_detail]).count} records)"
 
     CSV.foreach(options[:transfer_detail]) do |row|
-      next if row[0].empty?
+      next if row.blank?
 
       product_code, amount, from_user, from_user_id, to_user, to_user_id = *row[2..-1]
       amount = amount.to_i
@@ -33,7 +35,7 @@ class XiaojinJob
 
     failed = []
     CSV.foreach(options[:user_detail]) do |row|
-      next if row[0].empty?
+      next if row.blank?
 
       product_code, user_name, user_id, amount = *row
       amount = amount.to_i
@@ -41,7 +43,7 @@ class XiaojinJob
       user = find_in_cache_by(product_code, user_id)
 
       unless user.amount == amount
-        failed << [user_name, user.amount, amount]
+        failed << [product_code, user_name, user.amount, amount]
       end
     end
 
@@ -52,10 +54,30 @@ class XiaojinJob
       subject = "小金转让信息校验失败 #{Date.today}"
       body = {
         type: :table,
-        stat: [ ['用户', '开通计算转让后用户资产', '小金提供转让后用户资产'] ] + failed
+        stat: [ ['产品代码', '用户', '开通计算转让后用户资产', '小金提供转让后用户资产'] ] + failed
       }
       Notifier.notify(subject, body).deliver
       puts "[#{Time.now.to_s(:db)}] <-- Failed, sent messages"
     end
   end
+
+  private
+
+    def find_in_cache_by(product_code, user_id)
+      @user_details_cache.detect{|ud| ud.product_code == product_code && ud.user_id_card == user_id}
+    end
+
+    def find_or_initialize_by(product_code, to_user, to_user_id, amount)
+      find_in_cache_by(product_code, to_user_id)\
+        || UserDetail.where(product_code: product_code, user_id_card: to_user_id).first \
+        || UserDetail.new(product_code: product_code, user_name: to_user, user_id_card: to_user_id, amount: 0)
+    end
+
+    def already_in_cache?(product_code, user_id)
+      find_in_cache_by(product_code, user_id).present?
+    end
+
+    def save_cache_in_db!
+      @user_details_cache.map(&:save!)
+    end
 end
