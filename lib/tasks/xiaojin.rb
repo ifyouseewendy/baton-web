@@ -201,8 +201,8 @@ class KaitongCli < Thor
     Examples:
 
       ruby lib/tasks/xiaojin.rb check_transfer_detail
-        --transfer-detail=/Users/wendi/Workspace/kaitong/baton-web/test/tasks/resources/xiaojin/客户资产转让明细.csv
-        --user-detail=/Users/wendi/Workspace/kaitong/baton-web/test/tasks/resources/xiaojin/客户资产明细.csv
+        --transfer-detail=/Users/wendi/Workspace/kaitong/baton-web/samples/xiaojin/客户资产转让明细.csv
+        --user-detail=/Users/wendi/Workspace/kaitong/baton-web/samples/xiaojin/客户资产明细.csv
   LONGDESC
   option :transfer_detail, required: true
   option :user_detail,     required: true
@@ -217,7 +217,7 @@ class KaitongCli < Thor
     puts "[#{Time.now.to_s(:db)}] --> Start parsing transfer detail (#{CSV.foreach(options[:transfer_detail]).count} records)"
 
     CSV.foreach(options[:transfer_detail]) do |row|
-      next if row[0].empty?
+      next if row.blank?
 
       product_code, amount, from_user, from_user_id, to_user, to_user_id = *row[2..-1]
       amount = amount.to_i
@@ -236,7 +236,7 @@ class KaitongCli < Thor
 
     failed = []
     CSV.foreach(options[:user_detail]) do |row|
-      next if row[0].empty?
+      next if row.blank?
 
       product_code, user_name, user_id, amount = *row
       amount = amount.to_i
@@ -244,7 +244,7 @@ class KaitongCli < Thor
       user = find_in_cache_by(product_code, user_id)
 
       unless user.amount == amount
-        failed << [user_name, user.amount, amount]
+        failed << [product_code, user_name, user.amount, amount]
       end
     end
 
@@ -255,7 +255,7 @@ class KaitongCli < Thor
       subject = "小金转让信息校验失败 #{Date.today}"
       body = {
         type: :table,
-        stat: [ ['用户', '开通计算转让后用户资产', '小金提供转让后用户资产'] ] + failed
+        stat: [ ['产品代码', '用户', '开通计算转让后用户资产', '小金提供转让后用户资产'] ] + failed
       }
       Notifier.notify(subject, body).deliver
       puts "[#{Time.now.to_s(:db)}] <-- Failed, sent messages"
