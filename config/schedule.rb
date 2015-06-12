@@ -2,6 +2,6 @@
 
 set :output, "log/schedule.log"
 
-every :day, :at => '12:20am' do
+every :day, :at => '01:00am' do
   runner "XiaojinJob.new.check_transfer_detail"
 end
