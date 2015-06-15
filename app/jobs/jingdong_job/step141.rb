@@ -4,7 +4,7 @@ module JingdongJob
     def run(step, args)
       begin
         files = [
-          Pathname(step.stage.tasks[1].files.first.file.current_path),  # 产品发布文件
+          Pathname(step.stage.tasks[1].files.last.file.current_path),   # 产品发布文件
           Pathname(step.stage.tasks[2].files.first.file.current_path)   # 产品合同文件
         ]
         files.each{|pa| check_existence_of!(pa)}
