@@ -26,5 +26,6 @@ $(document).on 'ready', ->
         edit_project_form.find('#project_platform_zh').attr('value', data['platform_zh'])
         edit_project_form.find('#project_category option:nth-child('+data['category_index']+')').attr('selected', 'selected')
         edit_project_form.find('#project_bourse option:nth-child('+data['bourse_index']+')').attr('selected', 'selected')
+        edit_project_form.find('#project_serial').attr('value', data['serial'])
 
     edit_project_form.modal()

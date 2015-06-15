@@ -4,9 +4,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="<%= modal_id %>-modal-label">创建新项目</h4>
+        <h4 class="modal-title" id="<%= modal_id %>-modal-label">编辑项目</h4>
       </div>
-      <%= form_for Project.last, url: '#', method: :put, html: {class: "form-horizontal"} do |f| %>
+      <%= form_for Project.new, url: '#', method: :put, html: {class: "form-horizontal"} do |f| %>
         <div class="modal-body">
           <div class="form-group">
             <%= f.label '名称', class: "col-sm-2 control-label" %>
@@ -30,6 +30,12 @@
             <%= f.label '产品类型', class: "col-sm-2 control-label" %>
             <div class="col-sm-4">
               <%= f.select :category, Project::CATEGORY, {}, class: "form-control" %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= f.label '项目编号', class: "col-sm-2 control-label" %>
+            <div class="col-sm-4">
+              <%= f.text_field :serial, class: "form-control" %>
             </div>
           </div>
         </div>

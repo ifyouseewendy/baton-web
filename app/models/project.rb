@@ -79,7 +79,7 @@ class Project
     return serial if serial.present?
 
     serial = \
-      if platform == 'jingdong'
+      if platform =~ /^jingdong/
         "#{Date.today.to_s.gsub('-','')}_001"
       else
         "#{Date.today.to_s.gsub('-','')}"
