@@ -18,13 +18,15 @@ module JingdongJob
           content = Rails.root.join('samples').join('guangjiaosuo').join('产品合同模板.html').read
         end
 
-        output_dir = Rails.root.join('tmp').join("kaitong_contract_#{step.project.get_serial}")
+        bourse = get_bourse(step)
+
+        output_dir = Rails.root.join('tmp').join("#{bourse}_contract_#{step.project.get_serial}")
         FileUtils.mkdir_p output_dir
 
         (1..count.to_i).each do |idx|
           period = prefill_zero(idx, index_length || 2)
 
-          output_file = File.join(output_dir, "kaitong_kaitong#{code}_contract.html")
+          output_file = File.join(output_dir, "#{bourse}_#{bourse}#{code}_contract.html")
           File.open(output_file, 'w:GBK:UTF-8') do |wf|
             wf.write content\
                       .gsub('__contract_index__', "#{code}001")\
@@ -38,7 +40,7 @@ module JingdongJob
         end
 
         Dir.chdir(output_dir)
-        zip_name = "kaitong_contract_#{step.project.get_serial}.zip"
+        zip_name = "#{bourse}_contract_#{step.project.get_serial}.zip"
         `7z a #{zip_name} *`
         Dir.chdir(Rails.root)
 
@@ -73,6 +75,12 @@ module JingdongJob
         res = num.to_s
         res = ([0]*(length.to_i - res.length) + res.to_s.chars).join if num.to_s.length < length.to_i
         return res
+      end
+
+      def get_bourse(step)
+        bourse = step.project.bourse
+        bourse = :kaitong if bourse == :guangjiaosuo # Incompatible name for Jingdong
+        bourse
       end
 
 
