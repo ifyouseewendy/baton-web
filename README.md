@@ -117,9 +117,26 @@ $ ruby lib/tasks/xiaojin.rb
 
 ## Test
 
-+ Unit test by `$ rake`
-+ [Sample](samples/) files are used to test uploading on web page.
+### Unit Test
 
+```
+$ rake
+```
+
+### Samples
+
+[Sample](samples/) files are used to test uploading on web page.
+
+### Test env
+
+> Select when creating project.
+
+There are two strategies,
+
+1. Pass `{env: :test}` option to job run, and use `FileAgent` to mock SFTP download and upload.
+2. Always pass `{env: :online}` option, but use test user on SFTP. Change platform (`'jingdong'`) to test name (`'jingdong_test'`) when creating project.
+
+Strategy 2 is being used now.
 
 ## Deployment
 

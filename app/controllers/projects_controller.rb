@@ -32,7 +32,10 @@ class ProjectsController < ApplicationController
   def create
     begin
       project = Project.build_by(project_params[:recipe])
-      project.update_attributes!(project_params.merge({platform: project_params[:platform_zh].to_pinyin}))
+
+      platform = project_params[:platform_zh].to_pinyin
+      platform = "#{platform}_test" if project_params[:env] == 'test'
+      project.update_attributes!(project_params.merge({platform: platform}))
 
       flash[:notice] = "项目 #{project.name} 创建成功"
     rescue => e
