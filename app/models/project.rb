@@ -29,7 +29,7 @@ class Project
 
   # Constants
   CATEGORY = Rails.application.secrets.product_category
-  BOURSE   = Rails.application.secrets.bourse.reduce({}){|ha, b| ha[ b.to_pinyin.to_sym ] = b; ha }
+  BOURSE   = Rails.application.secrets.bourse.symbolize_keys
 
   class << self
     def build_by(recipe)
