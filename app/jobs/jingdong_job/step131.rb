@@ -24,7 +24,7 @@ module JingdongJob
         (1..count.to_i).each do |idx|
           period = prefill_zero(idx, index_length || 2)
 
-          output_file = File.join(output_dir, "kaitong_KAITONG#{code}_contract.html")
+          output_file = File.join(output_dir, "kaitong_kaitong#{code}_contract.html")
           File.open(output_file, 'w:GBK:UTF-8') do |wf|
             wf.write content\
                       .gsub('__contract_index__', "#{code}001")\
