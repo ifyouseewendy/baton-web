@@ -5,7 +5,7 @@ module JingdongJob
       begin
         @file = step.task.files.first.try(:file)
 
-        if step.env == :online
+        if args[:env] == :online
           @pa = Pathname.new @file.try(:current_path)
         else
           @pa = Rails.root.join('samples').join('jingdong').join('交易确认文件.txt')

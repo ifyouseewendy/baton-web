@@ -11,7 +11,7 @@ module JingdongJob
           :product_index_length
         )
 
-        if step.env == :online
+        if args[:env] == :online
           template = step.stage.files.detect{|af| Pathname(af.file.current_path).extname == '.html' }.file.current_path
           content = read_utf8_content(template)
         else
