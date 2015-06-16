@@ -7,21 +7,18 @@ module JingdongJob
         fa = FileAgent.new(platform, env: args[:env])
         fa.download(:dir, args)
 
-        if fa.files.count == 0
+        pa = fa.files.detect{|_f| _f.basename.to_s =~ /#{step.project.get_serial}.zip$/}
+        if pa.nil?
           {
             status: :failed,
             message: "未检查到文件"
           }
         else
-          pa = fa.files.first
+          Dir.chdir(pa.dirname)
+          `7z e -y #{pa.basename}`
+          Dir.chdir(Rails.root)
 
-          if pa.extname == '.zip'
-            Dir.chdir(pa.dirname)
-            `7z e -y #{pa.basename}`
-            Dir.chdir(Rails.root)
-
-            pa = pa.dirname.entries.detect{|_pa| _pa.extname == '.txt'}.expand_path(pa.dirname)
-          end
+          pa = pa.dirname.entries.detect{|_pa| _pa.basename.to_s =~ /#{step.project.get_serial}.txt$/}.expand_path(pa.dirname)
 
           step.add_file(pa, platform, override: true)
 
