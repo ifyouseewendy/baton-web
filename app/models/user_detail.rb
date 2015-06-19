@@ -8,6 +8,8 @@ class UserDetail
   field :user_id_card,  type: String
   field :amount,        type: Integer # Xiaojin uses fen as the basic unit, that save 10000 for 100.00 yuan.
 
+  index({ product_code: 1, user_id_card: 1 }, { unique: true, background: true })
+
   private
 
     def to_s
