@@ -11,6 +11,6 @@ class UserDetail
   private
 
     def to_s
-      [product_code, user_name, user_id_card, amount].join(' - ')
+      [product_code, user_name, user_id_card, amount].join(',')
     end
 end
