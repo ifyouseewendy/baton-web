@@ -11,8 +11,7 @@ class KaitongCli < Thor
   long_desc <<-LONGDESC
     Examples:
 
-      ruby lib/tasks/jingdong.rb convert --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/jingdong/kaitong_product_apply_20150411.xls
-      ruby lib/tasks/jingdong.rb convert --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/jingdong/kaitong_product_apply_20150411.xlsx
+      ruby lib/tasks/jingdong.rb convert --from=/Users/wendi/Workspace/kaitong/baton-web/samples/jingdong/产品发布文件.xls
   LONGDESC
   option :from,   required: true
   def convert
@@ -191,10 +190,11 @@ class KaitongCli < Thor
   long_desc <<-LONGDESC
     Examples:
 
-      ruby lib/tasks/jingdong.rb generate_contract_files --start_code=600101 --count=5
-        --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/jingdong/guangjiaosuo_产品合同模板_20150428.html
+      ruby lib/tasks/jingdong.rb generate_contract_files --bourse=kaitong --start_code=600101 --count=5
+        --from=/Users/wendi/Workspace/kaitong/baton-web/samples/guangjiaosuo/产品合同模板.html
   LONGDESC
   option :from,       required: true
+  option :bourse,     required: true # kaitong represents Guangjiaosuo, infae represents Liaojinsuo
   option :start_code, required: true
   option :count,      required: true, type: :numeric
   option :period_length, type: :numeric
@@ -206,17 +206,18 @@ class KaitongCli < Thor
     # Guangjiaosuo makes 600109's next is 600110, instead of 60010A
     # code = ProductCode.new(options[:start_code])
     code = options[:start_code]
+    bourse = options[:bourse]
 
     content = read_utf8_content(options[:from])
 
     date = Date.today.to_s.gsub('-', '')
-    output_dir = File.join( File.expand_path("../../../tmp/kaitong_contract_#{date}", __FILE__) )
+    output_dir = File.join( File.expand_path("../../../tmp/#{bourse}_contract_#{date}", __FILE__) )
     FileUtils.mkdir_p output_dir
 
     (1..options[:count]).each do |idx|
       period = prefill_zero(idx, options[:period_length] || 2)
 
-      output_file = File.join(output_dir, "kaitong_kaitong#{code}_contract.html")
+      output_file = File.join(output_dir, "#{bourse}_#{bourse}#{code}_contract.html")
       File.open(output_file, 'w:GBK:UTF-8') do |wf|
         wf.write content\
                   .gsub('__contract_index__', "#{code}001")\
