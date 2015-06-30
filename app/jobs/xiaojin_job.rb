@@ -1,12 +1,12 @@
 # This is a temp job, used in config/schedule.rb, copyed from lib/task/xiaojin.rb
 class XiaojinJob
-  def check_transfer_detail
-    today = Date.today.to_s.gsub('-','')
-    options = {}
+  def check_transfer_detail(options = {})
+    date = options.fetch(:date, Date.today.to_s).gsub('-','')
+
     # options[:transfer_detail]  ||= "/Users/wendi/Workspace/kaitong/baton-web/samples/xiaojin/客户资产转让明细.csv"
     # options[:user_detail]      ||= "/Users/wendi/Workspace/kaitong/baton-web/samples/xiaojin/客户资产明细.csv"
-    options[:transfer_detail]  ||= "/home/xiaojin/upload/#{today}/xiaojin_客户资产转让明细_#{today}.csv"
-    options[:user_detail]      ||= "/home/xiaojin/upload/#{today}/xiaojin_客户资产明细_#{today}.csv"
+    options[:transfer_detail]  ||= "/home/xiaojin/upload/#{date}/xiaojin_客户资产转让明细_#{date}.csv"
+    options[:user_detail]      ||= "/home/xiaojin/upload/#{date}/xiaojin_客户资产明细_#{date}.csv"
 
     proc { puts "[#{Time.now.to_s(:db)}] ** No such file: #{options[:transfer_detail]}"; return }.call unless File.exist?(options[:transfer_detail])
     proc { puts "[#{Time.now.to_s(:db)}] ** No such file: #{options[:user_detail]}"; return }.call     unless File.exist?(options[:user_detail])
@@ -51,7 +51,7 @@ class XiaojinJob
       save_cache_in_db!
       puts "[#{Time.now.to_s(:db)}] <-- Validate succeed"
     else
-      subject = "小金转让信息校验失败 #{Date.today}"
+      subject = "小金转让信息校验失败 #{date}"
       body = {
         type: :table,
         stat: [ ['产品代码', '用户', '开通计算转让后用户资产', '小金提供转让后用户资产'] ] + failed
