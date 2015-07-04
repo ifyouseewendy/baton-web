@@ -77,12 +77,30 @@ stages:
   - name: '起息日'
     description: ''
     tasks:
-      - name: 'TODO'
+      - name: '为京东提供《交易试算文件》'
         description: ''
         steps:
-          - name: 'TODO'
+          - name: '生成《交易试算文件》'
             description: ''
             job_id: "311"
+          - name: '发送，并等待确认'
+            description: ''
+            job_id: "312"
+          - name: '获取《交易试算结果文件》'
+            description: ''
+            job_id: "313"
+      - name: '为京东提供《交易还款文件》'
+        description: ''
+        steps:
+          - name: '生成《交易还款文件》'
+            description: ''
+            job_id: "321"
+          - name: '发送，并等待确认'
+            description: ''
+            job_id: "322"
+          - name: '获取《交易还款结果文件》'
+            description: ''
+            job_id: "323"
   - name: '到期日'
     description: ''
     tasks:

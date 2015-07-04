@@ -1,0 +1,21 @@
+<li class="list-group-item baton-step-list">
+  <a href="#" class="pull-right step-run" data-step-id="<%= step.id.to_s %>"><i class="fa <%= step.done? ? 'fa-repeat' : 'fa-play' %>"></i></a>
+
+  <%= hidden_field_tag 'param_direction', 'upload', class: 'param-direction'  %>
+  <%= tag(:input, type: 'date', class: 'param-date pull-right step-param', value: step.file_list_date) %>
+
+  <span class="pull-left media-xs step-status"><i class="fa <%= step.done? ? 'fa-check' : 'fa-arrow-right' %> text-muted fa-sm"></i> <%= step_idx+1 %></span>
+  <div class="clear">
+    <%= step.name %>
+  </div>
+
+  <div class="panel task-panel step-result" style="<%= step.done? ? '' : 'display:none' %>">
+    <div class="panel-body">
+      <% if step.done? %>
+        <%= html_format(step.result)[:html] %>
+      <% end %>
+    </div>
+  </div>
+</li>
+
+
