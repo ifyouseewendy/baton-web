@@ -76,7 +76,7 @@ class ProjectsController < ApplicationController
 
   def send_file
     request_filename = [params.require(:filename), params.require(:format)].join('.')
-    idx = @project.filenames.index(request_filename)
+    idx = @project.filenames.rindex(request_filename)
 
     render text: "No file<#{request_filename}> found." and return if idx.nil?
 
