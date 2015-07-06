@@ -1,4 +1,4 @@
-<% @stage.tasks.asc(:updated_at).each_with_index do |task, task_idx| %>
+<% @stage.tasks.asc(:created_at).each_with_index do |task, task_idx| %>
   <%= render layout: 'jingdong/task', locals: { number: task_idx+1, accordion_id: 'accordion_stage1', content: task.name, task_id: task.id } do %>
     <% task.steps.asc(:job_id).each_with_index do |step, step_idx| %>
       <%= render partial: "jingdong/step#{step.job_id}", locals: { step: step, step_idx: step_idx } rescue nil %>
