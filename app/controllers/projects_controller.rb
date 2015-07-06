@@ -82,10 +82,11 @@ class ProjectsController < ApplicationController
 
     file = @project.files[idx].file
     content = file.read
-    if stale?(etag: content, last_modified: @project.updated_at.utc, public: true)
-      send_data content, type: file.content_type, disposition: "inline"
-      expires_in 0, public: true
-    end
+
+    # Wrong expiration
+    # if stale?(etag: content, last_modified: @project.updated_at.utc, public: true)
+    send_data content, type: file.content_type, disposition: "inline"
+    expires_in 0, public: true
   end
 
 
