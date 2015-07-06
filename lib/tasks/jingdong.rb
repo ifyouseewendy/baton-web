@@ -84,7 +84,7 @@ class KaitongCli < Thor
   long_desc <<-LONGDESC
     Examples:
 
-      ruby lib/tasks/jingdong.rb generate_refund --from=/Users/wendi/Workspace/kaitong/ftp-monitor/test/tasks/resources/jingdong/kaitong_invest_20150411.txt --rate=0.0783
+      ruby lib/tasks/jingdong.rb generate_refund --from=/Users/wendi/Workspace/kaitong/baton-web/samples/jingdong/交易确认文件.txt --rate=0.0783
   LONGDESC
   option :from, required: true
   option :rate, type: :numeric, required: true
