@@ -194,7 +194,7 @@ class KaitongCli < Thor
         --from=/Users/wendi/Workspace/kaitong/baton-web/samples/guangjiaosuo/产品合同模板.html
   LONGDESC
   option :from,       required: true
-  option :bourse,     required: true # kaitong represents Guangjiaosuo, infae represents Liaojinsuo
+  option :bourse,     required: true # kaitong represents Guangjiaosuo, ktlnfae represents Liaojinsuo
   option :start_code, required: true
   option :count,      required: true, type: :numeric
   option :period_length, type: :numeric
