@@ -54,8 +54,11 @@ class ProjectsController < ApplicationController
 
   # PATCH/PUT /projects/1
   def update
+    platform = project_params[:platform_zh].to_pinyin
+    platform = "#{platform}_test" if @project.env.to_s == 'test'
+
     respond_to do |format|
-      if @project.update(project_params)
+      if @project.update(project_params.merge({platform: platform}))
         format.html { redirect_to projects_path, notice: "项目 #{@project.name} 更新成功" }
       else
         format.html { redirect_to projects_path, alert: @project.errors.full_messages.join("\n") }
