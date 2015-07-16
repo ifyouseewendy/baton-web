@@ -1,8 +1,9 @@
 # Compared to SftpProxy
-#   + params handling
-#   + naming
+#   + Params handling
+#   + Naming
+#   + Target path based on :env option, eg. 'jingdong' for :online,, and 'jingdon_test' for :test
 class FileAgent
-  attr_accessor :organization, :files
+  attr_accessor :organization, :files, :options
 
   def initialize(organization, options = {env: :online})
     @organization = organization
@@ -30,7 +31,7 @@ class FileAgent
   #     file:       'a.txt'
   #    )
   #   # from server-side  "/home/jingdong/download/20150501/a.txt"
-  #   # to local-side     "#{Rails.root}/public/resources/jingdong/project_id/download/a.txt"
+  #   # to local-side     "#{Rails.root}/public/resources/jingdong/#{project_id}/download/a.txt"
   #
   #   fa.download(
   #     :dir,
@@ -39,19 +40,31 @@ class FileAgent
   #     direction:  'download'
   #    )
   #   # from server-side  "/home/jingdong/download/20150501"
-  #   # to local-side     "#{Rails.root}/public/resources/jingdong/project_id/download"
+  #   # to local-side     "#{Rails.root}/public/resources/jingdong/#{project_id}/download"
+  #
+  #   fa = ::FileAgent.new(:jingdong, env: :test)
+  #   fa.download(
+  #     :file,
+  #     project_id: 'project_id',
+  #     date:       '2015-05-01',
+  #     direction:  'download',
+  #     file:       'a.txt'
+  #    )
+  #   # from server-side  "/home/jingdong_test/download/20150501/a.txt"
+  #   # to local-side     "#{Rails.root}/public/resources/jingdong_test/#{project_id}/download/a.txt"
   #
   # Returns an Array of files.
   def download(type, args)
     from, to = download_server_path(args), download_local_path(args)
 
-    self.files = ::SftpProxy.download(type, from, to, @options)
+    self.files = ::SftpProxy.download(type, from, to)
   end
 
   def upload(type, args)
     from, to = upload_local_path(args), upload_server_path(args)
 
-    ::SftpProxy.upload(type, from, to, @options)
+    require'pry';binding.pry
+    ::SftpProxy.upload(type, from, to)
   end
 
   def names
@@ -71,14 +84,14 @@ class FileAgent
       direction, file = args.values_at(:direction, :file)
       date = args.fetch(:date, Date.today.to_s).gsub('-', '')
 
-      "/home/#{organization}/#{direction}/#{date}/#{file}"
+      "/home/#{organization_name}/#{direction}/#{date}/#{file}"
     end
 
     def download_local_path(args)
       assert_present_keys(args, :direction, :project_id)
 
       direction, project_id = args.values_at(:direction, :project_id)
-      to_dir = Pathname.new File.join(Rails.root, "public", "resources", organization.to_s, project_id, direction.to_s)
+      to_dir = Pathname.new File.join(Rails.root, "public", "resources", organization_name, project_id, direction.to_s)
       to_dir.mkpath
 
       to_dir.to_s
@@ -86,7 +99,7 @@ class FileAgent
 
     def upload_server_path(args)
       date = args.fetch(:date, Date.today.to_s).gsub('-', '')
-      "/home/#{args[:organization]}/download/#{date}"
+      "/home/#{organization_name}/download/#{date}"
     end
 
     def upload_local_path(args)
@@ -95,6 +108,10 @@ class FileAgent
 
     def assert_present_keys(ha, *keys)
       keys.each{|k| ha.fetch(k){ raise "No #{k} passed." }}
+    end
+
+    def organization_name
+      options[:env] == :test ? "#{organization}_test" : "#{organization}"
     end
 
 end

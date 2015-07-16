@@ -15,7 +15,7 @@ class AttachFile
 
   def store_dir
     # Use download directory to be consistant with file structure on FTP
-    "resources/#{organization}/#{project.id}/download"
+    "resources/#{organization_name}/#{project.id}/download"
   end
 
   def recipe
@@ -24,6 +24,10 @@ class AttachFile
 
   def project
     step.try(:project) || raise("You need to set Step relation first")
+  end
+
+  def organization_name
+    step.env == :test ? "#{organization}_test" : "#{organization}"
   end
 
 end

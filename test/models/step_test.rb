@@ -19,7 +19,7 @@ class StepTest < ActiveSupport::TestCase
   end
 
   def test_run
-    project = stub(id: 'test')
+    project = stub(id: 'test', env: :test)
     @step.stubs(:project).returns(project)
     @step.stubs(:recipe).returns(:test)
     @step.stubs(:job_id).returns('007')

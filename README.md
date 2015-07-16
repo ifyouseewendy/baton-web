@@ -129,14 +129,8 @@ $ rake
 
 ### Test env
 
-> Select when creating project.
-
-There are two strategies,
-
-1. Pass `{env: :test}` option to job run, and use `FileAgent` to mock SFTP download and upload.
-2. Always pass `{env: :online}` option, but use test user on SFTP. Change platform (`'jingdong'`) to test name (`'jingdong_test'`) when creating project.
-
-Strategy 2 is being used now.
++ `FileAgent` handles target path based on env option, eg. `'jingdong'` for online, and `'jingdong_test'` for test.
++ Carrierwave saves file to path based on relevant step env.
 
 ## Deployment
 

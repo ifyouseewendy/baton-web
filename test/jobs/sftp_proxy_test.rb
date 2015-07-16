@@ -19,11 +19,11 @@ class SftpProxyTest < ActiveSupport::TestCase
   end
 
   def test_download
-    SftpProxy.expects(:download_file).with('from', 'to', {env: :online})
+    SftpProxy.expects(:download_file).with('from', 'to')
     ret = SftpProxy.download(:file, 'from', 'to')
     assert_kind_of(Array, ret)
 
-    SftpProxy.expects(:download_dir).with('from', 'to', {env: :online})
+    SftpProxy.expects(:download_dir).with('from', 'to')
     SftpProxy.download(:dir, 'from', 'to')
   end
 
@@ -56,29 +56,6 @@ class SftpProxyTest < ActiveSupport::TestCase
     assert_equal files, files_in(to).sort
   end
 
-  def test_download_file_test_env
-    from  = "/home/#@organization/upload/test_dir"
-    to    = File.join( local_test_dir, "download" )
-    file = 'a.txt'
-
-    target_file = Pathname.new(File.join(to, file))
-
-    refute target_file.exist?
-
-    SftpProxy.expects(:fake_download_file)
-    file = SftpProxy.download_file(File.join(from,file), to, env: :test)
-  end
-
-  def test_download_dir_test_env
-    from  = "/home/#@organization/upload/test_dir"
-    to    = File.join( local_test_dir, "download" )
-
-    assert_empty files_in(to)
-
-    SftpProxy.expects(:fake_download_file).at_least_once
-    SftpProxy.download_dir(from, to, env: :test)
-  end
-
   def test_upload
     dir  = Rails.root
     to    = "/home/#@organization/download/test_dir"
@@ -92,17 +69,6 @@ class SftpProxyTest < ActiveSupport::TestCase
     assert SftpProxy.ls(to).include?( Pathname(from).basename.to_s )
 
     FileUtils.rm from
-  end
-
-  def test_upload_test_env
-    dir  = Rails.root
-    to    = "/home/#@organization/download/test_dir"
-    from = dir.join('tmp').join("test-upload-中文-#{SecureRandom.hex(4)}")
-
-    refute SftpProxy.ls(to).include?( Pathname(from).basename.to_s )
-
-    SftpProxy.expects(:fake_upload_file)
-    SftpProxy.upload(:file, from, to, env: :test)
   end
 
   private

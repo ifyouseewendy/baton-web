@@ -39,17 +39,11 @@ class Step
     project.env
   end
 
-  # Two strategies to handle test env
-  #
-  # 1. Pass {env: :test} option, and use FileAgent test env mock.
-  # 2. Pass {env: :online} option, but change SFTP user name 'jingdong' to 'jingdong_test' when creating project.
-  #
-  # Now, using strategy 2.
   def run(args)
     job = "#{recipe.capitalize}Job::Step#{job_id}".constantize.new
     data = job.run self, args.merge({
       project_id: project.id.to_s,
-      env: :online
+      env: env
     })
 
     self.update_attribute(:result, data)

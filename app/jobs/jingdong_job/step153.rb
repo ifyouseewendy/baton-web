@@ -7,7 +7,7 @@ module JingdongJob
         files.each{|pa| check_existence_of!(pa)}
 
         platform = step.bourse
-        fa = FileAgent.new(platform)
+        fa = FileAgent.new(platform, env: args[:env])
         server_files = files.map{|pa| fa.upload(:file, file: pa.to_s, organization: platform)}
 
         {

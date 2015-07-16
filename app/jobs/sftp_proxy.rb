@@ -8,68 +8,53 @@ class SftpProxy
       end
     end
 
-    def download(type, from, to, options = {env: :online})
-      Array.wrap self.public_send( "download_#{type}", from, to, options )
+    def download(type, from, to)
+      Array.wrap self.public_send( "download_#{type}", from, to)
     end
 
     # Expecting from: 'dir/a.txt', to: 'dir'
-    def download_file(from, to, options = {env: :online})
+    def download_file(from, to)
       file = Pathname.new(from).basename
       source, target = from, File.join(to,file)
 
-      unless options[:env] == :online
-        fake_download_file(target)
-      else
-        start do |sftp|
-          puts "--> Fetching from SFTP:#{target}"
-          sftp.download! source, target
-        end
+      start do |sftp|
+        puts "--> Fetching from SFTP:#{target}"
+        sftp.download! source, target
       end
 
       Pathname.new target.force_encoding(Encoding::UTF_8)
     end
 
     # Download from/a, from/b -> to/a, to/b. No nested dir support.
-    def download_dir(from, to, options = {env: :online})
+    def download_dir(from, to)
       files = []
 
-      unless options[:env] == :online
-        (1..3).each do |num|
-          target = File.join(to, "test_#{num}.txt")
-          files << fake_download_file(target)
-        end
-      else
-        start do |sftp|
-          sftp.dir.foreach(from) do |file|
-            next if file.name =~ /^\./
-            source, target = File.join(from,file.name), File.join(to,file.name)
+      start do |sftp|
+        sftp.dir.foreach(from) do |file|
+          next if file.name =~ /^\./
+          source, target = File.join(from,file.name), File.join(to,file.name)
 
-            puts "--> Fetching from SFTP:#{target}"
-            sftp.download! source, target
+          puts "--> Fetching from SFTP:#{target}"
+          sftp.download! source, target
 
-            files << Pathname.new(target.force_encoding(Encoding::UTF_8))
-          end
+          files << Pathname.new(target.force_encoding(Encoding::UTF_8))
         end
       end
 
       files.sort
     end
 
-    def upload(type, from, to, options = {env: :online})
-      self.public_send( "upload_#{type}", from, to, options )
+    def upload(type, from, to)
+      self.public_send( "upload_#{type}", from, to)
     end
 
     # Expecting from: 'dir/a.txt', to: 'dir'
-    def upload_file(from, to, options = {env: :online})
+    def upload_file(from, to)
       file = Pathname.new(from).basename
       start do |sftp|
         puts "--> Uploading to SFTP:#{File.join(to,file)}"
 
-        if options[:env] == :online
-          sftp.upload! from.to_s, File.join(to,file).force_encoding('Binary') # net-sftp transfers binary
-        else
-          fake_upload_file
-        end
+        sftp.upload! from.to_s, File.join(to,file).force_encoding('Binary') # net-sftp transfers binary
       end
 
       Pathname.new File.join(to,file)
