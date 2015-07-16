@@ -63,7 +63,6 @@ class FileAgent
   def upload(type, args)
     from, to = upload_local_path(args), upload_server_path(args)
 
-    require'pry';binding.pry
     ::SftpProxy.upload(type, from, to)
   end
 
