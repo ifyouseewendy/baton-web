@@ -27,6 +27,13 @@
             <%= link_to content_tag(:i, nil, class: 'fa fa-info', data: {toggle: 'tooltip', placement: 'right'}, title: "若该值为2, 生成'京银宝'01, '京银宝'02；若该值为3, 生成'京银宝'001, '京银宝'002"), '#', class: 'control-label' %>
           <% end %>
         </div>
+        <div class="form-group">
+          <%= label_tag 'index', '产品名称编号起始', class: 'col-sm-3 control-label' %>
+          <%= content_tag :div, class: 'col-sm-4' do %>
+            <%= text_field_tag('start_nick_code', '1' , class: 'start_nick_code') %>
+            <%= link_to content_tag(:i, nil, class: 'fa fa-info', data: {toggle: 'tooltip', placement: 'right'}, title: "若该值为1结合［产品名称编号长度］产品名称编码为001 或 01开始；若该值为2则生成的产品名称为002或02开始"), '#', class: 'control-label' %>
+          <% end %>
+        </div>
       </form>
     </div>
   </div>

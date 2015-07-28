@@ -5,13 +5,14 @@ module JingdongJob
     # 批量生成产品合同
     def run(step, args)
       begin
-        code, count, index_length = args.values_at(
+        code, count, index_length, nick_code = args.values_at(
           :product_start_code,
           :product_count,
-          :product_index_length
+          :product_index_length,
+          :product_start_nick_code
         )
 
-        if args[:env] == :online
+        unless args[:env] == :online
           template = step.stage.files.detect{|af| Pathname(af.file.current_path).extname == '.html' }.file.current_path
           content = read_utf8_content(template)
         else
@@ -23,8 +24,10 @@ module JingdongJob
         output_dir = Rails.root.join('tmp').join("#{bourse}_contract_#{step.project.get_serial}")
         FileUtils.mkdir_p output_dir
 
+        nick_code ||= 1.to_s
+
         (1..count.to_i).each do |idx|
-          period = prefill_zero(idx, index_length || 2)
+          period = prefill_zero(nick_code, index_length || 2)
 
           output_file = File.join(output_dir, "#{bourse}_#{bourse}#{code}_contract.html")
           File.open(output_file, 'w:GBK:UTF-8') do |wf|
@@ -34,6 +37,7 @@ module JingdongJob
                       .gsub('__product_code__', code.to_s)
 
             code.next!
+            nick_code.next!
           end
 
           puts ">> Generate file: #{output_file}"

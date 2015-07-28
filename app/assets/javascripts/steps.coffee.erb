@@ -25,6 +25,7 @@ $(document).on 'ready', ->
         product_start_code: step_list.find('.param-group .start-code').val()
         product_count: step_list.find('.param-group .count').val()
         product_index_length: step_list.find('.param-group .index_length').val()
+        product_start_nick_code: step_list.find('.param-group .start_nick_code').val()
       type: 'POST'
       error: (jqXHR, textStatus, errorThrown) ->
         $('body').append "AJAX Error: #{textStatus}"
