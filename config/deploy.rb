@@ -4,8 +4,8 @@ require 'mina/git'
 require 'mina/rvm'
 require 'mina/whenever'
 
-set :domain, 'kaitong.aliyun'
-set :deploy_to, '/home/deploy/apps/baton-web'
+set :domain, '{domain}'
+set :deploy_to, '{deploy_to}'
 set :repository, 'git@github.com:ifyouseewendy/baton-web.git'
 set :branch, 'master'
 
